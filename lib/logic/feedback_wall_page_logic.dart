@@ -13,12 +13,12 @@ class FeedbackWallPageLogic{
 
 
   void getSuggestions(){
-    ApiService.instance.getSuggestions(
+    ApiService.instance?.getSuggestions(
       success: (data){
         SharedUtil.instance.saveString(Keys.feedbackWallCacheList, jsonEncode(data));
         SuggestionBean suggestionBean = SuggestionBean.fromMap(data);
         _model.suggestionList.clear();
-        _model.suggestionList.addAll(suggestionBean.suggestions);
+        _model.suggestionList.addAll(suggestionBean.suggestions as Iterable<SuggestionsListBean>);
         ///反转列表，按照时间最新的排在最前面
         _model.suggestionList = _model.suggestionList.reversed.toList();
         if(_model.suggestionList.isEmpty){
@@ -40,7 +40,7 @@ class FeedbackWallPageLogic{
     if(data == null) return;
     SuggestionBean suggestionBean = SuggestionBean.fromMap(jsonDecode(data));
     _model.suggestionList.clear();
-    _model.suggestionList.addAll(suggestionBean.suggestions);
+    _model.suggestionList.addAll(suggestionBean.suggestions as Iterable<SuggestionsListBean>);
     _model.hasCache = true;
     _model.suggestionList = _model.suggestionList.reversed.toList();
     _model.refresh();

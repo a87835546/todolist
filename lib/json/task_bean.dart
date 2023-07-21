@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:js_util';
 
 import 'package:todo_list/json/task_icon_bean.dart';
 
@@ -34,24 +35,25 @@ class TaskBean {
   String deadLine;
 
   ///当前任务的图标信息
-  TaskIconBean taskIconBean;
+  TaskIconBean? taskIconBean;
   List<TaskDetailBean> detailList = [];
 
 
   ///以下内容，只存储在本地数据库内。
 
   ///当前字体颜色
-  ColorBean textColor;
+  ColorBean? textColor;
   ///当前卡片背景图片地址
   String backgroundUrl;
 
   TaskBean(
-      {this.taskName = "",
+      {this.id=0,
+        this.taskName = "",
       this.taskType = "",
       this.taskStatus = TaskStatus.todo,
-      this.taskDetailNum,
+      this.taskDetailNum = 0,
       this.overallProgress = 0.0,
-      this.uniqueId,
+      this.uniqueId = "",
       this.needUpdateToCloud = 'true',
       this.changeTimes = 0,
       this.createDate = "",
@@ -59,14 +61,14 @@ class TaskBean {
       this.account = "default",
       this.startDate = "",
       this.deadLine = "",
-      this.taskIconBean,
-      this.detailList,
+      this.taskIconBean ,
+      required this.detailList,
       this.textColor,
-      this.backgroundUrl,
+      this.backgroundUrl = "",
       });
 
   static TaskBean fromMap(Map<String, dynamic> map) {
-    TaskBean taskBean = new TaskBean();
+    TaskBean taskBean = new TaskBean(detailList:newObject());
     taskBean.id = map['id'];
     taskBean.taskName = map['taskName'];
     taskBean.taskType = map['taskType'];
@@ -134,7 +136,7 @@ class TaskBean {
   }
 
   static List<TaskBean> fromMapList(dynamic mapList) {
-    List<TaskBean> list = List.filled(mapList.length, null);
+    List<TaskBean> list = List.empty();
     for (int i = 0; i < mapList.length; i++) {
       list[i] = fromMap(mapList[i]);
     }
@@ -142,7 +144,7 @@ class TaskBean {
   }
 
   static List<TaskBean> fromNetMapList(dynamic mapList) {
-    List<TaskBean> list = List.filled(mapList.length, null);
+    List<TaskBean> list = List.empty();
     for (int i = 0; i < mapList.length; i++) {
       list[i] = fromNetMap(mapList[i]);
     }
@@ -164,11 +166,11 @@ class TaskBean {
       'finishDate': finishDate,
       'startDate': startDate,
       'deadLine': deadLine,
-      'taskIconBean': jsonEncode(taskIconBean.toMap()),
+      'taskIconBean': jsonEncode(taskIconBean?.toMap()),
       'textColor': jsonEncode(textColor?.toMap()),
       'backgroundUrl': backgroundUrl,
-      'detailList': jsonEncode(List.generate(detailList.length, (index) {
-        return detailList[index].toMap();
+      'detailList': jsonEncode(List.generate(detailList?.length??0, (index) {
+        return detailList?[index].toMap();
       }))
     };
     //把list转换为string的时候不要直接使用tostring，要用jsonEncode
@@ -214,7 +216,7 @@ class TaskDetailBean {
   }
 
   static List<TaskDetailBean> fromMapList(dynamic mapList) {
-    List<TaskDetailBean> list = List.filled(mapList.length, null);
+    List<TaskDetailBean> list = List.empty();
     for (int i = 0; i < mapList.length; i++) {
       list[i] = fromMap(mapList[i]);
     }

@@ -11,7 +11,7 @@ class RegisterPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(IntlLocalizations.of(context).signUp),
+        title: Text(IntlLocalizations.of(context)?.signUp??""),
         actions: <Widget>[
           IconButton(icon: Icon(Icons.check), onPressed: model.logic.onSubmit,)
         ],
@@ -29,16 +29,16 @@ class RegisterPage extends StatelessWidget {
                 child: TextFormField(
                   focusNode: model.emailFocusNode..addListener((){
                     if(!model.emailFocusNode.hasFocus){
-                      model.emailKey.currentState.validate();
+                      model.emailKey.currentState?.validate();
                     }
                   }),
-                  validator: (text) => model.logic.validatorEmail(text),
+                  validator: (text) => model.logic.validatorEmail(text??""),
                   decoration: InputDecoration(
                     filled: true,
                     prefixIcon: Icon(Icons.email),
                     fillColor: Colors.transparent,
-                    hintText: IntlLocalizations.of(context).setEmailAccount,
-                    labelText: IntlLocalizations.of(context).emailAccount,
+                    hintText: IntlLocalizations.of(context)?.setEmailAccount,
+                    labelText: IntlLocalizations.of(context)?.emailAccount,
                   ),
                   style: TextStyle(textBaseline: TextBaseline.alphabetic),
                   keyboardType: TextInputType.emailAddress,
@@ -50,18 +50,18 @@ class RegisterPage extends StatelessWidget {
                 child: TextFormField(
                   focusNode: model.userNameFocusNode..addListener((){
                     if(!model.userNameFocusNode.hasFocus){
-                      model.userNameKey.currentState.validate();
+                      model.userNameKey.currentState?.validate();
                     }
                   }),
-                  validator: (text) => model.logic.validatorUserName(text),
+                  validator: (text) => model.logic.validatorUserName(text??""),
                   maxLength: 20,
                   textCapitalization: TextCapitalization.words,
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: Colors.transparent,
                     prefixIcon: Icon(Icons.person_outline),
-                    hintText: IntlLocalizations.of(context).setUserName,
-                    labelText: IntlLocalizations.of(context).userName,
+                    hintText: IntlLocalizations.of(context)?.setUserName,
+                    labelText: IntlLocalizations.of(context)?.userName,
                   ),
                   style: TextStyle(
                   textBaseline: TextBaseline.alphabetic),
@@ -73,18 +73,18 @@ class RegisterPage extends StatelessWidget {
                 child: TextFormField(
                   focusNode: model.passwordFocusNode..addListener((){
                     if(!model.passwordFocusNode.hasFocus){
-                      model.passwordKey.currentState.validate();
+                      model.passwordKey.currentState?.validate();
                     }
                   }),
                   maxLength: 20,
                   validator: (password) =>
-                      model.logic.validatePassword(password),
+                      model.logic.validatePassword(password??""),
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: Colors.transparent,
                     prefixIcon: Icon(Icons.lock_outline),
-                    hintText: IntlLocalizations.of(context).setPassword,
-                    labelText: IntlLocalizations.of(context).thePassword,
+                    hintText: IntlLocalizations.of(context)?.setPassword,
+                    labelText: IntlLocalizations.of(context)?.thePassword,
                   ),
                   obscureText: true,
                   style: TextStyle(textBaseline: TextBaseline.alphabetic),
@@ -96,19 +96,19 @@ class RegisterPage extends StatelessWidget {
                 child: TextFormField(
                   focusNode: model.rePasswordFocusNode..addListener((){
                     if(!model.rePasswordFocusNode.hasFocus){
-                      model.rePasswordKey.currentState.validate();
+                      model.rePasswordKey.currentState?.validate();
                     }
                   }),
                   maxLength: 20,
                   validator: (rePassword) =>
-                      model.logic.validateRePassword(rePassword),
+                      model.logic.validateRePassword(rePassword??""),
                   style: TextStyle(textBaseline: TextBaseline.alphabetic),
                   decoration: InputDecoration(
                     filled: true,
                     prefixIcon: Icon(Icons.lock),
                     fillColor: Colors.transparent,
-                    hintText: IntlLocalizations.of(context).reSetPassword,
-                    labelText: IntlLocalizations.of(context).confirmPassword,
+                    hintText: IntlLocalizations.of(context)?.reSetPassword,
+                    labelText: IntlLocalizations.of(context)?.confirmPassword,
                   ),
                   obscureText: true,
                 ),
@@ -119,11 +119,11 @@ class RegisterPage extends StatelessWidget {
                 child: TextFormField(
                   focusNode: model.verifyCodeFocusNode..addListener((){
                     if(!model.verifyCodeFocusNode.hasFocus){
-                      model.verifyCodeKey.currentState.validate();
+                      model.verifyCodeKey.currentState?.validate();
                     }
                   }),
                   validator: (verifyCode) =>
-                      model.logic.validatorVerifyCode(verifyCode),
+                      model.logic.validatorVerifyCode(verifyCode??""),
                   maxLength: 6,
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
@@ -131,8 +131,8 @@ class RegisterPage extends StatelessWidget {
                       fillColor: Colors.transparent,
                       prefixIcon: Icon(Icons.message),
                       hintText:
-                      IntlLocalizations.of(context).inputVerifyCode,
-                      labelText: IntlLocalizations.of(context).verifyCode,
+                      IntlLocalizations.of(context)?.inputVerifyCode,
+                      labelText: IntlLocalizations.of(context)?.verifyCode,
                       suffixIcon: VerifyCodeWidget(
                         account: model.email,
                         isEmailOk: model.isEmailOk,

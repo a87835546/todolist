@@ -6,7 +6,7 @@ import 'package:todo_list/json/theme_bean.dart';
 import 'package:todo_list/utils/shared_util.dart';
 
 class ThemeUtil {
-  static ThemeUtil _instance;
+  static ThemeUtil _instance = ThemeUtil.getInstance();
 
   static ThemeUtil getInstance() {
     if (_instance == null) {
@@ -21,14 +21,14 @@ class ThemeUtil {
     ThemeBean themeBean,
   ) {
     return _getThemeData(
-        ColorBean.fromBean(themeBean.colorBean), themeBean.themeType);
+        ColorBean.fromBean(themeBean.colorBean!), themeBean.themeType);
   }
 
   ThemeData _getThemeData(Color color, String themeType) {
     if (themeType == MyTheme.darkTheme) {
       return ThemeData(
         brightness: Brightness.dark,
-        appBarTheme: getAppBarTheme(Colors.grey[800], Colors.grey),
+        appBarTheme: getAppBarTheme(Colors.grey.shade800, Colors.grey),
         scaffoldBackgroundColor: Colors.grey[800],
       );
     }
@@ -62,45 +62,46 @@ class ThemeUtil {
       iconTheme: IconThemeData(color: iconColor),
       color: bgColor,
       elevation: 0.0,
-      textTheme: TextTheme(
-        subtitle1: TextStyle(color: iconColor, fontSize: 20),
-      ),
+
+      // textTheme: TextTheme(
+      //   subtitle1: TextStyle(color: iconColor, fontSize: 20),
+      // ),
     );
   }
 
   List<ThemeBean> defaultThemeBeans(BuildContext context) => [
         ThemeBean(
-          themeName: IntlLocalizations.of(context).pink,
+          themeName: IntlLocalizations.of(context)?.pink??"",
           colorBean: ColorBean.fromColor(MyThemeColor.defaultColor),
           themeType: MyTheme.defaultTheme,
         ),
         ThemeBean(
-          themeName: IntlLocalizations.of(context).dark,
+          themeName: IntlLocalizations.of(context)?.dark??"",
           colorBean: ColorBean.fromColor(MyThemeColor.darkColor),
           themeType: MyTheme.darkTheme,
         ),
         ThemeBean(
-          themeName: IntlLocalizations.of(context).coffee,
+          themeName: IntlLocalizations.of(context)?.coffee??"",
           colorBean: ColorBean.fromColor(MyThemeColor.coffeeColor),
           themeType: MyTheme.coffeeTheme,
         ),
         ThemeBean(
-          themeName: IntlLocalizations.of(context).green,
+          themeName: IntlLocalizations.of(context)?.green??"",
           colorBean: ColorBean.fromColor(MyThemeColor.greenColor),
           themeType: MyTheme.greenTheme,
         ),
         ThemeBean(
-          themeName: IntlLocalizations.of(context).purple,
+          themeName: IntlLocalizations.of(context)?.purple??"",
           colorBean: ColorBean.fromColor(MyThemeColor.purpleColor),
           themeType: MyTheme.purpleTheme,
         ),
         ThemeBean(
-          themeName: IntlLocalizations.of(context).cyan,
+          themeName: IntlLocalizations.of(context)?.cyan??"",
           colorBean: ColorBean.fromColor(MyThemeColor.cyanColor),
           themeType: MyTheme.cyanTheme,
         ),
         ThemeBean(
-          themeName: IntlLocalizations.of(context).blueGray,
+          themeName: IntlLocalizations.of(context)?.blueGray??"",
           colorBean: ColorBean.fromColor(MyThemeColor.blueGrayColor),
           themeType: MyTheme.blueGrayTheme,
         ),

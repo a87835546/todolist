@@ -1,4 +1,5 @@
 import 'dart:math';
+
 import 'package:todo_list/config/custom_image_cache_manager.dart';
 import 'package:todo_list/widgets/custom_cache_image.dart';
 
@@ -31,7 +32,7 @@ class NavPage extends StatelessWidget {
               )
             : SizedBox(),
         ListTile(
-          title: Text(IntlLocalizations.of(context).myAccount),
+          title: Text(IntlLocalizations.of(context)?.myAccount??""),
           leading: Icon(Icons.account_circle),
           trailing: Icon(Icons.keyboard_arrow_right),
           onTap: () async {
@@ -48,7 +49,7 @@ class NavPage extends StatelessWidget {
           },
         ),
         ListTile(
-          title: Text(IntlLocalizations.of(context).doneList),
+          title: Text(IntlLocalizations.of(context)?.doneList??""),
           leading: Icon(Icons.done_all),
           trailing: Icon(Icons.keyboard_arrow_right),
           onTap: () {
@@ -58,7 +59,7 @@ class NavPage extends StatelessWidget {
           },
         ),
         ListTile(
-          title: Text(IntlLocalizations.of(context).languageTitle),
+          title: Text(IntlLocalizations.of(context)?.languageTitle??""),
           leading: Icon(Icons.language),
           trailing: Icon(Icons.keyboard_arrow_right),
           onTap: () {
@@ -68,7 +69,7 @@ class NavPage extends StatelessWidget {
           },
         ),
         ListTile(
-          title: Text(IntlLocalizations.of(context).changeTheme),
+          title: Text(IntlLocalizations.of(context)?.changeTheme??""),
           leading: Icon(Icons.color_lens),
           trailing: Icon(Icons.keyboard_arrow_right),
           onTap: () {
@@ -78,7 +79,7 @@ class NavPage extends StatelessWidget {
           },
         ),
         ListTile(
-          title: Text(IntlLocalizations.of(context).feedbackWall),
+          title: Text(IntlLocalizations.of(context)?.feedbackWall??""),
           leading: Icon(Icons.subtitles),
           trailing: Icon(Icons.keyboard_arrow_right),
           onTap: () {
@@ -88,7 +89,7 @@ class NavPage extends StatelessWidget {
           },
         ),
         ListTile(
-          title: Text(IntlLocalizations.of(context).appSetting),
+          title: Text(IntlLocalizations.of(context)?.appSetting??""),
           leading: Icon(Icons.settings),
           trailing: Icon(Icons.keyboard_arrow_right),
           onTap: () {
@@ -112,8 +113,9 @@ class NavPage extends StatelessWidget {
       return GestureDetector(
         onTap: () {
           Navigator.of(context).push(CupertinoPageRoute(builder: (ctx) {
-            return ImagePage(
-              imageUrls: [isDailyPic ? NavHeadType.DAILY_PIC_URL : url],
+            return ImagePage(null,
+              imageUrls: [isDailyPic ? NavHeadType.DAILY_PIC_URL : url], initialPageIndex: 0  , onSelect: (page){
+              }, heroTag: '',
             );
           }));
         },
@@ -121,7 +123,7 @@ class NavPage extends StatelessWidget {
             tag: "tag_0",
             child: Container(
               height: netImageHeight,
-              child: CustomCacheImage(url: isDailyPic ? NavHeadType.DAILY_PIC_URL : url,cacheManager: isDailyPic ? CustomCacheManager():null,)
+              child: CustomCacheImage(null,url: isDailyPic ? NavHeadType.DAILY_PIC_URL : url,cacheManager: isDailyPic ? CustomCacheManager():null,)
             )),
       );
     }

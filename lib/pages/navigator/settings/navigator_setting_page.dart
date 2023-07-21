@@ -1,3 +1,5 @@
+import 'dart:js_util';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -19,7 +21,7 @@ class NavSettingPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(IntlLocalizations.of(context).navigatorSetting),
+        title: Text(IntlLocalizations.of(context)?.navigatorSetting??""),
       ),
       body: Container(
         child: ListView(
@@ -28,28 +30,28 @@ class NavSettingPage extends StatelessWidget {
               value: NavHeadType.meteorShower,
               groupValue: globalModel.currentNavHeader,
               subtitle: NavHead(),
-              onChanged: (value) => onChanged(globalModel, value),
-              title: Text(IntlLocalizations.of(context).meteorShower),
+              onChanged: (value) => onChanged(globalModel, value, context: context),
+              title: Text(IntlLocalizations.of(context)?.meteorShower??""),
             ),
             RadioListTile(
               value: NavHeadType.dailyPic,
               groupValue: globalModel.currentNavHeader,
-              subtitle: CustomCacheImage(url: NavHeadType.DAILY_PIC_URL,cacheManager: CustomCacheManager(),),
-              onChanged: (value) => onChanged(globalModel, value),
-              title: Text(IntlLocalizations.of(context).dailyPic),
+              subtitle: CustomCacheImage(null,url: NavHeadType.DAILY_PIC_URL,cacheManager: CustomCacheManager(),),
+              onChanged: (value) => onChanged(globalModel, value, context: context),
+              title: Text(IntlLocalizations.of(context)?.dailyPic??""),
             ),
             RadioListTile(
               value: NavHeadType.netPicture,
               groupValue: globalModel.currentNavHeader,
               onChanged: (value) => onChanged(globalModel, value,context: context),
-              title: Text(IntlLocalizations.of(context).netPicture),
+              title: Text(IntlLocalizations.of(context)?.netPicture??""),
               subtitle: globalModel.currentNetPicUrl == "" ? null : GestureDetector(
                 onTap: (){
                   Navigator.of(context).push(new CupertinoPageRoute(builder: (ctx) {
-                    return ProviderConfig.getInstance().getNetPicturesPage(useType: NetPicturesUseType.navigatorHeader);
+                    return ProviderConfig.getInstance().getNetPicturesPage(useType: NetPicturesUseType.navigatorHeader, accountPageModel: newObject(), taskBean: newObject());
                   }));
                 },
-              child: CustomCacheImage(url: globalModel.currentNetPicUrl,),)
+              child: CustomCacheImage(null,url: globalModel.currentNetPicUrl,),)
             ),
           ],
         ),
@@ -57,11 +59,11 @@ class NavSettingPage extends StatelessWidget {
     );
   }
 
-  Future onChanged(GlobalModel globalModel, value, {BuildContext context}) async {
+  Future onChanged(GlobalModel globalModel, value, {required BuildContext context}) async {
 
     if(context != null && globalModel.currentNetPicUrl == ""){
       Navigator.of(context).push(new CupertinoPageRoute(builder: (ctx) {
-        return ProviderConfig.getInstance().getNetPicturesPage(useType: value);
+        return ProviderConfig.getInstance().getNetPicturesPage(useType: value, accountPageModel: newObject()  , taskBean: newObject());
       }));
       return;
     }

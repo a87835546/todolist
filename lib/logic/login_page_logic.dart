@@ -25,16 +25,16 @@ class LoginPageLogic {
   String validatorEmail(String email) {
     final context = _model.context;
     _model.isEmailOk = false;
-    Pattern pattern =
+    var pattern =
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
     RegExp regex = new RegExp(pattern);
     if (email.isEmpty)
-      return IntlLocalizations.of(context).emailCantBeEmpty;
+      return IntlLocalizations.of(context)?.emailCantBeEmpty??"";
     else if (!regex.hasMatch(email))
-      return IntlLocalizations.of(context).emailIncorrectFormat;
+      return IntlLocalizations.of(context)?.emailIncorrectFormat??"";
     else {
       _model.isEmailOk = true;
-      return null;
+      return "";
     }
   }
 
@@ -42,22 +42,22 @@ class LoginPageLogic {
     final context = _model.context;
     _model.isPasswordOk = false;
     if (password.isEmpty) {
-      return IntlLocalizations.of(context).passwordCantBeEmpty;
+      return IntlLocalizations.of(context)?.passwordCantBeEmpty??"";
     } else if (password.length < 8) {
-      return IntlLocalizations.of(context).passwordTooShort;
+      return IntlLocalizations.of(context)?.passwordTooShort??"";
     } else if (password.length > 20) {
-      return IntlLocalizations.of(context).passwordTooLong;
+      return IntlLocalizations.of(context)?.passwordTooLong??"";
     } else {
       _model.isPasswordOk = true;
-      return null;
+      return "";
     }
   }
 
   void onLogin() {
     final context = _model.context;
-    _model.formKey.currentState.validate();
+    _model.formKey.currentState?.validate();
     if (!_model.isEmailOk || !_model.isPasswordOk) {
-      _showDialog(IntlLocalizations.of(context).checkYourEmailOrPassword, context);
+      _showDialog(IntlLocalizations.of(context)?.checkYourEmailOrPassword??"", context);
       return;
     }
     showDialog(context: _model.context, builder: (ctx){
@@ -108,7 +108,7 @@ class LoginPageLogic {
     final password = _model.passwordController.text;
     final encryptPassword = EncryptUtil.instance.encrypt(password);
 
-    ApiService.instance.login(
+    ApiService.instance?.login(
       params: {
         "account": "$account",
         "password": "$encryptPassword"

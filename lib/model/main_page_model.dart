@@ -1,3 +1,5 @@
+import 'dart:js_util';
+
 import 'package:flutter/material.dart';
 import 'package:todo_list/config/api_service.dart';
 import 'package:todo_list/logic/all_logic.dart';
@@ -53,11 +55,11 @@ class MainPageModel extends ChangeNotifier {
   ///用于在mainPage销毁后将GlobalModel中的mainPageModel销毁
   GlobalModel _globalModel;
 
-  MainPageModel() {
+  MainPageModel(this.logic,this.context,this._globalModel) {
     logic = MainPageLogic(this);
   }
 
-  void setContext(BuildContext context, {GlobalModel globalModel}) {
+  void setContext(BuildContext context, {required GlobalModel globalModel}) {
     if (this.context == null) {
       this.context = context;
       logic.checkUpdate(globalModel);
@@ -83,7 +85,7 @@ class MainPageModel extends ChangeNotifier {
     super.dispose();
     scaffoldKey?.currentState?.dispose();
     if(!cancelToken.isCancelled) cancelToken.cancel();
-    _globalModel.mainPageModel = null;
+    _globalModel.mainPageModel = newObject();
     debugPrint("MainPageModel销毁了");
   }
 

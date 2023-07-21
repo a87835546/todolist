@@ -9,7 +9,7 @@ import 'package:path/path.dart' as p;
 class CustomCacheManager extends CacheManager {
   static const key = "customCache";
 
-  static CustomCacheManager _instance;
+  static CustomCacheManager _instance = CustomCacheManager();
 
   factory CustomCacheManager() {
     if (_instance == null) {

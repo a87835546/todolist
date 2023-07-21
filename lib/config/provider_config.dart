@@ -1,3 +1,5 @@
+import 'dart:js_util';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_list/json/task_bean.dart';
@@ -6,7 +8,7 @@ import 'package:todo_list/model/all_model.dart';
 import 'package:todo_list/pages/all_page.dart';
 
 class ProviderConfig {
-  static ProviderConfig _instance;
+  static ProviderConfig _instance = newObject();
 
   static ProviderConfig getInstance() {
     if (_instance == null) {
@@ -37,8 +39,8 @@ class ProviderConfig {
   ChangeNotifierProvider<TaskDetailPageModel> getTaskDetailPage(
     int index,
     TaskBean taskBean, {
-    DoneTaskPageModel doneTaskPageModel,
-    SearchPageModel searchPageModel,
+     DoneTaskPageModel? doneTaskPageModel,
+     SearchPageModel? searchPageModel,
   }) {
     return ChangeNotifierProvider<TaskDetailPageModel>(
       create: (context) => TaskDetailPageModel(
@@ -54,8 +56,8 @@ class ProviderConfig {
   ///任务编辑页provider
   ChangeNotifierProvider<EditTaskPageModel> getEditTaskPage(
       TaskIconBean taskIcon,
-      {TaskDetailPageModel taskDetailPageModel,
-      TaskBean taskBean}) {
+      {required TaskDetailPageModel taskDetailPageModel,
+      required TaskBean taskBean}) {
     return ChangeNotifierProvider<EditTaskPageModel>(
       create: (context) => EditTaskPageModel(oldTaskBean: taskBean),
       child: EditTaskPage(
@@ -83,7 +85,7 @@ class ProviderConfig {
 
   ///头像裁剪页provider
   ChangeNotifierProvider<AvatarPageModel> getAvatarPage(
-      {MainPageModel mainPageModel}) {
+      {required MainPageModel mainPageModel}) {
     return ChangeNotifierProvider<AvatarPageModel>(
       create: (context) => AvatarPageModel(),
       child: AvatarPage(
@@ -152,9 +154,9 @@ class ProviderConfig {
 
   ///网络图片页provider，用于设置账号页面的背景，或者侧滑栏的头部,或者主页背景
   ChangeNotifierProvider<NetPicturesPageModel> getNetPicturesPage(
-      {@required String useType,
-      AccountPageModel accountPageModel,
-      TaskBean taskBean}) {
+      {required String useType,
+      required AccountPageModel accountPageModel,
+      required TaskBean taskBean}) {
     return ChangeNotifierProvider<NetPicturesPageModel>(
       create: (context) => NetPicturesPageModel(
         useType: useType,

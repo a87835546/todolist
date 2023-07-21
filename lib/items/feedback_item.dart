@@ -12,11 +12,11 @@ class FeedbackItem extends StatelessWidget {
   final int index;
 
   const FeedbackItem({
-    Key key,
-    this.userName,
-    this.avatarUrl,
-    this.submitTime,
-    this.suggestion, this.emoji, this.index,
+    required Key? key,
+    required this.userName,
+    required this.avatarUrl,
+    required this.submitTime,
+    required this.suggestion, required this.emoji, required this.index,
   }) : super(key: key);
 
   @override

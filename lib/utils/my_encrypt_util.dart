@@ -5,9 +5,9 @@ class EncryptUtil{
   factory EncryptUtil() => _getInstance();
 
   static EncryptUtil get instance => _getInstance();
-  static EncryptUtil _instance;
+  static EncryptUtil _instance = EncryptUtil._getInstance();
 
-  Encrypter _encrypter;
+  Encrypter _encrypter = Encrypter(AES(Key.fromUtf8("my 32 length key................"))) ;
   final iv = IV.fromLength(16);
 
 

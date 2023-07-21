@@ -1,3 +1,5 @@
+import 'dart:js_util';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_list/config/api_service.dart';
@@ -17,10 +19,10 @@ class TaskDetailPageLogic {
   TaskDetailPageLogic(this._model);
 
   double _getOverallProgress() {
-    int length = _model.taskBean.detailList.length;
+    int length = _model.taskBean.detailList?.length??0;
     double overallProgress = 0.0;
     for (int i = 0; i < length; i++) {
-      overallProgress += _model.taskBean.detailList[i].itemProgress / length;
+      overallProgress += _model.taskBean.detailList?[i].itemProgress??0 / length;
     }
     _model.taskBean.overallProgress =
         overallProgress > 0.999 ? 1.0 : overallProgress;
@@ -39,7 +41,7 @@ class TaskDetailPageLogic {
     final taskBean = _model.taskBean;
     final textColor = taskBean.textColor;
     if(textColor != null) return ColorBean.fromBean(textColor);
-    return DefaultTextStyle.of(context).style.backgroundColor;
+    return DefaultTextStyle.of(context).style.backgroundColor??Colors.grey;
   }
 
   //页面退出需要执行的逻辑,isDeleting表示这个页面是否执行了删除当前任务的操作
@@ -78,8 +80,8 @@ class TaskDetailPageLogic {
         ///如果是从"完成列表"过来
         if (_model.doneTaskPageModel != null) {
           mainPageModel.logic.getTasks();
-          _model.doneTaskPageModel.logic.getDoneTasks().then((value) {
-            _model.doneTaskPageModel.refresh();
+          _model.doneTaskPageModel!.logic.getDoneTasks().then((value) {
+            _model.doneTaskPageModel!.refresh();
             Navigator.of(context).pop();
           });
         }
@@ -88,7 +90,7 @@ class TaskDetailPageLogic {
           _model.isExiting = true;
           _model.refresh();
           mainPageModel.logic.getTasks();
-          _model.searchPageModel.logic.onEditingComplete();
+          _model.searchPageModel!.logic.onEditingComplete();
           Navigator.of(context).pop();
         } else {
           debugPrint("退出了");
@@ -128,9 +130,9 @@ class TaskDetailPageLogic {
         context: _model.context,
         builder: (ctx) {
           return AlertDialog(
-            title: Text("${IntlLocalizations.of(_model.context).doDelete}${_model.taskBean.taskName}"),
+            title: Text("${IntlLocalizations.of(_model.context)?.doDelete}${_model.taskBean.taskName}"),
             actions: <Widget>[
-              FlatButton(onPressed: (){
+              TextButton(onPressed: (){
                 Navigator.of(_model.context).pop();
                 if (account == 'default') {
                   deleteAndExit(mainPageModel);
@@ -138,7 +140,7 @@ class TaskDetailPageLogic {
                   deleteCloudTask(mainPageModel, account);
                 }
               }, child: Text("删除",style: TextStyle(color: Colors.redAccent),)),
-              FlatButton(onPressed: (){
+              TextButton(onPressed: (){
                 Navigator.of(_model.context).pop();
               }, child: Text("取消",style: TextStyle(color: Colors.green),)),
             ],
@@ -154,7 +156,7 @@ class TaskDetailPageLogic {
           return NetLoadingWidget();
         });
     final token = await SharedUtil.instance.getString(Keys.token);
-    ApiService.instance.postDeleteTask(
+    ApiService.instance?.postDeleteTask(
       success: (CommonBean bean) {
         Navigator.of(_model.context).pop();
         deleteAndExit(mainPageModel);
@@ -214,7 +216,7 @@ class TaskDetailPageLogic {
       new CupertinoPageRoute(
         builder: (ctx) {
           return ProviderConfig.getInstance().getEditTaskPage(
-            _model.taskBean.taskIconBean,
+            _model.taskBean.taskIconBean??newObject(),
             taskBean: _model.taskBean,
             taskDetailPageModel: _model,
           );

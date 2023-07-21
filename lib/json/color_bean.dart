@@ -6,12 +6,12 @@ class ColorBean {
   int blue;
   double opacity;
 
-  ColorBean({this.red, this.green, this.blue, this.opacity});
+  ColorBean({ this.red = 0,  this.green=0,  this.blue =0,  this.opacity=0});
 
   static Color fromBean(ColorBean bean) =>
       Color.fromRGBO(bean.red, bean.green, bean.blue, bean.opacity);
 
-  static ColorBean fromMap(Map<String, dynamic> map) {
+  static ColorBean? fromMap(Map<String, dynamic> map) {
     if(map == null) return null;
     if(map.isEmpty) return null;
     ColorBean bean = new ColorBean();

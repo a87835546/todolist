@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:js_util';
 
 import 'package:flutter/material.dart';
 import 'package:todo_list/config/api_service.dart';
@@ -33,17 +34,23 @@ class TaskDetailPageModel extends ChangeNotifier {
   double progress;
 
   //如果不为空，表示是否从"完成列表"过来的
-  DoneTaskPageModel doneTaskPageModel;
+  DoneTaskPageModel? doneTaskPageModel;
 
   //如果不为空，表示是否从"搜索界面"过来的
-  SearchPageModel searchPageModel;
+  SearchPageModel? searchPageModel;
 
   TaskDetailPageModel(
-    TaskBean taskBean, {
-    DoneTaskPageModel doneTaskPageModel,
-    SearchPageModel searchPageModel,
-        int heroTag,
-  }) {
+      this.logic,
+    this.context,
+     this.taskBean,
+      this.globalModel,
+      this.timer,
+      this.progress,
+      this.doneTaskPageModel,
+      this.searchPageModel,
+      this.heroTag
+
+      ) {
     logic = TaskDetailPageLogic(this);
     this.taskBean = taskBean;
     this.heroTag = heroTag;
@@ -79,7 +86,7 @@ class TaskDetailPageModel extends ChangeNotifier {
     timer?.cancel();
     if(!cancelToken.isCancelled) cancelToken.cancel();
     super.dispose();
-    globalModel.taskDetailPageModel = null;
+    globalModel.taskDetailPageModel = newObject();
     debugPrint("TaskDetailPageModel销毁了");
 
   }

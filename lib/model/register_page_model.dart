@@ -36,7 +36,7 @@ class RegisterPageModel extends ChangeNotifier{
 
 
 
-  RegisterPageModel(){
+  RegisterPageModel(this.logic,this.context){
     logic = RegisterPageLogic(this);
   }
 

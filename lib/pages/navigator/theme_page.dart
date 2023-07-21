@@ -15,7 +15,7 @@ class ThemePage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(IntlLocalizations.of(context).changeTheme),
+        title: Text(IntlLocalizations.of(context)?.changeTheme??""),
         actions: <Widget>[
           model.themes.length > 7
               ? CustomAnimatedSwitcher(
@@ -98,7 +98,7 @@ class ThemePage extends StatelessWidget {
               child: SwitchListTile(
                 title: Text(
                   '    ' +
-                      IntlLocalizations.of(context).autoDarkMode +
+                      '${IntlLocalizations.of(context)?.autoDarkMode}'+
                       ' ${model.logic.getTimeRangeText(globalModel.autoDarkModeTimeRange, globalModel.enableAutoDarkMode)}',
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 12),

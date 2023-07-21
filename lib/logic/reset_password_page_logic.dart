@@ -15,32 +15,32 @@ class ResetPasswordPageLogic {
     final context = _model.context;
     _model.isVerifyCodeOk = false;
     if (verifyCode.isEmpty) {
-      return IntlLocalizations.of(context).verifyCodeCantBeEmpty;
+      return IntlLocalizations.of(context)?.verifyCodeCantBeEmpty??"";
     } else if (verifyCode.contains(" ")) {
-      return IntlLocalizations.of(context).verifyCodeContainEmpty;
+      return IntlLocalizations.of(context)?.verifyCodeContainEmpty??"";
     } else {
       _model.verifyCode = verifyCode;
       _model.isVerifyCodeOk = true;
       _model.refresh();
-      return null;
+      return "";
     }
   }
 
   String validatorEmail(String email) {
     final context = _model.context;
     _model.isEmailOk = false;
-    Pattern pattern =
+    var pattern =
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
     RegExp regex = new RegExp(pattern);
     if (email.isEmpty)
-      return IntlLocalizations.of(context).emailCantBeEmpty;
+      return IntlLocalizations.of(context)?.emailCantBeEmpty??"";
     else if (!regex.hasMatch(email))
-      return IntlLocalizations.of(context).emailIncorrectFormat;
+      return IntlLocalizations.of(context)?.emailIncorrectFormat??"";
     else {
       _model.isEmailOk = true;
       _model.emailAccount = email;
       _model.refresh();
-      return null;
+      return "";
     }
   }
 
@@ -48,16 +48,16 @@ class ResetPasswordPageLogic {
     _model.isRePasswordOk = false;
     final context = _model.context;
     if (rePassword.isEmpty) {
-      return IntlLocalizations.of(context).confirmPasswordCantBeEmpty;
+      return IntlLocalizations.of(context)?.confirmPasswordCantBeEmpty??"";
     } else if (_model.newPassword != rePassword) {
-      return IntlLocalizations.of(context).twoPasswordsNotSame;
+      return IntlLocalizations.of(context)?.twoPasswordsNotSame??"";
     } else if (rePassword.contains(" ")) {
-      return IntlLocalizations.of(context).confirmPasswordContainEmpty;
+      return IntlLocalizations.of(context)?.confirmPasswordContainEmpty??"";
     } else {
       _model.rePassword = rePassword;
       _model.isRePasswordOk = true;
       _model.refresh();
-      return null;
+      return "";
     }
   }
 
@@ -65,16 +65,16 @@ class ResetPasswordPageLogic {
     _model.isNewPasswordOk = false;
     final context = _model.context;
     if (password.isEmpty) {
-      return IntlLocalizations.of(context).newPasswordCantBeEmpty;
+      return IntlLocalizations.of(context)?.newPasswordCantBeEmpty??"";
     } else if (password.length < 8) {
-      return IntlLocalizations.of(context).passwordTooShort;
+      return IntlLocalizations.of(context)?.passwordTooShort??"";
     } else if (password.length > 20) {
-      return IntlLocalizations.of(context).passwordTooLong;
+      return IntlLocalizations.of(context)?.passwordTooLong??"";
     } else {
       _model.newPassword = password;
       _model.isNewPasswordOk = true;
       _model.refresh();
-      return null;
+      return "";
     }
   }
 
@@ -82,25 +82,25 @@ class ResetPasswordPageLogic {
     _model.isOldPasswordOk = false;
     final context = _model.context;
     if (password.isEmpty) {
-      return IntlLocalizations.of(context).oldPasswordCantBeEmpty;
+      return IntlLocalizations.of(context)?.oldPasswordCantBeEmpty??"";
     } else if (password.length < 8) {
-      return IntlLocalizations.of(context).passwordTooShort;
+      return IntlLocalizations.of(context)?.passwordTooShort??"";
     } else if (password.length > 20) {
-      return IntlLocalizations.of(context).passwordTooLong;
+      return IntlLocalizations.of(context)?.passwordTooLong??"";
     } else {
       _model.oldPassword = password;
       _model.isOldPasswordOk = true;
       _model.refresh();
-      return null;
+      return "";
     }
   }
 
   void _validate(){
-    bool b1 = _model.emailKey?.currentState?.validate();
-    bool b2 = _model.oldPasswordKey?.currentState?.validate();
-    bool b3 = _model.rePasswordKey?.currentState?.validate();
-    bool b4 = _model.passwordKey?.currentState?.validate();
-    bool b5 = _model.verifyCodeKey?.currentState?.validate();
+    bool b1 = _model.emailKey?.currentState?.validate()??false;
+    bool b2 = _model.oldPasswordKey?.currentState?.validate()??false;
+    bool b3 = _model.rePasswordKey?.currentState?.validate()??false;
+    bool b4 = _model.passwordKey?.currentState?.validate()??false;
+    bool b5 = _model.verifyCodeKey?.currentState?.validate()??false;
     debugPrint("$b1 - $b2 - $b3 - $b4 - $b5");
   }
 
@@ -114,7 +114,7 @@ class ResetPasswordPageLogic {
       if (!model.isOldPasswordOk ||
           !model.isNewPasswordOk ||
           !model.isRePasswordOk) {
-        _showTextDialog(IntlLocalizations.of(context).wrongParams, context);
+        _showTextDialog(IntlLocalizations.of(context)?.wrongParams??"", context);
         return;
       }
       showDialog(context: context, builder: (ctx){
@@ -122,8 +122,8 @@ class ResetPasswordPageLogic {
           onRequest: (){
             _onResetPasswordRequest();
           },
-          successText: IntlLocalizations.of(context).resetPasswordSuccess,
-          errorText: IntlLocalizations.of(context).resetPasswordFailed,
+          successText: IntlLocalizations.of(context)?.resetPasswordSuccess??"",
+          errorText: IntlLocalizations.of(context)?.resetPasswordFailed??"",
           loadingController: _model.loadingController,
           onSuccess: (){
             Navigator.of(_model.context).popUntil((route) => route.isFirst);
@@ -138,7 +138,7 @@ class ResetPasswordPageLogic {
           !model.isVerifyCodeOk ||
           !model.isNewPasswordOk ||
           !model.isRePasswordOk) {
-        _showTextDialog(IntlLocalizations.of(context).wrongParams, context);
+        _showTextDialog(IntlLocalizations.of(context)?.wrongParams??"", context);
         return;
       }
       showDialog(context: context, builder: (ctx){
@@ -146,8 +146,8 @@ class ResetPasswordPageLogic {
           onRequest: (){
             _onForgetPasswordRequest();
           },
-          successText: IntlLocalizations.of(context).resetPasswordSuccess,
-          errorText: IntlLocalizations.of(context).resetPasswordFailed,
+          successText: IntlLocalizations.of(context)?.resetPasswordSuccess??"",
+          errorText: IntlLocalizations.of(context)?.resetPasswordFailed??"",
           loadingController: _model.loadingController,
           onSuccess: (){
             Navigator.of(_model.context).pop();
@@ -182,7 +182,7 @@ class ResetPasswordPageLogic {
     final encryptOldPW = EncryptUtil.instance.encrypt(oldPassword);
     final encryptNewPW = EncryptUtil.instance.encrypt(newPassword);
     final encryptConfirmPW = EncryptUtil.instance.encrypt(confirmPassword);
-    ApiService.instance.postResetPassword(
+    ApiService.instance?.postResetPassword(
       params: {
         "account": account,
         "token": token,
@@ -212,7 +212,7 @@ class ResetPasswordPageLogic {
     final encryptNewPW = EncryptUtil.instance.encrypt(newPassword);
     final encryptConfirmPW = EncryptUtil.instance.encrypt(confirmPassword);
 
-    ApiService.instance.postForgetPassword(
+    ApiService.instance?.postForgetPassword(
       params: {
         "account": account,
         "accountType": "0",

@@ -10,10 +10,10 @@ export 'package:dio/dio.dart';
 
 ///这里存放所有的网络请求接口
 class ApiService {
-  factory ApiService() => _getInstance();
+  // factory ApiService() => _getInstance();
 
-  static ApiService get instance => _getInstance();
-  static ApiService _instance;
+  static ApiService? get instance => _getInstance();
+  static ApiService? _instance;
 
   static final int requestSucceed = 0;
   static final int requestFailed = 1;
@@ -22,7 +22,7 @@ class ApiService {
     ///初始化
   }
 
-  static ApiService _getInstance() {
+  static ApiService? _getInstance() {
     if (_instance == null) {
       _instance = new ApiService._internal();
     }
@@ -31,12 +31,12 @@ class ApiService {
 
   ///获取图片
   void getPhotos({
-    Function success,
-    Function failed,
-    Function error,
-    Map<String, String> params,
-    CancelToken token,
-    int startPage,
+    required Function success,
+    required Function failed,
+    required Function error,
+    required Map<String, String> params,
+    CancelToken? token,
+    required int startPage,
   }) {
     ApiStrategy.getInstance().get(
       "https://api.unsplash.com/photos/",
@@ -58,33 +58,39 @@ class ApiService {
 
   ///提交建议(新增头像上传)
   void postSuggestionWithAvatar(
-      {FormData params,
-      Function success,
-      Function failed,
-      Function error,
-      CancelToken token}) {
+      { FormData? params,
+       Function? success,
+       Function? failed,
+       Function? error,
+       CancelToken? token}) {
     ApiStrategy.getInstance().postUpload(
         "fUser/oneDaySuggestion",
         (data) {
           CommonBean commonBean = CommonBean.fromMap(data);
           if (commonBean.status == requestSucceed) {
-            success(commonBean);
+            if(success != null){
+              success(commonBean);
+            }
           } else {
-            failed(commonBean);
+            if(failed != null) {
+              failed(commonBean);
+            }
           }
         },
         (count, total) {},
         formData: params,
         errorCallBack: (errorMessage) {
-          error(errorMessage);
+          if(error != null) {
+            error(errorMessage);
+          }
         });
   }
 
   ///获取建议列表
   void getSuggestions({
-    Function success,
-    Function error,
-    CancelToken token,
+     required Function success,
+     required Function error,
+     required CancelToken token,
   }) {
     ApiStrategy.getInstance().get(
       "fUser/getSuggestion",
@@ -94,42 +100,48 @@ class ApiService {
       errorCallBack: (errorMessage) {
         error(errorMessage);
       },
-      token: token,
+      token: token, params: {},
     );
   }
 
   ///通用的请求
   void postCommon(
-      {Map<String, String> params,
-      Function success,
-      Function failed,
-      Function error,
-      String url,
-      CancelToken token}) {
+      {required Map<String, String> params,
+       Function? success,
+       Function? failed,
+       Function? error,
+      required String url,
+       CancelToken? token}) {
     ApiStrategy.getInstance().post(
         url,
         (data) {
           CommonBean commonBean = CommonBean.fromMap(data);
           if (commonBean.status == requestSucceed) {
-            success(commonBean);
+            if (success != null) {
+              success(commonBean);
+            }
           } else {
-            failed(commonBean);
+            if (failed != null){
+              failed(commonBean);
+            }
           }
         },
         params: params,
         errorCallBack: (errorMessage) {
-          error(errorMessage);
+          if(error != null) {
+            error(errorMessage);
+          }
         },
         token: token);
   }
 
   ///天气获取
   void getWeatherNow({
-    Function success,
-    Function failed,
-    Function error,
-    Map<String, String> params,
-    CancelToken token,
+    required Function success,
+    required Function failed,
+    required Function error,
+    required Map<String, String> params,
+    required CancelToken token,
   }) {
     ApiStrategy.getInstance().get(
       "https://free-api.heweather.com/s6/weather/now",
@@ -152,10 +164,10 @@ class ApiService {
 
   ///检查更新
   void checkUpdate({
-    Function success,
-    Function error,
-    Map<String, String> params,
-    CancelToken token,
+    required Function success,
+    required Function error,
+    required Map<String, String> params,
+    required CancelToken token,
   }) {
     ApiStrategy.getInstance().post(
       "app/checkUpdate",
@@ -173,11 +185,11 @@ class ApiService {
 
   ///登录
   void login({
-    Map<String, String> params,
-    Function success,
-    Function failed,
-    Function error,
-    CancelToken token,
+    required Map<String, String> params,
+    required Function success,
+    required Function failed,
+    required Function error,
+    required CancelToken token,
   }) {
     ApiStrategy.getInstance().post(
         "fUser/login",
@@ -197,11 +209,11 @@ class ApiService {
 
   ///修改用户名
   void changeUserName(
-      {Map<String, String> params,
-      Function success,
-      Function failed,
-      Function error,
-      CancelToken token}) {
+      {required Map<String, String> params,
+      required Function success,
+      required Function failed,
+      required Function error,
+      required CancelToken token}) {
     postCommon(
       params: params,
       success: success,
@@ -214,11 +226,11 @@ class ApiService {
 
   ///上传头像
   void uploadAvatar(
-      {FormData params,
-      Function success,
-      Function failed,
-      Function error,
-      CancelToken token}) {
+      {required FormData params,
+      required Function success,
+      required Function failed,
+      required Function error,
+      required CancelToken token}) {
     ApiStrategy.getInstance().postUpload(
         "fUser/uploadAvatar",
         (data) {
@@ -238,11 +250,11 @@ class ApiService {
 
   ///邮箱验证码获取请求
   void getVerifyCode({
-    Map<String, String> params,
-    Function success,
-    Function failed,
-    Function error,
-    CancelToken token,
+    required Map<String, String> params,
+    required Function success,
+    required Function failed,
+    required Function error,
+    required CancelToken token,
   }) {
     postCommon(
       params: params,
@@ -255,8 +267,8 @@ class ApiService {
   }
 
   //邮箱验证码校验请求
-  void postVerifyCheck({Map<String, String> params, Function success,
-    Function failed, Function error, CancelToken token}) {
+  void postVerifyCheck({required Map<String, String> params, required Function success,
+    required Function failed, required Function error, required CancelToken token}) {
     postCommon(
       params: params,
       success: success,
@@ -268,33 +280,39 @@ class ApiService {
   }
 
   ///邮箱注册
-  void postRegister(
-      {Map<String, String> params,
-      Function success,
-      Function failed,
-      Function error,
-      CancelToken token}) {
+  void postRegister({
+      required Map<String, String> params,
+      Function? success,
+      Function? failed,
+      Function? error,
+      CancelToken? token}) {
     ApiStrategy.getInstance().post(
       "fUser/register",
       (data) {
         RegisterBean registerBean = RegisterBean.fromMap(data);
         if (registerBean.status == requestSucceed) {
-          success(registerBean);
+          if (success != null) {
+            success(registerBean);
+          }
         } else {
-          failed(registerBean);
+          if(failed!=null) {
+            failed(registerBean);
+          }
         }
       },
       params: params,
       errorCallBack: (errorMessage) {
-        error(errorMessage);
+        if (error != null) {
+          error(errorMessage);
+        }
       },
       token: token,
     );
   }
 
   ///重设密码
-  void postResetPassword({Map<String, String> params, Function success,
-    Function failed, Function error, CancelToken token,}){
+  void postResetPassword({required Map<String, String> params, Function? success,
+    Function? failed, Function? error, CancelToken? token}){
     postCommon(
       params: params,
       success: success,
@@ -306,8 +324,8 @@ class ApiService {
   }
 
   ///忘记密码
-  void postForgetPassword({Map<String, String> params, Function success,
-    Function failed, Function error, CancelToken token}){
+  void postForgetPassword({required Map<String, String> params, Function? success,
+    Function? failed, Function? error, CancelToken? token}){
     postCommon(
       params: params,
       success: success,
@@ -319,37 +337,43 @@ class ApiService {
   }
 
   ///上传一个Task
-  void postCreateTask({String token, Function success,
-    Function failed, Function error, CancelToken cancelToken, TaskBean taskBean}){
+  void postCreateTask({required String token, Function? success,
+    Function? failed, Function? error, CancelToken? cancelToken, TaskBean? taskBean}){
     ApiStrategy.getInstance().post(
       "oneDayTask/createTask",
           (data) {
         UploadTaskBean bean = UploadTaskBean.fromMap(data);
         if (bean.status == requestSucceed) {
-          success(bean);
+          if(success != null) {
+            success(bean);
+          }
         } else {
-          failed(bean);
+          if(failed != null) {
+            failed(bean);
+          }
         }
       },
       params: {
-        'taskName':taskBean.taskName,
-        'taskType':taskBean.taskType,
-        'account':taskBean.account,
-        'taskStatus':'${taskBean.taskStatus}',
-        'taskDetailNum':'${taskBean.taskDetailNum}',
-        'overallProgress':'${taskBean.overallProgress}',
-        'changeTimes':'${taskBean.changeTimes}',
-        'finishDate':taskBean.finishDate,
-        'startDate':taskBean.startDate,
-        'deadLine':taskBean.deadLine,
-        'taskIconBean':jsonEncode(taskBean.taskIconBean.toMap()),
-        'detailList':jsonEncode(List.generate(taskBean.detailList.length, (index) {
-          return taskBean.detailList[index].toMap();
+        'taskName': taskBean?.taskName ?? "",
+        'taskType': taskBean?.taskType ?? "",
+        'account': '${taskBean?.account}',
+        'taskStatus': '${taskBean?.taskStatus}',
+        'taskDetailNum': '${taskBean?.taskDetailNum}',
+        'overallProgress': '${taskBean?.overallProgress}',
+        'changeTimes': '${taskBean?.changeTimes}',
+        'finishDate': '${taskBean?.finishDate}',
+        'startDate':'${taskBean?.startDate}',
+        'deadLine':'${taskBean?.deadLine}',
+        'taskIconBean':jsonEncode(taskBean?.taskIconBean?.toMap()),
+        'detailList':jsonEncode(List.generate(taskBean?.detailList?.length??0, (index) {
+          return taskBean?.detailList?[index].toMap();
         })),
         'token':token,
       },
       errorCallBack: (errorMessage) {
-        error("上传出错：$errorMessage");
+        if (error != null) {
+          error("上传出错：$errorMessage");
+        }
 
       },
       token: cancelToken,
@@ -357,8 +381,8 @@ class ApiService {
   }
 
   ///获取所有task
-  void getTasks({Map<String, String> params, Function success,
-    Function failed, Function error, CancelToken token}){
+  void getTasks(Map<String, String> params, Function success,
+    Function failed, Function error, CancelToken token){
     ApiStrategy.getInstance().post(
       "oneDayTask/getTasks",
           (data) {
@@ -378,8 +402,8 @@ class ApiService {
   }
 
   ///更新一个task
-  void postUpdateTask({String token, Function success,
-    Function failed, Function error, CancelToken cancelToken, TaskBean taskBean}){
+  void postUpdateTask({required String token, Function? success,
+    Function? failed, Function? error, CancelToken? cancelToken, required TaskBean taskBean}){
     postCommon(
       params: {
         'taskName':taskBean.taskName,
@@ -393,9 +417,9 @@ class ApiService {
         'startDate':taskBean.startDate,
         'uniqueId':taskBean.uniqueId,
         'deadLine':taskBean.deadLine,
-        'taskIconBean':jsonEncode(taskBean.taskIconBean.toMap()),
-        'detailList':jsonEncode(List.generate(taskBean.detailList.length, (index) {
-          return taskBean.detailList[index].toMap();
+        'taskIconBean':jsonEncode(taskBean.taskIconBean?.toMap()),
+        'detailList':jsonEncode(List.generate(taskBean.detailList?.length??0, (index) {
+          return taskBean.detailList?[index].toMap();
         })),
         'token':token,
       },
@@ -408,8 +432,8 @@ class ApiService {
   }
 
   ///删除一个task
-  void postDeleteTask({Map<String, String> params, Function success,
-    Function failed, Function error, CancelToken token}){
+  void postDeleteTask({required Map<String, String> params, Function? success,
+    Function? failed, Function? error, CancelToken? token}){
     postCommon(
       params: params,
       success: success,

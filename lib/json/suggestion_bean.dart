@@ -6,9 +6,9 @@ class SuggestionBean {
    * suggestions : [{"id":9,"account":"default","suggestion":"test for submitting suggestions with avatar","connect_way":"<emoji>2<emoji>","avatarUrl":"files/default/2019/7/icon.png","userName":"anonymous","time":"2019-08-15"},{"id":10,"account":"default","suggestion":"test for submitting suggestions with avatar","connect_way":"<emoji>2<emoji>","avatarUrl":"files/default/2019/7/icon.png","userName":"anonymous","time":"2019-08-15"},{"id":11,"account":"default","suggestion":"test for submitting suggestions with avatar","connect_way":"<emoji>2<emoji>","avatarUrl":"files/default/2019/7/icon.png","userName":"anonymous","time":"2019-08-15"},{"id":12,"account":"default","suggestion":"test for submitting suggestions with avatar","connect_way":"<emoji>2<emoji>","avatarUrl":"files/default/2019/7/icon.png","userName":"anonymous","time":"2019-08-15"}]
    */
 
-  String description;
-  int status;
-  List<SuggestionsListBean> suggestions;
+  String description = '';
+  int status = 0;
+  List<SuggestionsListBean>? suggestions;
 
   static SuggestionBean fromMap(Map<String, dynamic> map) {
     SuggestionBean suggestionBean = new SuggestionBean();
@@ -19,7 +19,7 @@ class SuggestionBean {
   }
 
   static List<SuggestionBean> fromMapList(dynamic mapList) {
-    List<SuggestionBean> list = List.filled(mapList.length, null);
+    List<SuggestionBean> list = List.empty();
     for (int i = 0; i < mapList.length; i++) {
       list[i] = fromMap(mapList[i]);
     }
@@ -40,13 +40,13 @@ class SuggestionsListBean {
    * id : 9
    */
 
-  String account;
-  String suggestion;
-  String connectWay;
-  String avatarUrl;
-  String userName;
-  String time;
-  int id;
+  String account = "";
+  String suggestion = "";
+  String connectWay = "";
+  String avatarUrl = "";
+  String userName = "";
+  String time = "";
+  int id = 0;
 
   static SuggestionsListBean fromMap(Map<String, dynamic> map) {
     SuggestionsListBean suggestionsListBean = new SuggestionsListBean();
@@ -61,7 +61,7 @@ class SuggestionsListBean {
   }
 
   static List<SuggestionsListBean> fromMapList(dynamic mapList) {
-    List<SuggestionsListBean> list = List.filled(mapList.length, null);
+    List<SuggestionsListBean> list = List.empty();
     for (int i = 0; i < mapList.length; i++) {
       list[i] = fromMap(mapList[i]);
     }

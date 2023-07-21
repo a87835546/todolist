@@ -20,7 +20,7 @@ class FeedbackWallPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(IntlLocalizations.of(context).feedbackWall),
+        title: Text(IntlLocalizations.of(context)?.feedbackWall??""),
         actions: <Widget>[
           IconButton(
               icon: Icon(Icons.add),
@@ -63,7 +63,7 @@ class FeedbackWallPage extends StatelessWidget {
                       submitTime: bean.time,
                       suggestion: bean.suggestion,
                       emoji: emoji,
-                      index: index,
+                      index: index, key: super.key,
                     ),
                   ),
                 ),

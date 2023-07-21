@@ -1,3 +1,4 @@
+import 'dart:js_util';
 import 'dart:ui';
 import 'dart:io';
 import 'package:flutter/material.dart';
@@ -20,7 +21,7 @@ class LoginPage extends StatelessWidget {
     bool isDartNow =
         globalModel.currentThemeBean.themeType == MyTheme.darkTheme;
     final iconColor = isDartNow
-        ? ColorBean.fromBean(globalModel.currentThemeBean.colorBean)
+        ? ColorBean.fromBean(globalModel.currentThemeBean.colorBean??newObject())
         : Theme.of(context).primaryColor;
 
     return Scaffold(
@@ -28,7 +29,7 @@ class LoginPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: bgColor,
         title: Text(
-          IntlLocalizations.of(context).login,
+          IntlLocalizations.of(context)?.login??"",
           style: TextStyle(color: iconColor),
         ),
         elevation: 0.0,

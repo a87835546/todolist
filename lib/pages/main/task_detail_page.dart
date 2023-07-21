@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:js_util';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -22,7 +23,7 @@ class TaskDetailPage extends StatelessWidget {
     globalModel.setTaskDetailPageModel(model);
     final taskColor = globalModel.isCardChangeWithBg
         ? Theme.of(context).primaryColor
-        : ColorBean.fromBean(model.taskBean.taskIconBean.colorBean);
+        : ColorBean.fromBean(model.taskBean.taskIconBean?.colorBean??newObject());
 
     final textColor = model.logic.getTextColor(context);
 
@@ -119,12 +120,7 @@ class TaskDetailPage extends StatelessWidget {
                                       model.taskBean.detailList[index];
                                   return Container(
                                     margin: EdgeInsets.only(
-                                        bottom: index ==
-                                                model.taskBean.detailList
-                                                        .length -
-                                                    1
-                                            ? 20
-                                            : 0,
+                                        bottom: (index ==model.taskBean.detailList.length - 1)? 20: 0,
                                         left: 50,
                                         right: 50),
                                     child: TaskDetailItem(

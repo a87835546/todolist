@@ -4,14 +4,14 @@ export 'package:dio/dio.dart';
 
 ///Dio的封装类
 class ApiStrategy {
-  static ApiStrategy _instance;
+  static ApiStrategy _instance = ApiStrategy._internal();
 
   static final String baseUrl = "http://42.194.193.85/oldchen/";
 //  static final String baseUrl = "http://192.168.137.1:8080/";
   static const int connectTimeOut = 10 * 1000; //连接超时时间为10秒
   static const int receiveTimeOut = 15 * 1000; //响应超时时间为15秒
 
-  Dio _client;
+  Dio _client = Dio();
 
   static ApiStrategy getInstance() {
     if (_instance == null) {
@@ -23,8 +23,8 @@ class ApiStrategy {
   ApiStrategy._internal() {
     if (_client == null) {
       BaseOptions options = new BaseOptions();
-      options.connectTimeout = connectTimeOut;
-      options.receiveTimeout = receiveTimeOut;
+      options.connectTimeout = connectTimeOut as Duration?;
+      options.receiveTimeout = receiveTimeOut as Duration?;
       options.baseUrl = baseUrl;
       _client = new Dio(options);
       _client.interceptors.add(LogInterceptor(
@@ -48,9 +48,9 @@ class ApiStrategy {
   void get(
     String url,
     Function callBack, {
-    Map<String, String> params,
-    Function errorCallBack,
-    CancelToken token,
+    required Map<String, String> params,
+     Function? errorCallBack,
+        CancelToken? token,
   }) async {
     _request(
       url,
@@ -66,9 +66,9 @@ class ApiStrategy {
   void post(
     String url,
     Function callBack, {
-    Map<String, String> params,
-    Function errorCallBack,
-    CancelToken token,
+    required Map<String, String> params,
+    required Function errorCallBack,
+    required CancelToken? token,
   }) async {
     _request(
       url,
@@ -76,7 +76,7 @@ class ApiStrategy {
       method: POST,
       params: params,
       errorCallBack: errorCallBack,
-      token: token,
+      token: token, progressCallBack: (int count, int total) {  },
     );
   }
 
@@ -85,9 +85,9 @@ class ApiStrategy {
     String url,
     Function callBack,
     ProgressCallback progressCallBack, {
-    FormData formData,
-    Function errorCallBack,
-    CancelToken token,
+     FormData? formData,
+     Function? errorCallBack,
+     CancelToken? token,
   }) async {
     _request(
       url,
@@ -96,26 +96,26 @@ class ApiStrategy {
       formData: formData,
       errorCallBack: errorCallBack,
       progressCallBack: progressCallBack,
-      token: token,
+      token: token, params: {},
     );
   }
 
   void _request(
     String url,
     Function callBack, {
-    String method,
-    Map<String, String> params,
-    FormData formData,
-    Function errorCallBack,
-    ProgressCallback progressCallBack,
-    CancelToken token,
+    required String method,
+    required Map<String, String> params,
+        FormData? formData,
+        Function? errorCallBack,
+     ProgressCallback? progressCallBack,
+     CancelToken? token,
   }) async {
     if (params != null && params.isNotEmpty) {
       print("<net> params :" + params.toString());
     }
 
     String errorMsg = "";
-    int statusCode;
+    int statusCode = 0;
     try {
       Response response;
       if (method == GET) {
@@ -148,12 +148,12 @@ class ApiStrategy {
         }
       }
 
-      statusCode = response.statusCode;
+      statusCode = response.statusCode??0;
 
       //处理错误部分
       if (statusCode < 0) {
         errorMsg = "网络请求错误,状态码:" + statusCode.toString();
-        _handError(errorCallBack, errorMsg);
+        _handError(errorCallBack!, errorMsg);
         return;
       }
 
@@ -161,7 +161,7 @@ class ApiStrategy {
         callBack(response.data);
       }
     } catch (e) {
-      _handError(errorCallBack, e.toString());
+      _handError(errorCallBack!, e.toString());
     }
   }
 

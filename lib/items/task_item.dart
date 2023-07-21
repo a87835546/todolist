@@ -11,7 +11,7 @@ class TaskItem extends StatelessWidget {
   final VoidCallback onDelete;
   final VoidCallback onEdit;
 
-  TaskItem(this.index, this.taskBean, {this.onDelete, this.onEdit});
+  TaskItem(this.index, this.taskBean, {required this.onDelete, required this.onEdit});
 
   @override
   Widget build(BuildContext context) {

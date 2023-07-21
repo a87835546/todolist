@@ -19,10 +19,10 @@ class NetPicturesPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(model.useType == NetPicturesUseType.navigatorHeader
-            ? IntlLocalizations.of(context).netPicture
-            : IntlLocalizations.of(context).accountBackgroundSetting),
+            ? IntlLocalizations.of(context)?.netPicture??""
+            : IntlLocalizations.of(context)?.accountBackgroundSetting??""),
         actions: <Widget>[
-          PopupMenuButton(
+          PopupMenuButton<PopItemType>(
             onSelected: (value) => model.logic.onPopItemSelect(value),
             itemBuilder: (ctx) {
               return [
@@ -30,14 +30,14 @@ class NetPicturesPage extends StatelessWidget {
                   value: PopItemType.local,
                   child: ListTile(
                     leading: Icon(Icons.insert_drive_file),
-                    title: Text(IntlLocalizations.of(context).selectLocalImage),
+                    title: Text(IntlLocalizations.of(context)?.selectLocalImage??""),
                   ),
                 ),
                 PopupMenuItem(
                   value: PopItemType.history,
                   child: ListTile(
                     leading: Icon(Icons.history),
-                    title: Text(IntlLocalizations.of(context).netPicHistory),
+                    title: Text(IntlLocalizations.of(context)?.netPicHistory??""),
                   ),
                 ),
               ];
@@ -54,7 +54,7 @@ class NetPicturesPage extends StatelessWidget {
                   enablePullUp: true,
                   onLoading: model.logic.loadMorePhoto,
                   footer: CustomFooter(
-                    builder: (BuildContext context, LoadStatus mode) =>
+                    builder: (BuildContext context, LoadStatus? mode) =>
                         model.logic.getRefreshFooter(context, mode),
                   ),
                   child: GridView.builder(
@@ -77,8 +77,10 @@ class NetPicturesPage extends StatelessWidget {
                           child: Hero(
                             tag: "tag_$index",
                             child: CustomCacheImage(
-                              url: url,
+                              null,
+                               url:url,
                               fit: BoxFit.contain,
+                              cacheManager: null,
                             ),
                           ),
                         ),

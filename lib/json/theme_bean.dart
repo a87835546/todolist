@@ -3,13 +3,13 @@ export 'package:todo_list/json/color_bean.dart';
 
 class ThemeBean {
   String themeName;
-  ColorBean colorBean;
+  ColorBean? colorBean;
   String themeType;
 
-  ThemeBean({this.themeName, this.colorBean, this.themeType});
+  ThemeBean({required this.themeName, required this.colorBean, required this.themeType});
 
   static ThemeBean fromMap(Map<String, dynamic> map) {
-    ThemeBean bean = new ThemeBean();
+    ThemeBean bean = new ThemeBean(themeName: '', colorBean: null, themeType: '');
     bean.themeName = map['themeName'];
     bean.colorBean = ColorBean.fromMap(map['colorBean']);
     bean.themeType = map['themeType'];
@@ -19,15 +19,15 @@ class ThemeBean {
   Map<dynamic, dynamic> toMap() {
     return {
       'themeName': themeName,
-      'colorBean': colorBean.toMap(),
+      'colorBean': colorBean?.toMap(),
       'themeType': themeType
     };
   }
-
-  @override
-  bool operator ==(other) {
-    return other.themeName == themeName;
-  }
+  //
+  // @override
+  // bool operator ==(other) {
+  //   return other.themeName == themeName;
+  // }
 
 
 }

@@ -37,7 +37,7 @@ class NetPicturesPageModel extends ChangeNotifier{
   ///[taskBean]表示当前背景设置页是为任务卡片设置背景
   TaskBean taskBean;
 
-  NetPicturesPageModel({String useType, AccountPageModel accountPageModel,TaskBean taskBean}){
+  NetPicturesPageModel(this.context,this.logic,this.globalModel,this.useType, this.accountPageModel,this.taskBean){
     this.useType = useType;
     this.accountPageModel = accountPageModel;
     this.taskBean = taskBean;

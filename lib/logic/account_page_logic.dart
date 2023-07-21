@@ -7,6 +7,8 @@ import 'package:todo_list/config/provider_config.dart';
 import 'package:todo_list/model/all_model.dart';
 import 'package:todo_list/utils/shared_util.dart';
 
+import '../json/task_bean.dart';
+
 class AccountPageLogic{
 
   final AccountPageModel _model;
@@ -40,7 +42,7 @@ class AccountPageLogic{
       width: 100,
       height: 100,
       child: ClipRRect(
-        child: Image.file(File(_model.avatarUrl)),
+        child: Image.file(File(_model.avatarUrl??"")),
         borderRadius: BorderRadius.all(Radius.circular(50)),
       ),
     )
@@ -83,7 +85,7 @@ class AccountPageLogic{
     Navigator.of(_model.context).push(new CupertinoPageRoute(builder: (ctx) {
       return ProviderConfig.getInstance().getNetPicturesPage(
         useType: NetPicturesUseType.accountBackground,
-        accountPageModel: _model,
+        accountPageModel: _model, taskBean: new TaskBean(detailList: []),
       );
     }));
   }

@@ -34,15 +34,15 @@ class MyApp extends StatelessWidget {
         const Locale('zh', 'CN'), // 中文简体
       ],
       localeResolutionCallback:
-          (Locale locale, Iterable<Locale> supportedLocales) {
+          (Locale? locale, Iterable<Locale> supportedLocales) {
         debugPrint("locale:$locale   sups:$supportedLocales  currentLocale:${model.currentLocale}");
         if (model.currentLocale == locale) return model.currentLocale;
         for (var supportedLocale in supportedLocales) {
           if (supportedLocale == locale) {
-            model.currentLocale = locale;
+            model.currentLocale = locale!;
             model.currentLanguageCode = [
               locale.languageCode,
-              locale.countryCode
+              locale.countryCode??""
             ];
             locale.countryCode == "CN"
                 ? model.currentLanguage = "中文"
@@ -57,7 +57,7 @@ class MyApp extends StatelessWidget {
         return model.currentLocale;
       },
       localeListResolutionCallback:
-          (List<Locale> locales, Iterable<Locale> supportedLocales) {
+          (List<Locale>? locales, Iterable<Locale> supportedLocales) {
         debugPrint("locatassss:$locales  sups:$supportedLocales");
         return model.currentLocale;
       },

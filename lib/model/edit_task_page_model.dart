@@ -45,9 +45,26 @@ class EditTaskPageModel extends ChangeNotifier{
   ///当这个值不为空的时候，表示不是新增一个task，而是编辑已存在的task
   TaskBean oldTaskBean;
 
-  EditTaskPageModel({this.oldTaskBean}){
+  EditTaskPageModel(this.context,
+      this.logic,
+      this.cancelToken,
+      this.mainPageModel,
+      this.backgroundUrl,
+      this.canAddTaskDetail,
+      this.changeTimes,
+      this.createDate,
+      this.currentTaskName,
+      this.deadLine,
+      this.finishDate,
+      this.startDate,
+      this.taskDetailPageModel,
+      this.taskDetails,
+      this.taskIcon,
+      this.textColorBean,
+      this.uniqueId,
+   {required this.oldTaskBean}){
     logic = EditTaskPageLogic(this);
-    this.uniqueId = oldTaskBean?.uniqueId;
+    this.uniqueId = oldTaskBean.uniqueId;
     logic.initialDataFromOld(oldTaskBean);
   }
 

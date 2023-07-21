@@ -1,3 +1,4 @@
+import 'dart:js_util';
 import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
@@ -23,7 +24,7 @@ class SettingPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(IntlLocalizations.of(context).appSetting),
+        title: Text(IntlLocalizations.of(context)?.appSetting??""),
       ),
       body: buildSettingListView(context, globalModel),
     );
@@ -35,7 +36,7 @@ void onNetPicBgSelect(
   if (value) {
     Navigator.of(context).push(new CupertinoPageRoute(builder: (ctx) {
       return ProviderConfig.getInstance().getNetPicturesPage(
-        useType: NetPicturesUseType.mainPageBackground,
+        useType: NetPicturesUseType.mainPageBackground, accountPageModel: newObject(), taskBean: newObject(),
       );
     }));
   } else {
@@ -52,8 +53,8 @@ void onWeatherOpen(bool value, BuildContext context, GlobalModel globalModel) {
       builder: (ctx1) {
         return EditDialog(
           positiveWithPop: false,
-          title: IntlLocalizations.of(context).enableWeatherShow,
-          hintText: IntlLocalizations.of(context).inputCurrentCity,
+          title: IntlLocalizations.of(context)?.enableWeatherShow??"",
+          hintText: IntlLocalizations.of(context)?.inputCurrentCity??"",
           initialValue: globalModel.currentPosition,
           onValueChanged: (text) {
             globalModel.currentPosition = text;
@@ -69,12 +70,12 @@ void onWeatherOpen(bool value, BuildContext context, GlobalModel globalModel) {
                     onRequest: () {
                       globalModel.logic.getWeatherNow(
                           globalModel.currentPosition,
-                          controller: globalModel.loadingController);
+                          controller: globalModel.loadingController, context: context);
                     },
                     cancelToken: cancelToken,
-                    errorText: IntlLocalizations.of(context).weatherGetWrong,
-                    loadingText: IntlLocalizations.of(context).weatherGetting,
-                    successText: IntlLocalizations.of(context).weatherSuccess,
+                    errorText: IntlLocalizations.of(context)?.weatherGetWrong??"",
+                    loadingText: IntlLocalizations.of(context)?.weatherGetting??"",
+                    successText: IntlLocalizations.of(context)?.weatherSuccess??"",
                     onSuccess: () {
                       Navigator.of(context).pop();
                       Navigator.of(context).pop();
@@ -97,7 +98,7 @@ ListView buildSettingListView(BuildContext context, GlobalModel globalModel) {
   return ListView(
     children: <Widget>[
       SwitchListTile(
-        title: Text(IntlLocalizations.of(context).backgroundGradient),
+        title: Text(IntlLocalizations.of(context)?.backgroundGradient??""),
         secondary: const Icon(
           Icons.invert_colors,
         ),
@@ -111,7 +112,7 @@ ListView buildSettingListView(BuildContext context, GlobalModel globalModel) {
         },
       ),
       SwitchListTile(
-        title: Text(IntlLocalizations.of(context).bgChangeWithCard),
+        title: Text(IntlLocalizations.of(context)?.bgChangeWithCard??""),
         secondary: const Icon(
           Icons.format_color_fill,
         ),
@@ -130,7 +131,7 @@ ListView buildSettingListView(BuildContext context, GlobalModel globalModel) {
         },
       ),
       SwitchListTile(
-        title: Text(IntlLocalizations.of(context).cardChangeWithBg),
+        title: Text(IntlLocalizations.of(context)?.cardChangeWithBg??""),
         secondary: Transform(
           transform: Matrix4.rotationY(pi),
           origin: Offset(12, 0.0),
@@ -153,7 +154,7 @@ ListView buildSettingListView(BuildContext context, GlobalModel globalModel) {
         },
       ),
       SwitchListTile(
-        title: Text(IntlLocalizations.of(context).splashAnimation),
+        title: Text(IntlLocalizations.of(context)?.splashAnimation??""),
         secondary: const Icon(
           Icons.subscriptions,
         ),
@@ -167,7 +168,7 @@ ListView buildSettingListView(BuildContext context, GlobalModel globalModel) {
         },
       ),
       SwitchListTile(
-        title: Text(IntlLocalizations.of(context).enableWeatherShow),
+        title: Text(IntlLocalizations.of(context)?.enableWeatherShow??""),
         secondary: const Icon(
           Icons.wb_sunny,
         ),
@@ -176,7 +177,7 @@ ListView buildSettingListView(BuildContext context, GlobalModel globalModel) {
         onChanged: (value) => onWeatherOpen(value, context, globalModel),
       ),
       SwitchListTile(
-        title: Text(IntlLocalizations.of(context).enableNetPicBgInMainPage),
+        title: Text(IntlLocalizations.of(context)?.enableNetPicBgInMainPage??""),
         secondary: const Icon(
           Icons.image,
         ),
@@ -185,7 +186,7 @@ ListView buildSettingListView(BuildContext context, GlobalModel globalModel) {
         onChanged: (value) => onNetPicBgSelect(value, context, globalModel),
       ),
       SwitchListTile(
-        title: Text(IntlLocalizations.of(context).enableInfiniteScroll),
+        title: Text(IntlLocalizations.of(context)?.enableInfiniteScroll??""),
         secondary: const Icon(
           Icons.repeat,
         ),
@@ -200,7 +201,7 @@ ListView buildSettingListView(BuildContext context, GlobalModel globalModel) {
       ),
       BackgroundSlider(globalModel.mainPageModel),
       ListTile(
-        title: Text(IntlLocalizations.of(context).iconSetting),
+        title: Text(IntlLocalizations.of(context)?.iconSetting??""),
         leading: Icon(
           Icons.insert_emoticon,
         ),
@@ -212,7 +213,7 @@ ListView buildSettingListView(BuildContext context, GlobalModel globalModel) {
         },
       ),
       ListTile(
-        title: Text(IntlLocalizations.of(context).navigatorSetting),
+        title: Text(IntlLocalizations.of(context)?.navigatorSetting??""),
         leading: Icon(
           Icons.navigation,
         ),
@@ -224,7 +225,7 @@ ListView buildSettingListView(BuildContext context, GlobalModel globalModel) {
         },
       ),
       ListTile(
-        title: Text(IntlLocalizations.of(context).aboutApp),
+        title: Text(IntlLocalizations.of(context)?.aboutApp??""),
         leading: Icon(
           Icons.info_outline,
         ),

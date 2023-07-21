@@ -8,7 +8,7 @@ import 'package:todo_list/model/main_page_model.dart';
 class AvatarPage extends StatelessWidget {
   final MainPageModel mainPageModel;
 
-  const AvatarPage({Key key, this.mainPageModel}) : super(key: key);
+  const AvatarPage(Key? key, {required this.mainPageModel}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,23 +20,23 @@ class AvatarPage extends StatelessWidget {
       backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.black,
-        title: Text(IntlLocalizations.of(context).avatar,),
+        title: Text(IntlLocalizations.of(context)?.avatar??""),
         actions: <Widget>[
-          PopupMenuButton(
+          PopupMenuButton<AvatarType>(
             onSelected: (value) => model.logic.onAvatarSelect(value, context),
             itemBuilder: (ctx) {
               return [
                 PopupMenuItem(
                   value: AvatarType.local,
                   child: Container(
-                    child: Text(IntlLocalizations.of(context).avatarLocal),
+                    child: Text(IntlLocalizations.of(context)?.avatarLocal??""),
                     alignment: Alignment.centerLeft,
                   ),
                 ),
                 PopupMenuItem(
                   value: AvatarType.history,
                   child: Container(
-                    child: Text(IntlLocalizations.of(context).avatarHistory),
+                    child: Text(IntlLocalizations.of(context)?.avatarHistory??""),
                     alignment: Alignment.centerLeft,
                   ),
                 ),
@@ -64,14 +64,14 @@ class AvatarPage extends StatelessWidget {
           ),
           Align(
             alignment: Alignment(0, 0.8),
-            child: FlatButton(
-              color: Theme.of(context).primaryColor,
-              highlightColor: Theme.of(context).primaryColorLight,
-              colorBrightness: Brightness.dark,
-              splashColor: Theme.of(context).primaryColorDark,
-              child: Text(IntlLocalizations.of(context).save),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20.0)),
+            child: TextButton(
+              // color: Theme.of(context).primaryColor,
+              // highlightColor: Theme.of(context).primaryColorLight,
+              // colorBrightness: Brightness.dark,
+              // splashColor: Theme.of(context).primaryColorDark,
+              child: Text(IntlLocalizations.of(context)?.save??""),
+              // shape: RoundedRectangleBorder(
+              //     borderRadius: BorderRadius.circular(20.0)),
               onPressed: model.logic.onSaveTap,
             ),
           )

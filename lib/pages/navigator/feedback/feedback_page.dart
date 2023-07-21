@@ -24,7 +24,7 @@ class FeedbackPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(IntlLocalizations.of(context).feedback),
+        title: Text(IntlLocalizations.of(context)?.feedback??""),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.check),
@@ -58,7 +58,7 @@ class FeedbackPage extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(30)),
                 border: Border.all(
-                  color: primaryColor,
+                  color: primaryColor??Colors.grey,
                   width: 3,
                 ),
               ),
@@ -76,7 +76,7 @@ class FeedbackPage extends StatelessWidget {
                     contentPadding: EdgeInsets.all(10),
                     border: InputBorder.none,
                     hintText:
-                        IntlLocalizations.of(context).writeYourFeedback,
+                        IntlLocalizations.of(context)?.writeYourFeedback,
                     hintStyle: TextStyle(color: Colors.grey)),
                 maxLength: 2000,
               ),
@@ -88,7 +88,7 @@ class FeedbackPage extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(30)),
                 border: Border.all(
-                  color: primaryColor,
+                  color: primaryColor!,
                   width: 3,
                 ),
               ),
@@ -98,7 +98,7 @@ class FeedbackPage extends StatelessWidget {
                   expands: true,
                   maxLines: null,
                   validator: (text) {
-                    model.contactWay = text;
+                    model.contactWay = text??"";
                     return null;
                   },
                   style: TextStyle(
@@ -110,7 +110,7 @@ class FeedbackPage extends StatelessWidget {
                       color: primaryColor,
                     ),
                     hintText:
-                        IntlLocalizations.of(context).writeYourContactInfo,
+                        IntlLocalizations.of(context)?.writeYourContactInfo,
                     hintStyle: TextStyle(color: Colors.grey),
                   ),
                 ),

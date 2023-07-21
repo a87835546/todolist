@@ -41,7 +41,7 @@ class ResetPasswordPageModel extends ChangeNotifier {
 
 
 
-  ResetPasswordPageModel(bool isReset) {
+  ResetPasswordPageModel(this.logic,this.context, this.isReset) {
     logic = ResetPasswordPageLogic(this);
     this.isReset = isReset;
   }

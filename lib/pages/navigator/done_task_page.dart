@@ -28,7 +28,7 @@ class DoneTaskPage extends StatelessWidget {
     bool isDartNow =
         globalModel.currentThemeBean.themeType == MyTheme.darkTheme;
     final bgColor = isDartNow
-        ? ColorBean.fromBean(globalModel.currentThemeBean.colorBean)
+        ? ColorBean.fromBean(globalModel.currentThemeBean.colorBean!)
         : Theme
         .of(context)
         .primaryColor;
@@ -40,7 +40,7 @@ class DoneTaskPage extends StatelessWidget {
         title: Text(
           IntlLocalizations
               .of(context)
-              .doneList,
+              ?.doneList??"",
           style: TextStyle(
             color: bgColor,
           ),
@@ -58,11 +58,11 @@ class DoneTaskPage extends StatelessWidget {
               itemCount: model.doneTasks.length,
               itemBuilder: (ctx, index) {
                 final task = model.doneTasks[index];
-                final colorBean = task.taskIconBean.colorBean;
-                final iconBean = task.taskIconBean.iconBean;
+                final colorBean = task.taskIconBean?.colorBean;
+                final iconBean = task.taskIconBean?.iconBean;
                 final color = isDartNow
                     ? Colors.black.withOpacity(0.2)
-                    : ColorBean.fromBean(colorBean);
+                    : ColorBean.fromBean(colorBean!);
                 return AnimationConfiguration.staggeredList(
                   position: index,
                   duration: const Duration(milliseconds: 500),
@@ -103,7 +103,7 @@ class DoneTaskPage extends StatelessWidget {
                                       Text(
                                         "${IntlLocalizations
                                             .of(context)
-                                            .taskNum}:${task.taskDetailNum}",
+                                            ?.taskNum}:${task.taskDetailNum}",
                                         style: TextStyle(
                                           fontSize: textSize,
                                           color: textColor,
@@ -114,7 +114,7 @@ class DoneTaskPage extends StatelessWidget {
                                       Text(
                                         "${IntlLocalizations
                                             .of(context)
-                                            .createDate}:${model.logic.getTimeText(
+                                            ?.createDate}:${model.logic.getTimeText(
                                             task.createDate)}",
                                         style: TextStyle(
                                           fontSize: textSize,
@@ -155,7 +155,7 @@ class DoneTaskPage extends StatelessWidget {
                                     ),
                                     shape: BoxShape.circle),
                                 child: Icon(
-                                  IconBean.fromBean(iconBean),
+                                  IconBean.fromBean(iconBean!),
                                   color: color,
                                 ),
                               ),
@@ -195,7 +195,7 @@ class DoneTaskPage extends StatelessWidget {
                                         child: Text(
                                           "${IntlLocalizations
                                               .of(context)
-                                              .spendTime}:${model.logic.getDiffTimeText(
+                                              ?.spendTime}:${model.logic.getDiffTimeText(
                                               task.createDate, task.finishDate)}",
                                           maxLines: 3,
                                           style: TextStyle(
@@ -208,7 +208,7 @@ class DoneTaskPage extends StatelessWidget {
                                       Text(
                                         "${IntlLocalizations
                                             .of(context)
-                                            .changedTimes}:${task.changeTimes}",
+                                            ?.changedTimes}:${task.changeTimes}",
                                         style: TextStyle(
                                           fontSize: textSize,
                                           color: textColor,
@@ -219,7 +219,7 @@ class DoneTaskPage extends StatelessWidget {
                                       Text(
                                         "${IntlLocalizations
                                             .of(context)
-                                            .completeDate}:${model.logic.getTimeText(
+                                            ?.completeDate}:${model.logic.getTimeText(
                                             task.finishDate)}",
                                         style: TextStyle(
                                           fontSize: textSize,
@@ -249,7 +249,7 @@ class DoneTaskPage extends StatelessWidget {
           errorCallBack: () {},
           emptyText: IntlLocalizations
               .of(context)
-              .toFinishTask,
+              ?.toFinishTask??"",
         ),
       ),
     );

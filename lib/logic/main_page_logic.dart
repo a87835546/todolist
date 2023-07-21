@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:js_util';
 import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
@@ -43,23 +44,23 @@ class MainPageLogic {
               builder: (ctx) {
                 return AlertDialog(
                   title: Text(
-                      "${IntlLocalizations.of(_model.context).doDelete}${taskBean.taskName}"),
+                      "${IntlLocalizations.of(_model.context)?.doDelete}${taskBean.taskName}"),
                   actions: <Widget>[
-                    FlatButton(
+                    TextButton(
                         onPressed: () {
                           Navigator.of(context).pop();
                           _model.logic.deleteTask(taskBean);
                         },
                         child: Text(
-                          IntlLocalizations.of(_model.context).delete,
+                          IntlLocalizations.of(_model.context)?.delete??"delete",
                           style: TextStyle(color: Colors.redAccent),
                         )),
-                    FlatButton(
+                    TextButton(
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
                         child: Text(
-                          IntlLocalizations.of(_model.context).cancel,
+                          IntlLocalizations.of(_model.context)?.cancel??"cancel",
                           style: TextStyle(color: Colors.green),
                         )),
                   ],
@@ -84,7 +85,7 @@ class MainPageLogic {
     });
   }
 
-  Widget getIconText({Icon icon, String text, VoidCallback onTap}) {
+  Widget getIconText({required Icon icon, String? text, VoidCallback? onTap}) {
     return InkWell(
       onTap: onTap,
       child: Container(
@@ -98,7 +99,7 @@ class MainPageLogic {
             SizedBox(
               width: 4,
             ),
-            Text(text),
+            Text('${text}'),
           ],
         ),
       ),
@@ -142,9 +143,7 @@ class MainPageLogic {
     return enableBg
         ? BoxDecoration(
             image: DecorationImage(
-            image: bgUrl.startsWith('http')
-                ? CachedNetworkImageProvider(bgUrl)
-                : FileImage(File(bgUrl)),
+            image: FileImage(File(bgUrl)),
             fit: BoxFit.cover,
           ))
         : BoxDecoration(
@@ -175,7 +174,7 @@ class MainPageLogic {
     }
   }
 
-  Color _getBgColor(bool isBgGradient, bool isBgChangeWithCard) {
+  Color? _getBgColor(bool isBgGradient, bool isBgChangeWithCard) {
     if (isBgGradient) {
       return null;
     }
@@ -191,7 +190,7 @@ class MainPageLogic {
     int taskLength = _model.tasks.length;
     if (taskLength == 0) return primaryColor;
     if (index > taskLength - 1) return primaryColor;
-    return ColorBean.fromBean(_model.tasks[index].taskIconBean.colorBean);
+    return ColorBean.fromBean(_model.tasks[index].taskIconBean?.colorBean??newObject());
   }
 
   void deleteTask(TaskBean taskBean) async {
@@ -209,7 +208,7 @@ class MainPageLogic {
             builder: (ctx) {
               return NetLoadingWidget();
             });
-        ApiService.instance.postDeleteTask(
+        ApiService.instance?.postDeleteTask(
           success: (CommonBean bean) {
             Navigator.of(_model.context).pop();
             _deleteDataBaseTask(taskBean);
@@ -227,7 +226,7 @@ class MainPageLogic {
             _showTextDialog(msg);
           },
           params: {
-            "token": token,
+            "token": token??"",
             "account": account,
             "uniqueId": taskBean.uniqueId,
           },
@@ -250,7 +249,7 @@ class MainPageLogic {
       new CupertinoPageRoute(
         builder: (ctx) {
           return ProviderConfig.getInstance()
-              .getEditTaskPage(taskBean.taskIconBean, taskBean: taskBean);
+              .getEditTaskPage(taskBean.taskIconBean??newObject(), taskBean: taskBean, taskDetailPageModel: newObject());
         },
       ),
     );
@@ -370,8 +369,8 @@ class MainPageLogic {
         context: context,
         builder: (ctx) {
           return EditDialog(
-            title: IntlLocalizations.of(context).customUserName,
-            hintText: IntlLocalizations.of(context).inputUserName,
+            title: IntlLocalizations.of(context)?.customUserName??"",
+            hintText: IntlLocalizations.of(context)?.inputUserName??"",
             positiveWithPop: false,
             onValueChanged: (text) {
               _model.currentEditingUserName = text;
@@ -380,7 +379,7 @@ class MainPageLogic {
             onPositive: () async {
               if (_model.currentEditingUserName.isEmpty) {
                 _showTextDialog(
-                    IntlLocalizations.of(context).userNameCantBeNull);
+                    IntlLocalizations.of(context)?.userNameCantBeNull??"");
                 return;
               }
               final account = await SharedUtil.instance.getString(Keys.account);
@@ -415,7 +414,7 @@ class MainPageLogic {
     final context = _model.context;
     final token = await SharedUtil.instance.getString(Keys.token);
     _showLoadingDialog(context);
-    ApiService.instance.changeUserName(
+    ApiService.instance?.changeUserName(
       success: (bean) async {
         _model.currentUserName = _model.currentEditingUserName;
         SharedUtil.instance
@@ -455,7 +454,7 @@ class MainPageLogic {
     if (Platform.isIOS) return;
     final context = _model.context;
     CancelToken cancelToken = CancelToken();
-    ApiService.instance.checkUpdate(
+    ApiService.instance?.checkUpdate(
       success: (UpdateInfoBean updateInfo) async {
         final packageInfo = await PackageInfo.fromPlatform();
         bool needUpdate = UpdateInfoBean.needUpdate(
@@ -489,7 +488,7 @@ class MainPageLogic {
     final account = await SharedUtil.instance.getString(Keys.account);
     if (account == 'default') return;
     final token = await SharedUtil.instance.getString(Keys.token);
-    ApiService.instance.postUpdateTask(
+    ApiService.instance?.postUpdateTask(
       success: (CommonBean bean) {
         taskBean.needUpdateToCloud = 'false';
         DBProvider.db.updateTask(taskBean);
@@ -520,7 +519,7 @@ class MainPageLogic {
           return NetLoadingWidget();
         });
     final token = await SharedUtil.instance.getString(Keys.token);
-    ApiService.instance.postCreateTask(
+    ApiService.instance?.postCreateTask(
       success: (UploadTaskBean bean) {
         taskBean.needUpdateToCloud = 'false';
         taskBean.uniqueId = bean.uniqueId;
@@ -547,7 +546,7 @@ class MainPageLogic {
   void onBackGroundTap(GlobalModel globalModel) {
     Navigator.of(_model.context).push(new CupertinoPageRoute(builder: (ctx) {
       return ProviderConfig.getInstance().getNetPicturesPage(
-        useType: NetPicturesUseType.mainPageBackground,
+        useType: NetPicturesUseType.mainPageBackground, accountPageModel: newObject(), taskBean: newObject(),
       );
     }));
   }

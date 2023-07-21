@@ -6,15 +6,15 @@ class AccountPageModel extends ChangeNotifier {
   AccountPageLogic logic;
   BuildContext context;
 
-  String avatarUrl;
-  String userName;
-  String emailAccount;
-  String backgroundType = AccountBGType.defaultType;
-  String backgroundUrl;
+  String? avatarUrl;
+  String? userName;
+  String? emailAccount;
+  String? backgroundType = AccountBGType.defaultType;
+  String? backgroundUrl;
 
   bool isExisting = false;
 
-  AccountPageModel() {
+  AccountPageModel(this.logic,this.context,this.avatarUrl,this.userName,this.emailAccount,this.backgroundType,this.backgroundUrl,this.isExisting) {
     logic = AccountPageLogic(this);
   }
 

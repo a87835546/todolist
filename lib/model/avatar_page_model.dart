@@ -18,7 +18,7 @@ class AvatarPageModel extends ChangeNotifier{
 
   final cropKey = GlobalKey<CropState>();
 
-  AvatarPageModel(){
+  AvatarPageModel(this.logic,this.context,this.mainPageModel,this.cancelToken,this.currentAvatarType,this.currentAvatarUrl){
     logic = AvatarPageLogic(this);
   }
 

@@ -16,7 +16,7 @@ class FeedbackWallPageModel extends ChangeNotifier{
 
   bool hasCache = false;
 
-  FeedbackWallPageModel(){
+  FeedbackWallPageModel(this.logic,this.context){
     logic = FeedbackWallPageLogic(this);
   }
 

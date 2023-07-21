@@ -15,8 +15,8 @@ class AvatarHistoryPage extends StatefulWidget {
   final String currentAvatarUrl;
   final AvatarPageModel avatarPageModel;
 
-  const AvatarHistoryPage(
-      {Key key, @required this.currentAvatarUrl, this.avatarPageModel})
+  const AvatarHistoryPage(Key? key,
+      { required this.currentAvatarUrl, required this.avatarPageModel})
       : super(key: key);
 
   @override
@@ -38,7 +38,7 @@ class _AvatarHistoryPageState extends State<AvatarHistoryPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(IntlLocalizations.of(context).avatarHistory),
+        title: Text(IntlLocalizations.of(context)?.avatarHistory??""),
         actions: <Widget>[
           Container(
             margin: EdgeInsets.only(right: 20),
@@ -152,7 +152,7 @@ class _AvatarHistoryPageState extends State<AvatarHistoryPage> {
   void uploadAvatar(String account, String token, String filePath,
       String fileName, BuildContext context) async {
     _showLoadingDialog(context);
-    ApiService.instance.uploadAvatar(
+    ApiService.instance?.uploadAvatar(
       params: FormData.fromMap({
         "avatar": await MultipartFile.fromFile(filePath),
         "account": account,

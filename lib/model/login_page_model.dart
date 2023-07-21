@@ -19,13 +19,13 @@ class LoginPageModel extends ChangeNotifier{
   bool isLoginNow = false;
 
   ///表示登录页面是不是第一个页面
-  bool isFirst;
+  bool isFirst = false;
 
   final formKey = GlobalKey<FormState>();
 
   CancelToken cancelToken = CancelToken();
 
-  LoginPageModel({bool isFirst = false}){
+  LoginPageModel(this.logic,this.context, this.isFirst){
     logic = LoginPageLogic(this);
     this.isFirst = isFirst;
   }

@@ -1,3 +1,5 @@
+import 'dart:js_util';
+
 import 'package:flutter/cupertino.dart';
 import 'package:todo_list/config/api_service.dart';
 import 'package:todo_list/json/task_bean.dart';
@@ -21,7 +23,7 @@ class SearchPageModel extends ChangeNotifier{
   CancelToken cancelToken = CancelToken();
 
 
-  SearchPageModel(){
+  SearchPageModel(this.logic,this.context,this._globalModel){
     logic = SearchPageLogic(this);
   }
 
@@ -39,7 +41,7 @@ class SearchPageModel extends ChangeNotifier{
     textEditingController?.dispose();
     if(!cancelToken.isCancelled) cancelToken.cancel();
     super.dispose();
-    _globalModel.searchPageModel = null;
+    _globalModel.searchPageModel = newObject();
     debugPrint("SearchPageModel销毁了");
   }
 

@@ -1,10 +1,10 @@
 class RegisterBean{
 
 
-  String description;
-  String token;
-  String avatarUrl;
-  int status;
+  String description = "";
+  String token = "";
+  String avatarUrl = "";
+  int status = 0;
 
   static RegisterBean fromMap(Map<String, dynamic> map) {
     RegisterBean diaryBase = new RegisterBean();
@@ -16,7 +16,7 @@ class RegisterBean{
   }
 
   static List<RegisterBean> fromMapList(dynamic mapList) {
-    List<RegisterBean> list = List.filled(mapList.length, null);
+    List<RegisterBean> list = List.empty();
     for (int i = 0; i < mapList.length; i++) {
       list[i] = fromMap(mapList[i]);
     }

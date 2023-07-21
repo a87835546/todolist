@@ -1,3 +1,5 @@
+import 'dart:js_util';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_list/config/api_service.dart';
@@ -53,13 +55,13 @@ class SearchPageLogic{
         context: _model.context,
         builder: (ctx) {
           return AlertDialog(
-            title: Text("${IntlLocalizations.of(_model.context).doDelete}${task.taskName}"),
+            title: Text("${IntlLocalizations.of(_model.context)?.doDelete}${task.taskName}"),
             actions: <Widget>[
-              FlatButton(onPressed: (){
+              TextButton(onPressed: (){
                 Navigator.of(_model.context).pop();
                 deleteTask(task, globalModel);
               }, child: Text("删除",style: TextStyle(color: Colors.redAccent),)),
-              FlatButton(onPressed: (){
+              TextButton(onPressed: (){
                 Navigator.of(_model.context).pop();
               }, child: Text("取消",style: TextStyle(color: Colors.green),)),
             ],
@@ -79,8 +81,8 @@ class SearchPageLogic{
       new CupertinoPageRoute(
         builder: (ctx) {
           return ProviderConfig.getInstance().getEditTaskPage(
-              taskBean.taskIconBean,
-              taskBean: taskBean,);
+              taskBean.taskIconBean??newObject(),
+              taskBean: taskBean, taskDetailPageModel: newObject(),);
         },
       ),
     );
@@ -99,7 +101,7 @@ class SearchPageLogic{
         showDialog(context: _model.context, builder: (ctx){
           return NetLoadingWidget();
         });
-        ApiService.instance.postDeleteTask(
+        ApiService.instance?.postDeleteTask(
           success: (CommonBean bean) {
             Navigator.of(_model.context).pop();
             doDelete(taskBean, globalModel);

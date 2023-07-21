@@ -11,7 +11,7 @@ class ThemePageModel extends ChangeNotifier{
   List<ThemeBean> themes = [];
   bool isDeleting = false;
 
-  ThemePageModel(){
+  ThemePageModel(this.logic,this.context){
     logic = ThemePageLogic(this);
   }
 

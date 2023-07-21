@@ -27,14 +27,14 @@ class AvatarPageLogic {
         PermissionReqUtil.getInstance().requestPermission(
           Permission.photos,
           granted: getImage,
-          deniedDes: IntlLocalizations.of(context).deniedDes,
+          deniedDes: IntlLocalizations.of(context)!.deniedDes,
           context: context,
-          openSetting: IntlLocalizations.of(context).openSystemSetting,
+          openSetting: IntlLocalizations.of(context)!.openSystemSetting,
         );
         break;
       case AvatarType.history:
         Navigator.of(context).push(new CupertinoPageRoute(builder: (ctx) {
-          return AvatarHistoryPage(
+          return AvatarHistoryPage(null,
             currentAvatarUrl: _model.mainPageModel.currentAvatarUrl,
             avatarPageModel: _model,
           );
@@ -46,7 +46,7 @@ class AvatarPageLogic {
   Future getImage() async {
     final context = _model.context;
 
-    XFile image = await ImagePicker().pickImage(source: ImageSource.gallery);
+    XFile? image = await ImagePicker().pickImage(source: ImageSource.gallery);
     if (image != null) {
       if (Platform.isAndroid) {
         PermissionReqUtil.getInstance().requestPermission(
@@ -54,9 +54,9 @@ class AvatarPageLogic {
           granted: () {
             _saveAndGetAvatarFile(image);
           },
-          deniedDes: IntlLocalizations.of(context).deniedDes,
+          deniedDes: IntlLocalizations.of(context)!.deniedDes,
           context: context,
-          openSetting: IntlLocalizations.of(context).openSystemSetting,
+          openSetting: IntlLocalizations.of(context)!.openSystemSetting,
         );
         return;
       }
@@ -73,7 +73,7 @@ class AvatarPageLogic {
   void onSaveTap() async {
     final croppedFile = await ImageCrop.cropImage(
       file: File(_model.currentAvatarUrl),
-      area: _model.cropKey.currentState.area,
+      area: _model.cropKey.currentState!.area!,
     );
     await _saveImage(croppedFile);
   }
@@ -94,7 +94,7 @@ class AvatarPageLogic {
             .replaceAll(" ", "");
         String transFormName = Uri.encodeFull(fileName).replaceAll("%", "");
 
-        uploadAvatar(account,token, path, transFormName);
+        uploadAvatar(account,token!, path, transFormName);
       }
     }
   }
@@ -111,7 +111,7 @@ class AvatarPageLogic {
   void uploadAvatar(String account, String token, String filePath, String fileName) async{
     final context = _model.context;
     _showLoadingDialog(context);
-    ApiService.instance.uploadAvatar(
+    ApiService.instance?.uploadAvatar(
       params: FormData.fromMap({
         "avatar": await MultipartFile.fromFile(filePath),
         "account": account,

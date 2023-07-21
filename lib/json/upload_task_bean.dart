@@ -6,9 +6,9 @@ class UploadTaskBean {
    * status : 0
    */
 
-  String description;
-  String uniqueId;
-  int status;
+  String description = "";
+  String uniqueId = "";
+  int status = 0;
 
   static UploadTaskBean fromMap(Map<String, dynamic> map) {
     UploadTaskBean uploadTaskBean = new UploadTaskBean();
@@ -19,7 +19,7 @@ class UploadTaskBean {
   }
 
   static List<UploadTaskBean> fromMapList(dynamic mapList) {
-    List<UploadTaskBean> list = List.filled(mapList.length, null);
+    List<UploadTaskBean> list = List.empty();
     for (int i = 0; i < mapList.length; i++) {
       list[i] = fromMap(mapList[i]);
     }

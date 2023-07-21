@@ -11,7 +11,7 @@ class DoneTaskPageLogic {
   DoneTaskPageLogic(this._model);
 
   Future getDoneTasks() async {
-    final tasks = await DBProvider.db.getTasks(isDone: true);
+    final tasks = await DBProvider.db.getTasks(isDone: true, account: '');
     if (tasks.length == 0) {
       _model.loadingFlag = LoadingFlag.empty;
       _model.doneTasks.clear();
@@ -28,7 +28,7 @@ class DoneTaskPageLogic {
       return ProviderConfig.getInstance().getTaskDetailPage(
         task.id,
         task,
-        doneTaskPageModel: _model,
+        doneTaskPageModel: _model, searchPageModel: null,
       );
     }));
   }
@@ -53,7 +53,7 @@ class DoneTaskPageLogic {
 
 
     return diff.inDays == 0
-        ? "${IntlLocalizations.of(context).hours(diff.inHours.abs())}"
-        : "${IntlLocalizations.of(context).days(diff.inDays.abs())}";
+        ? "${IntlLocalizations.of(context)?.hours(diff.inHours.abs())}"
+        : "${IntlLocalizations.of(context)?.days(diff.inDays.abs())}";
   }
 }

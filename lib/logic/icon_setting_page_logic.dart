@@ -14,7 +14,7 @@ class IconSettingPageLogic {
   IconSettingPageLogic(this._model);
 
   void onIconPress(IconBean iconBean,
-      {ColorBean colorBean, String name, bool isEdit = false, int index}) {
+      {ColorBean? colorBean, required String name, bool isEdit = false, int index = 0}) {
     showDialog(
         barrierDismissible: false,
         context: _model.context,
@@ -24,7 +24,7 @@ class IconSettingPageLogic {
                   borderRadius: BorderRadius.all(Radius.circular(20.0))),
               elevation: 0.0,
               contentPadding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-              title: Text(IntlLocalizations.of(_model.context).customIcon),
+              title: Text(IntlLocalizations.of(_model.context)?.customIcon??""),
               content: CustomIconWidget(
                 iconData: IconBean.fromBean(iconBean),
                 onApplyTap: (color) async {
@@ -33,7 +33,7 @@ class IconSettingPageLogic {
                       ColorBean.fromColor(_model.currentPickerColor);
                   TaskIconBean taskIconBean = TaskIconBean(
                       taskName: _model.currentIconName.isEmpty
-                          ? IntlLocalizations.of(_model.context).defaultIconName
+                          ? IntlLocalizations.of(_model.context)?.defaultIconName??""
                           : _model.currentIconName,
                       colorBean: colorBean,
                       iconBean: iconBean);
@@ -58,11 +58,11 @@ class IconSettingPageLogic {
                     : ColorBean.fromBean(colorBean),
                 onTextChange: (text) {
                   final name = text.isEmpty
-                      ? IntlLocalizations.of(_model.context).defaultIconName
+                      ? IntlLocalizations.of(_model.context)?.defaultIconName??""
                       : text;
                   _model.currentIconName = name;
                 },
-                iconName: name ?? iconBean.iconName,
+                iconName: name,
               ));
         },);
   }
@@ -92,7 +92,7 @@ class IconSettingPageLogic {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(20.0))),
             content:
-                Text(IntlLocalizations.of(_model.context).canNotAddMoreIcon),
+                Text(IntlLocalizations.of(_model.context)?.canNotAddMoreIcon??""),
           );
         });
   }
@@ -159,7 +159,7 @@ class IconSettingPageLogic {
             child: Column(
               children: <Widget>[
                 IconButton(
-                  onPressed: () => onIconPress(icon),
+                  onPressed: () => onIconPress(icon, colorBean: null, name: ''),
                   icon: Icon(
                     IconBean.fromBean(icon),
                     size: 30,
@@ -170,7 +170,7 @@ class IconSettingPageLogic {
                 ),
                 Expanded(
                   child: Text(
-                    name,
+                    name??"",
                     style: TextStyle(fontSize: 10),
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -199,7 +199,7 @@ class IconSettingPageLogic {
           }),
         onEditingComplete: () => _model.focusNode.unfocus(),
         decoration: new InputDecoration(
-          hintText: IntlLocalizations.of(_model.context).searchIcon,
+          hintText: IntlLocalizations.of(_model.context)?.searchIcon,
           hintStyle: TextStyle(color: textColor),
           suffixIcon: IconButton(
             icon: Icon(
@@ -231,7 +231,7 @@ class IconSettingPageLogic {
     for (var i = 0; i < _model.showIcons.length; ++i) {
       final icon = _model.showIcons[i];
       final iconName = icon.iconName;
-      if (iconName.contains(text)) {
+      if (iconName!=null && iconName!.contains(text)) {
         _model.searchIcons.add(icon);
       }
     }

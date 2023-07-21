@@ -5,7 +5,7 @@ export 'package:permission_handler/permission_handler.dart';
 import 'package:permission_handler_platform_interface/permission_handler_platform_interface.dart';
 
 class PermissionReqUtil {
-  static PermissionReqUtil _instance;
+  static PermissionReqUtil _instance = PermissionReqUtil.getInstance();
 
   static PermissionReqUtil getInstance() {
     if (_instance == null) {
@@ -18,17 +18,17 @@ class PermissionReqUtil {
 
   void requestPermission(Permission reqPermissions, {
     bool showDialog = true,
-    @required BuildContext context,
-    @required VoidCallback granted,
-    VoidCallback denied,
-    VoidCallback disabled,
-    VoidCallback restricted,
-    VoidCallback unknown,
-    String deniedDes,
-    String disabledDes,
-    String restrictedDes,
-    String unknownDes,
-    String openSetting,
+    required BuildContext context,
+    required VoidCallback granted,
+    VoidCallback? denied,
+    VoidCallback? disabled,
+    VoidCallback? restricted,
+    VoidCallback? unknown,
+     String? deniedDes,
+     String? disabledDes,
+     String? restrictedDes,
+     String? unknownDes,
+     String? openSetting,
   }) async {
     Map<Permission, PermissionStatus> output =
     await PermissionHandlerPlatform.instance.requestPermissions([reqPermissions]);
@@ -44,8 +44,8 @@ class PermissionReqUtil {
           showDialog,
           context,
           reqPermissions,
-          deniedDes ?? IntlLocalizations.of(context).deniedDes,
-          openSetting ?? IntlLocalizations.of(context).openSystemSetting,
+          deniedDes ,
+          openSetting ,
           showOpenSettingButton: true,
         );
         break;
@@ -97,7 +97,7 @@ class PermissionReqUtil {
             title: Text("$permissionName $description"),
             actions: <Widget>[
               showOpenSettingButton
-                  ? FlatButton(
+                  ? TextButton(
                   onPressed: () {
                     openAppSettings();
                   },

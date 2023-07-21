@@ -29,7 +29,7 @@ class SearchPage extends StatelessWidget {
           controller: model.textEditingController,
           onEditingComplete: model.logic.onEditingComplete,
           decoration: new InputDecoration(
-            hintText: IntlLocalizations.of(context).tryToSearch,
+            hintText: IntlLocalizations.of(context)?.tryToSearch,
             hintStyle: new TextStyle(color: bgColor),
             suffixIcon: IconButton(
               icon: Icon(

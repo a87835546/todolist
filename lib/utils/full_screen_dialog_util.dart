@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class FullScreenDialog{
-  static FullScreenDialog _instance;
+  static FullScreenDialog _instance = FullScreenDialog.getInstance();
 
   static FullScreenDialog getInstance(){
     if(_instance == null){

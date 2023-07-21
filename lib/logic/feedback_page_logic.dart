@@ -46,37 +46,33 @@ class FeedbackPageLogic {
     ///限制建议内容不能为空，长度不能小于10
     if (_model.feedbackContent.isEmpty) {
       showWrongDialog(
-          context, IntlLocalizations.of(context).feedbackCantBeNull);
+          context, IntlLocalizations.of(context)?.feedbackCantBeNull??"");
       return;
     } else if (_model.feedbackContent.length < 10) {
       showWrongDialog(
-          context, IntlLocalizations.of(context).feedbackIsTooLittle);
+          context, IntlLocalizations.of(context)?.feedbackIsTooLittle??"error");
       return;
     }
 
     ///限制：需要选择评价表情
     if (_model.currentSelectSvg == -99) {
-      showWrongDialog(context, IntlLocalizations.of(context).feedbackNeedEmoji);
+      showWrongDialog(context, IntlLocalizations.of(context)?.feedbackNeedEmoji??"限制：需要选择评价表情");
       return;
     }
 
     ///防止过多提交
     bool canSubmitSuggest = await canSubmit();
     if(!canSubmitSuggest){
-      showWrongDialog(context, IntlLocalizations.of(context).feedbackFrequently);
+      showWrongDialog(context, IntlLocalizations.of(context)?.feedbackFrequently??"防止过多提交");
       return;
     }
 
-    final userName = await SharedUtil.instance.getString(Keys.currentUserName) ?? IntlLocalizations.of(context).noName;
+    final userName = await SharedUtil.instance.getString(Keys.currentUserName);
     final suggestion = _model.feedbackContent;
-    final avatarPath = await SharedUtil.instance.getString(Keys.localAvatarPath) ?? "";
-//    String fileName = avatarPath
-//        .substring(avatarPath.lastIndexOf("/") + 1, avatarPath.length)
-//        .replaceAll(" ", "");
-//    String transFormName = Uri.encodeFull(fileName).replaceAll("%", "");
+    final avatarPath = await SharedUtil.instance.getString(Keys.localAvatarPath) ;
     ///由于写后端的时候忘记添加表情的字段，现在把它放这里面
     final connectWay = "${(_model.contactWay ?? "") + "<emoji>${_model.currentSelectSvg + 1}<emoji>"}";
-    final account = await SharedUtil.instance.getString(Keys.account) ?? "default";
+    final account = await SharedUtil.instance.getString(Keys.account);
 
     showDialog(
         context: context,
@@ -84,9 +80,9 @@ class FeedbackPageLogic {
           return NetLoadingWidget(
             onRequest: () async {
               _model.loadingController.setFlag(LoadingFlag.loading);
-              ApiService.instance.postSuggestionWithAvatar(
+              ApiService.instance?.postSuggestionWithAvatar(
                 params: FormData.fromMap({
-                  "avatar": await MultipartFile.fromFile(avatarPath),
+                  "avatar": await MultipartFile.fromFile(avatarPath??""),
                   "account": account,
                   "suggestion": suggestion,
                   "connectWay": connectWay,
@@ -113,31 +109,31 @@ class FeedbackPageLogic {
                 Column(
                   children: <Widget>[
                     Text(
-                      IntlLocalizations.of(context).submitSuccess,
+                      IntlLocalizations.of(context)?.submitSuccess??"",
                       style: TextStyle(fontSize: 30),
                     ),
                     SizedBox(height: 10,),
                     Container(
                       margin: EdgeInsets.only(left: 10,right: 10),
                       child: Text(
-                        IntlLocalizations.of(context).thanksForFeedback,
+                        IntlLocalizations.of(context)?.thanksForFeedback??"",
                         style: TextStyle(fontSize: 30),
                       ),
                     ),
                   ],
                 ),
-                FlatButton(
-                  color: Theme.of(context).primaryColor,
-                  highlightColor: Theme.of(context).primaryColorLight,
-                  colorBrightness: Brightness.dark,
-                  splashColor: Theme.of(context).primaryColorDark,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0)),
+                TextButton(
+                  // color: Theme.of(context).primaryColor,
+                  // highlightColor: Theme.of(context).primaryColorLight,
+                  // colorBrightness: Brightness.dark,
+                  // splashColor: Theme.of(context).primaryColorDark,
+                  // shape: RoundedRectangleBorder(
+                  //     borderRadius: BorderRadius.circular(20.0)),
                   onPressed: () {
                     Navigator.of(context).pop();
                     Navigator.of(context).pop();
                   },
-                  child: Text(IntlLocalizations.of(context).ok),
+                  child: Text(IntlLocalizations.of(context)?.ok??""),
                 )
               ],
             ),

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:js_interop';
 
 import 'package:flutter/material.dart';
 
@@ -14,12 +15,12 @@ class TaskDetailItem extends StatefulWidget {
 
   TaskDetailItem({
     this.itemProgress = 0.0,
-    this.onChecked,
-    @required this.itemName,
+    required this.onChecked,
+    required this.itemName,
     this.index = 0,
-    this.onProgressChanged,
-    @required this.iconColor,
-    this.showAnimation = true, this.textColor,
+    required this.onProgressChanged,
+    required this.iconColor,
+    this.showAnimation = true, required this.textColor,
   });
 
   @override
@@ -31,12 +32,14 @@ class _TaskDetailItemState extends State<TaskDetailItem>
   double currentProgress = 0.0;
   bool progressShow = false;
 
-  AnimationController _controller;
-  Animation _animation;
+  late AnimationController _controller ;
+
+
+  late Animation _animation;
 
   ///这个定时器是因为hero动画大概时间是1秒，等动画结束后再执行列表划出动画
   ///不过如果任务详情页是从"完成列表"页面过来的，就没有hero动画了，自然不需要这个timer
-  Timer timer;
+  late Timer timer;
 
   @override
   void initState() {
@@ -88,7 +91,7 @@ class _TaskDetailItemState extends State<TaskDetailItem>
                     value: currentProgress == 1.0,
                     onChanged: (value) {
                       setState(() {
-                        if (value) {
+                        if (value.isNull) {
                           currentProgress = 1.0;
                         } else {
                           currentProgress = 0.0;

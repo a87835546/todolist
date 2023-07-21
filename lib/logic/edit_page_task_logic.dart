@@ -15,7 +15,7 @@ class EditTaskPageLogic {
 
   EditTaskPageLogic(this._model);
 
-  Widget getIconText({Icon icon, String text, VoidCallback onTap}) {
+  Widget getIconText({required Icon icon, String? text, VoidCallback? onTap}) {
     return InkWell(
       onTap: onTap,
       child: Container(
@@ -29,7 +29,7 @@ class EditTaskPageLogic {
             SizedBox(
               width: 4,
             ),
-            Text(text),
+            Text(text??""),
           ],
         ),
       ),
@@ -59,8 +59,8 @@ class EditTaskPageLogic {
       debugPrint("软键盘弹出}");
       final scroller = _model.scrollController;
       debugPrint(
-          "当前:${scroller?.position?.pixels ?? 100}  全:${scroller?.position?.maxScrollExtent ?? 100}");
-      scroller?.animateTo(scroller?.position?.maxScrollExtent,
+          "当前:${scroller.position.pixels}  全:${scroller.position.maxScrollExtent}");
+      scroller.animateTo(scroller.position.maxScrollExtent,
           duration: Duration(milliseconds: 200), curve: Curves.easeInOutSine);
     } else {
       debugPrint("软键盘收起");
@@ -104,7 +104,7 @@ class EditTaskPageLogic {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(20.0))),
                     content: Text(
-                        IntlLocalizations.of(_model.context).endBeforeStart),
+                        IntlLocalizations.of(_model.context)?.endBeforeStart??""),
                   );
                 });
             return;
@@ -133,7 +133,7 @@ class EditTaskPageLogic {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(20.0))),
                     content: Text(
-                        IntlLocalizations.of(_model.context).startAfterEnd),
+                        IntlLocalizations.of(_model.context)?.startAfterEnd??""),
                   );
                 });
             return;
@@ -145,28 +145,28 @@ class EditTaskPageLogic {
     );
   }
 
-  Future<DateTime> showDP(DateTime firstDate, DateTime initialDate,
+  Future<DateTime?> showDP(DateTime firstDate, DateTime initialDate,
       DateTime lastDate, bool isDarkNow) {
     return showDatePicker(
       context: _model.context,
       initialDate: firstDate,
       firstDate: initialDate,
-      lastDate: lastDate,
-      builder: (BuildContext context, Widget child) {
-        final color = ColorBean.fromBean(_model.taskIcon.colorBean);
-        return Theme(
-            child: child,
-            data: isDarkNow
-                ? ThemeData.dark()
-                : ThemeData(
-                    primaryColor: color,
-                    accentColor: color,
-                    backgroundColor: Colors.white,
-                    buttonTheme:
-                        ButtonThemeData(textTheme: ButtonTextTheme.accent),
-                  ),
-          );
-      },
+      lastDate: lastDate
+      // builder: (BuildContext context, Widget child) {
+      //   final color = ColorBean.fromBean(_model.taskIcon.colorBean);
+      //   return Theme(
+      //       child: child,
+      //       data: isDarkNow
+      //           ? ThemeData.dark()
+      //           : ThemeData(
+      //               primaryColor: color,
+      //               accentColor: color,
+      //               backgroundColor: Colors.white,
+      //               buttonTheme:
+      //                   ButtonThemeData(textTheme: ButtonTextTheme.accent),
+      //             ),
+      //     );
+      // },
     );
   }
 
@@ -176,7 +176,7 @@ class EditTaskPageLogic {
       final time = _model.deadLine;
       return "${time.year}-${time.month}-${time.day}";
     }
-    return IntlLocalizations.of(_model.context).deadline;
+    return IntlLocalizations.of(_model.context)?.deadline??"";
   }
 
   //将开始时间做转换
@@ -185,7 +185,7 @@ class EditTaskPageLogic {
       final time = _model.startDate;
       return "${time.year}-${time.month}-${time.day}";
     }
-    return IntlLocalizations.of(_model.context).startDate;
+    return IntlLocalizations.of(_model.context)?.startDate??"";
   }
 
   //将DateTime转换为String
@@ -214,7 +214,7 @@ class EditTaskPageLogic {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(20.0))),
               content: Text(
-                  IntlLocalizations.of(_model.context).writeAtLeastOneTaskItem),
+                  IntlLocalizations.of(_model.context)?.writeAtLeastOneTaskItem??""),
             );
           });
       return;
@@ -256,7 +256,7 @@ class EditTaskPageLogic {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(20.0))),
               content: Text(
-                  IntlLocalizations.of(_model.context).writeAtLeastOneTaskItem),
+                  IntlLocalizations.of(_model.context)?.writeAtLeastOneTaskItem??""),
             );
           });
       return;
@@ -277,7 +277,7 @@ class EditTaskPageLogic {
       return NetLoadingWidget();
     });
     final token = await SharedUtil.instance.getString(Keys.token);
-    ApiService.instance.postCreateTask(
+    ApiService.instance?.postCreateTask(
       success: (UploadTaskBean bean){
         taskBean.uniqueId = bean.uniqueId;
         taskBean.needUpdateToCloud = 'false';
@@ -294,7 +294,7 @@ class EditTaskPageLogic {
         isSubmitOldTask ? exitWhenSubmitOldTask(taskBean) : exitWithSubmitNewTask(taskBean, needCancelDialog: true);
       },
       taskBean: taskBean,
-      token: token,
+      token: token!,
       cancelToken: _model.cancelToken,
     );
   }
@@ -305,7 +305,7 @@ class EditTaskPageLogic {
       return NetLoadingWidget();
     });
     final token = await SharedUtil.instance.getString(Keys.token);
-    ApiService.instance.postUpdateTask(
+    ApiService.instance?.postUpdateTask(
       success: (CommonBean bean){
         taskBean.needUpdateToCloud = 'false';
         exitWhenSubmitOldTask(taskBean);
@@ -321,7 +321,7 @@ class EditTaskPageLogic {
         exitWhenSubmitOldTask(taskBean);
       },
       taskBean: taskBean,
-      token: token,
+      token: token!,
       cancelToken: _model.cancelToken,
     );
   }
@@ -337,7 +337,7 @@ class EditTaskPageLogic {
   }
 
   Future<TaskBean> transformDataToBean(
-      {int id, double overallProgress = 0.0}) async {
+      {int id = 0, double overallProgress = 0.0}) async {
     final account =
         await SharedUtil.instance.getString(Keys.account) ?? "default";
     final taskName = _model.currentTaskName.isEmpty
@@ -348,14 +348,14 @@ class EditTaskPageLogic {
     TaskBean taskBean = TaskBean(
       taskName: taskName,
       account: account,
-      taskStatus: _model.oldTaskBean?.taskStatus ?? TaskStatus.todo,
-      needUpdateToCloud: _model.oldTaskBean?.needUpdateToCloud ?? 'false',
-      uniqueId: _model.uniqueId ?? null,
+      taskStatus: _model.oldTaskBean.taskStatus ?? TaskStatus.todo,
+      needUpdateToCloud: _model.oldTaskBean.needUpdateToCloud ?? 'false',
+      uniqueId: _model.uniqueId ,
       taskType: _model.taskIcon.taskName,
       taskDetailNum: _model.taskDetails.length,
       createDate: createDate,
-      startDate: _model.startDate?.toIso8601String(),
-      deadLine: _model.deadLine?.toIso8601String(),
+      startDate: _model.startDate.toIso8601String(),
+      deadLine: _model.deadLine.toIso8601String(),
       detailList: _model.taskDetails,
       taskIconBean: _model.taskIcon,
       changeTimes: _model.changeTimes,
@@ -374,7 +374,7 @@ class EditTaskPageLogic {
   void initialDataFromOld(TaskBean oldTaskBean) {
     if (oldTaskBean != null) {
       _model.taskDetails.clear();
-      _model.taskDetails.addAll(oldTaskBean.detailList);
+      _model.taskDetails.addAll(oldTaskBean.detailList as Iterable<TaskDetailBean>);
       if (oldTaskBean.deadLine != null)
         _model.deadLine = DateTime.parse(oldTaskBean.deadLine);
       if (oldTaskBean.startDate != null)
@@ -383,10 +383,10 @@ class EditTaskPageLogic {
       if(oldTaskBean.finishDate.isNotEmpty)
       _model.finishDate = DateTime.parse(oldTaskBean.finishDate);
       _model.changeTimes = oldTaskBean.changeTimes ?? 0;
-      _model.taskIcon = oldTaskBean.taskIconBean;
+      _model.taskIcon = oldTaskBean.taskIconBean!;
       _model.currentTaskName = oldTaskBean.taskName;
       _model.backgroundUrl = oldTaskBean.backgroundUrl;
-      _model.textColorBean = oldTaskBean.textColor;
+      _model.textColorBean = oldTaskBean.textColor!;
     }
   }
 
@@ -399,7 +399,7 @@ class EditTaskPageLogic {
     bool isEdit = isEditOldTask();
     final context = _model.context;
     String defaultTitle =
-        "${IntlLocalizations.of(context).defaultTitle}:${_model.taskIcon.taskName}";
+        "${IntlLocalizations.of(context)?.defaultTitle}:${_model.taskIcon.taskName}";
     String oldTaskTitle = "${_model?.oldTaskBean?.taskName}";
     return isEdit ? oldTaskTitle : defaultTitle;
   }
@@ -424,7 +424,7 @@ class EditTaskPageLogic {
                 borderRadius: BorderRadius.all(Radius.circular(20.0))),
             elevation: 0.0,
             contentPadding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-            title: Text(IntlLocalizations.of(_model.context).customIcon),
+            title: Text(IntlLocalizations.of(_model.context)?.customIcon??""),
             content: CustomIconWidget(
               iconData: IconBean.fromBean(iconBean),
               onApplyTap: (Color color) async {
@@ -434,11 +434,11 @@ class EditTaskPageLogic {
               pickerColor: ColorBean.fromBean(colorBean),
               onTextChange: (text) {
                 final name = text.isEmpty
-                    ? IntlLocalizations.of(_model.context).defaultIconName
+                    ? IntlLocalizations.of(_model.context)?.defaultIconName
                     : text;
-                _model.taskIcon.iconBean.iconName = name;
+                _model.taskIcon.iconBean?.iconName = name;
               },
-              iconName: iconBean.iconName,
+              iconName: iconBean.iconName??"",
             ));
       },);
   }

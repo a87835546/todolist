@@ -6,9 +6,9 @@ class UploadAvatarBean {
    * status : 0
    */
 
-  String description;
-  String filePath;
-  int status;
+  String description = "";
+  String filePath = "";
+  int status =0;
 
   static UploadAvatarBean fromMap(Map<String, dynamic> map) {
     UploadAvatarBean uploadAvatarBean = new UploadAvatarBean();
@@ -19,7 +19,7 @@ class UploadAvatarBean {
   }
 
   static List<UploadAvatarBean> fromMapList(dynamic mapList) {
-    List<UploadAvatarBean> list = List.filled(mapList.length, null);
+    List<UploadAvatarBean> list = List.empty();
     for (int i = 0; i < mapList.length; i++) {
       list[i] = fromMap(mapList[i]);
     }

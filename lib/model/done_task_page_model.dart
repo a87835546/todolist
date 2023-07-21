@@ -16,7 +16,7 @@ class DoneTaskPageModel extends ChangeNotifier{
   //当前点击到的已完成任务的index，方便再任务列表页面删除用的
   int currentTapIndex = 0;
 
-  DoneTaskPageModel(){
+  DoneTaskPageModel(this.logic,this.context,this.doneTasks,this.loadingFlag,this.currentTapIndex){
     logic = DoneTaskPageLogic(this);
   }
 

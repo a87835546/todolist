@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:js_util';
 import 'package:flutter/foundation.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
@@ -6,11 +7,11 @@ import 'package:todo_list/json/task_bean.dart';
 import 'package:todo_list/utils/shared_util.dart';
 
 class DBProvider {
-  DBProvider._();
+  // DBProvider._() ;
 
-  static final DBProvider db = DBProvider._();
+  static final DBProvider db = DBProvider();
 
-  Database _database;
+  Database _database = newObject();
 
   Future<Database> get database async {
     if (_database != null) return _database;
@@ -76,7 +77,7 @@ class DBProvider {
   ///根据完成进度查询所有任务
   ///
   ///isDone为true表示查询已经完成的任务,否则表示未完成
-  Future<List<TaskBean>> getTasks({bool isDone = false, String account}) async {
+  Future<List<TaskBean>> getTasks({bool isDone = false, String? account}) async {
     final db = await database;
     final theAccount =
         await SharedUtil.instance.getString(Keys.account) ?? "default";
@@ -92,7 +93,7 @@ class DBProvider {
 
 
   ///查询所有任务
-  Future<List<TaskBean>> getAllTasks({String account}) async {
+  Future<List<TaskBean>> getAllTasks({required String account}) async {
     final db = await database;
     final theAccount =
         await SharedUtil.instance.getString(Keys.account) ?? "default";
@@ -142,7 +143,7 @@ class DBProvider {
   }
 
   ///根据[uniqueId]查询一项任务
-  Future<List<TaskBean>> getTaskByUniqueId(String uniqueId) async{
+  Future<List<TaskBean>?> getTaskByUniqueId(String uniqueId) async{
     final db = await database;
     var tasks = await db.query("TodoList",
         where: "uniqueId = ?" ,

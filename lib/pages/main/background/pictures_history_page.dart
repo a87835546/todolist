@@ -20,12 +20,12 @@ class PicturesHistoryPage extends StatefulWidget {
   final AccountPageModel accountPageModel;
   final TaskBean taskBean;
 
-  const PicturesHistoryPage({
-    Key key,
-    @required this.useType,
-    this.accountPageModel,
-    this.taskBean,
-  }) : super(key: key);
+  const PicturesHistoryPage(
+    Key? key,
+      {required this.useType,
+       required this.accountPageModel,
+        required this.taskBean,
+      }) : super(key: key);
 
   @override
   _PicturesHistoryPagState createState() => _PicturesHistoryPagState();
@@ -54,7 +54,7 @@ class _PicturesHistoryPagState extends State<PicturesHistoryPage> {
     final theMin = min(size.width, size.height) / 2;
     return Scaffold(
       appBar: AppBar(
-        title: Text(IntlLocalizations.of(context).netPicHistory),
+        title: Text(IntlLocalizations.of(context)?.netPicHistory??""),
         actions: <Widget>[
           Container(
             margin: EdgeInsets.only(right: 20),
@@ -106,7 +106,7 @@ class _PicturesHistoryPagState extends State<PicturesHistoryPage> {
                     aspectRatio: 1.0,
                     child: Container(
                       margin: EdgeInsets.all(10),
-                      child: CustomCacheImage(url: imageUrl,fit: BoxFit.contain,),
+                      child: CustomCacheImage(null,url: imageUrl,fit: BoxFit.contain,),
                     ),
                   ),
                 ),

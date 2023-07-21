@@ -16,11 +16,11 @@ class ImagePage extends StatefulWidget {
   final String heroTag;
 
   const ImagePage(
-      {Key key,
-      @required this.imageUrls,
-      this.initialPageIndex,
-      this.onSelect,
-      this.heroTag})
+      Key? key,{
+      required this.imageUrls,
+        required this.initialPageIndex,
+        required this.onSelect,
+        required this.heroTag})
       : super(key: key);
 
   @override
@@ -28,8 +28,8 @@ class ImagePage extends StatefulWidget {
 }
 
 class _ImagePageState extends State<ImagePage> {
-  int currentPage;
-  PageController pageController;
+  int currentPage = 0;
+  late PageController pageController;
 
   @override
   void initState() {

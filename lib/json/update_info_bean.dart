@@ -8,11 +8,11 @@ class UpdateInfoBean {
    * appId : "001"
    */
 
-  String appVersion;
-  String appName;
-  String updateInfo;
-  String downloadUrl;
-  String appId;
+  String appVersion = "";
+  String appName = "";
+  String updateInfo = "";
+  String downloadUrl = "";
+  String appId = "";
 
   static UpdateInfoBean fromMap(Map<String, dynamic> map) {
     UpdateInfoBean updateInfoBean = new UpdateInfoBean();
@@ -25,7 +25,7 @@ class UpdateInfoBean {
   }
 
   static List<UpdateInfoBean> fromMapList(dynamic mapList) {
-    List<UpdateInfoBean> list = List.filled(mapList.length, null);
+    List<UpdateInfoBean> list = List.empty();
     for (int i = 0; i < mapList.length; i++) {
       list[i] = fromMap(mapList[i]);
     }

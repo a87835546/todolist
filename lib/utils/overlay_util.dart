@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class OverlayUtil{
-  static OverlayUtil _instance;
+  static OverlayUtil _instance = OverlayUtil.getInstance();
 
   static OverlayUtil getInstance(){
     if(_instance == null){
@@ -12,16 +12,16 @@ class OverlayUtil{
 
   OverlayUtil._internal();
 
-  OverlayEntry _overlayEntry;
+  OverlayEntry? _overlayEntry = OverlayEntry(builder: (BuildContext context) { return Container(); });
 //  Timer timeTask;
 
 
 
-  void show(BuildContext context, {Widget showWidget, String text = "默认显示内容",Duration duration }){
+  void show(BuildContext context, {required Widget showWidget, String text = "默认显示内容",required Duration duration }){
     if(_overlayEntry == null){
       _showEntry(showWidget, context,text,duration);
     } else{
-      _overlayEntry.remove();
+      _overlayEntry?.remove();
       _overlayEntry = null;
       _showEntry(showWidget, context,text,duration);
     }
@@ -29,7 +29,7 @@ class OverlayUtil{
 
   void hide(){
     if(_overlayEntry != null){
-      _overlayEntry.remove();
+      _overlayEntry?.remove();
       _overlayEntry = null;
     }
   }
@@ -38,7 +38,7 @@ class OverlayUtil{
     _overlayEntry = OverlayEntry(builder: (ctx){
       return showWidget??_defaultShow(text);
     });
-    Overlay.of(context).insert(_overlayEntry);
+    Overlay.of(context).insert(_overlayEntry!);
 //    timeTask?.cancel();
 //    timeTask = Timer(duration??Duration(seconds: 3), (){
 //      if(_overlayEntry != null){

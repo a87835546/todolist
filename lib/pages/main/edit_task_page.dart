@@ -16,7 +16,7 @@ class EditTaskPage extends StatelessWidget {
 
   EditTaskPage(
     this.taskIconBean, {
-    this.taskDetailPageModel,
+    required this.taskDetailPageModel,
   });
 
   @override
@@ -49,7 +49,7 @@ class EditTaskPage extends StatelessWidget {
                 Icons.check,
                 color: iconColor,
               ),
-              tooltip: IntlLocalizations.of(context).submit,
+              tooltip: IntlLocalizations.of(context)?.submit??"",
               onPressed: model.logic.onSubmitTap,)
         ],
         title: Container(
@@ -60,7 +60,7 @@ class EditTaskPage extends StatelessWidget {
               style: TextStyle(color: textColor,textBaseline: TextBaseline.alphabetic),
               textAlign: TextAlign.center,
               validator: (text) {
-                model.currentTaskName = text;
+                model.currentTaskName = text!;
                 return null;
               },
               decoration: InputDecoration(
@@ -165,7 +165,7 @@ class EditTaskPage extends StatelessWidget {
                           textBaseline: TextBaseline.alphabetic
                       ),
                       decoration: InputDecoration(
-                          hintText: IntlLocalizations.of(context).addTask,
+                          hintText: IntlLocalizations.of(context)?.addTask,
                           border: InputBorder.none,
                           hintStyle: TextStyle(
                             color: hintTextColor,

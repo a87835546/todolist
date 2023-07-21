@@ -7,7 +7,7 @@ class SharedUtil{
   factory SharedUtil() => _getInstance();
 
   static SharedUtil get instance => _getInstance();
-  static SharedUtil _instance;
+  static SharedUtil _instance = SharedUtil._getInstance();
 
 
   SharedUtil._internal() {
@@ -87,7 +87,7 @@ class SharedUtil{
   //-----------------------------------------------------get----------------------------------------------------
 
 
-  Future<String> getString (String key) async{
+  Future<String?> getString (String key) async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if(key == Keys.account){
       return prefs.getString(key);
@@ -96,13 +96,13 @@ class SharedUtil{
     return prefs.getString(key + account);
   }
 
-  Future<int> getInt (String key) async{
+  Future<int?> getInt (String key) async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String account =  prefs.getString(Keys.account) ?? "default";
     return prefs.getInt(key + account);
   }
 
-  Future<double> getDouble (String key) async{
+  Future<double?> getDouble (String key) async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String account =  prefs.getString(Keys.account) ?? "default";
     return prefs.getDouble(key + account);
@@ -114,7 +114,7 @@ class SharedUtil{
     return prefs.getBool(key + account)??false;
   }
 
-  Future<List<String>> getStringList(String key) async{
+  Future<List<String>?> getStringList(String key) async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String account =  prefs.getString(Keys.account) ?? "default";
     return prefs.getStringList(key + account);

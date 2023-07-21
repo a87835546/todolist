@@ -5,7 +5,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:todo_list/config/api_strategy.dart';
 
 class FileUtil {
-  static FileUtil _instance;
+  static FileUtil _instance = FileUtil.getInstance();
 
   static FileUtil getInstance() {
     if (_instance == null) {
@@ -66,10 +66,10 @@ class FileUtil {
   }
 
   void downloadFile(
-      {String url,
-      String filePath,
-      String fileName,
-      Function onComplete}) async {
+      {required String url,
+      required String filePath,
+      required String fileName,
+      required Function onComplete}) async {
     final path = await FileUtil.getInstance().getSavePath(filePath);
     String name = fileName ?? url.split("/").last;
     ApiStrategy.getInstance().client.download(
@@ -81,7 +81,7 @@ class FileUtil {
           if (onComplete != null) onComplete(path + name);
         }
       },
-      options: Options(sendTimeout: 15 * 1000, receiveTimeout: 360 * 1000),
+      options: Options(sendTimeout: Duration(seconds:15) , receiveTimeout:Duration(seconds:360)),
     );
   }
 }

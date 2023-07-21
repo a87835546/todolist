@@ -5,7 +5,7 @@ import 'package:todo_list/i10n/messages_all.dart';
 
 class IntlLocalizations {
   static Future<IntlLocalizations> load(Locale locale) {
-    final String name = locale.countryCode.isEmpty ? locale.languageCode : locale.toString();
+    final String name = locale.countryCode!.isEmpty ? locale.languageCode : locale.toString();
     final String localeName = Intl.canonicalizedLocale(name);
     print("name是：$localeName");
     return initializeMessages(localeName).then((b) {
@@ -14,7 +14,7 @@ class IntlLocalizations {
     });
   }
 
-  static IntlLocalizations of(BuildContext context) {
+  static IntlLocalizations? of(BuildContext context) {
     return Localizations.of<IntlLocalizations>(context, IntlLocalizations);
   }
 

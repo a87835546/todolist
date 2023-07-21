@@ -7,7 +7,7 @@ import 'package:todo_list/utils/shared_util.dart';
 import 'package:todo_list/utils/theme_util.dart';
 
 class IconListUtil{
-  static IconListUtil _instance;
+  static IconListUtil _instance = IconListUtil.getInstance();
 
   static IconListUtil getInstance(){
     if(_instance == null){
@@ -21,27 +21,27 @@ class IconListUtil{
 
   List<TaskIconBean> getDefaultTaskIcons(BuildContext context){
     return [TaskIconBean(
-        taskName: IntlLocalizations.of(context).music,
+        taskName: IntlLocalizations.of(context)?.music??"",
         iconBean: IconBean.fromIconData(Icons.music_note),
         colorBean: ColorBean.fromColor(MyThemeColor.coffeeColor)),
       TaskIconBean(
-          taskName: IntlLocalizations.of(context).game,
+          taskName: IntlLocalizations.of(context)?.game??"",
           iconBean: IconBean.fromIconData(Icons.videogame_asset),
           colorBean: ColorBean.fromColor(MyThemeColor.cyanColor)),
       TaskIconBean(
-          taskName: IntlLocalizations.of(context).read,
+          taskName: IntlLocalizations.of(context)?.read??"",
           iconBean: IconBean.fromIconData(Icons.book),
           colorBean: ColorBean.fromColor(MyThemeColor.defaultColor)),
       TaskIconBean(
-          taskName: IntlLocalizations.of(context).sports,
+          taskName: IntlLocalizations.of(context)?.sports??"",
           iconBean: IconBean.fromIconData(Icons.directions_run),
           colorBean: ColorBean.fromColor(MyThemeColor.greenColor)),
       TaskIconBean(
-          taskName: IntlLocalizations.of(context).travel,
+          taskName: IntlLocalizations.of(context)?.travel??"",
           iconBean: IconBean.fromIconData(Icons.drive_eta),
           colorBean: ColorBean.fromColor(MyThemeColor.darkColor)),
       TaskIconBean(
-          taskName: IntlLocalizations.of(context).work,
+          taskName: IntlLocalizations.of(context)?.work??"",
           iconBean: IconBean.fromIconData(Icons.work),
           colorBean: ColorBean.fromColor(MyThemeColor.blueGrayColor)),];
   }

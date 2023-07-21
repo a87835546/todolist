@@ -33,7 +33,7 @@ class AccountPage extends StatelessWidget {
                     "svgs/bg.svg",
                     fit: BoxFit.cover,
                   )
-                : CustomCacheImage(url: model.backgroundUrl)
+                : CustomCacheImage(null,url: model.backgroundUrl)
           ),
           model.isExisting
               ? Container()
@@ -50,7 +50,7 @@ class AccountPage extends StatelessWidget {
             child: Scaffold(
               backgroundColor: Colors.transparent,
               appBar: AppBar(
-                title: Text(IntlLocalizations.of(context).myAccount),
+                title: Text(IntlLocalizations.of(context)?.myAccount??""),
                 backgroundColor: Colors.transparent,
               ),
               body: Container(
@@ -83,25 +83,25 @@ class AccountPage extends StatelessWidget {
                       SizedBox(
                         height: 30,
                       ),
-                      FlatButton(
-                        color: primaryColor,
-                        highlightColor: primaryColorLight,
-                        colorBrightness: Brightness.dark,
-                        splashColor: Colors.grey,
-                        child: Text(IntlLocalizations.of(context).logout),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0)),
+                      TextButton(
+                        // color: primaryColor,
+                        // highlightColor: primaryColorLight,
+                        // colorBrightness: Brightness.dark,
+                        // splashColor: Colors.grey,
+                        child: Text(IntlLocalizations.of(context)?.logout??""),
+                        // shape: RoundedRectangleBorder(
+                        //     borderRadius: BorderRadius.circular(20.0)),
                         onPressed: model.logic.onLogoutPressed,
                       ),
-                      FlatButton(
-                        color: primaryColor,
-                        highlightColor: primaryColorLight,
-                        colorBrightness: Brightness.dark,
-                        splashColor: Colors.grey,
+                      TextButton(
+                        // color: primaryColor,
+                        // highlightColor: primaryColorLight,
+                        // colorBrightness: Brightness.dark,
+                        // splashColor: Colors.grey,
                         child:
-                            Text(IntlLocalizations.of(context).resetPassword),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0)),
+                            Text(IntlLocalizations.of(context)?.resetPassword??""),
+                        // shape: RoundedRectangleBorder(
+                        //     borderRadius: BorderRadius.circular(20.0)),
                         onPressed: model.logic.onResetPasswordPressed,
                       )
                     ],

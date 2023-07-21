@@ -3,11 +3,11 @@
 class LoginBean{
 
 
-  String description;
-  int status;
-  String token;
-  String username;
-  String avatarUrl;
+  String description = "";
+  int status = 0;
+  String token = "";
+  String username = "";
+  String avatarUrl = "";
 
   static LoginBean fromMap(Map<String, dynamic> map) {
     LoginBean loginBean = new LoginBean();
@@ -20,7 +20,7 @@ class LoginBean{
   }
 
   static List<LoginBean> fromMapList(dynamic mapList) {
-    List<LoginBean> list = List.filled(mapList.length, null);
+    List<LoginBean> list = List.empty();
     for (int i = 0; i < mapList.length; i++) {
       list[i] = fromMap(mapList[i]);
     }

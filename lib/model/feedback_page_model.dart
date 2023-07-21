@@ -23,7 +23,8 @@ class FeedbackPageModel extends ChangeNotifier{
   String contactWay = "";
   final CancelToken cancelToken = CancelToken();
 
-  FeedbackPageModel(){
+  FeedbackPageModel(this.logic,this.context,this.contactWay,
+      this.currentSelectSvg,this.feedbackContent){
     logic = FeedbackPageLogic(this);
   }
 

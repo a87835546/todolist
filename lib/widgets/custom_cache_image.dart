@@ -8,12 +8,13 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class CustomCacheImage extends StatelessWidget {
-  const CustomCacheImage({Key key, @required this.url, this.fit = BoxFit.cover, this.cacheManager})
+  const CustomCacheImage(Key? key,{
+    required this.url,  this.fit = BoxFit.cover,this.cacheManager})
       : super(key: key);
 
   final String url;
   final BoxFit fit;
-  final BaseCacheManager cacheManager;
+  final BaseCacheManager? cacheManager;
 
   @override
   Widget build(BuildContext context) {

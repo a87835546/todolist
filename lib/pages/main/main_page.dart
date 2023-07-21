@@ -30,12 +30,12 @@ class MainPage extends StatelessWidget {
           appBar: AppBar(
             backgroundColor: Colors.transparent,
             elevation: 0,
-            title: Text(IntlLocalizations.of(context).appName),
+            title: Text(IntlLocalizations.of(context)?.appName??""),
             leading: !canHideWidget
-                ? FlatButton(
+                ? TextButton(
                     child: MenuIcon(globalModel.logic.getWhiteInDark()),
                     onPressed: () {
-                      model.scaffoldKey.currentState.openDrawer();
+                      model.scaffoldKey.currentState?.openDrawer();
                     },
                   )
                 : Container(),
@@ -68,9 +68,10 @@ class MainPage extends StatelessWidget {
                         });
                   },
                   child: AnimatedFloatingButton(
+                    null,
                     bgColor: globalModel.isBgChangeWithCard
                         ? model.logic.getCurrentCardColor()
-                        : null,
+                        : Colors.grey,
                   ),
                 )
               : Container(),
@@ -135,7 +136,7 @@ class MainPage extends StatelessWidget {
                                           ? null
                                           : model.logic.onUserNameTap,
                                       child: Text(
-                                        "${IntlLocalizations.of(context).welcomeWord}${model.currentUserName}",
+                                        "${IntlLocalizations.of(context)?.welcomeWord}${model.currentUserName}",
                                         style: TextStyle(
                                             fontSize: 30,
                                             color: globalModel.logic
@@ -165,7 +166,7 @@ class MainPage extends StatelessWidget {
                           child: Container(
                             margin: EdgeInsets.only(top: 8, left: 12),
                             child: Text(
-                              "${IntlLocalizations.of(context).taskItems(model.tasks.length)}",
+                              "${IntlLocalizations.of(context)?.taskItems(model.tasks.length)}",
                               style: TextStyle(
                                   fontSize: 15,
                                   color: globalModel.logic.getWhiteInDark()),

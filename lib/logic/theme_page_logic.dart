@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:js_util';
 import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
@@ -40,7 +41,7 @@ class ThemePageLogic {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(20.0))),
             elevation: 0.0,
-            title: Text(IntlLocalizations.of(context).pickAColor),
+            title: Text(IntlLocalizations.of(context)?.pickAColor??""),
             content: SingleChildScrollView(
               child: MaterialPicker(
                 pickerColor: Theme.of(context).primaryColor,
@@ -51,17 +52,17 @@ class ThemePageLogic {
               ),
             ),
             actions: <Widget>[
-              FlatButton(
+              TextButton(
                 child: Text(
-                  IntlLocalizations.of(context).cancel,
+                  IntlLocalizations.of(context)?.cancel??"",
                   style: TextStyle(color: Colors.redAccent),
                 ),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
               ),
-              FlatButton(
-                child: Text(IntlLocalizations.of(context).ok),
+              TextButton(
+                child: Text(IntlLocalizations.of(context)?.ok??""),
                 onPressed: () async {
                   final beans =
                       await SharedUtil.instance.readList(Keys.themeBeans) ?? [];
@@ -70,9 +71,9 @@ class ThemePageLogic {
                     return;
                   }
                   ThemeBean themeBean = ThemeBean(
-                    themeName: IntlLocalizations.of(context).customTheme +
+                    themeName: IntlLocalizations.of(context)?.customTheme??"" +
                         " ${beans.length + 1}",
-                    themeType: IntlLocalizations.of(context).customTheme +
+                    themeType: IntlLocalizations.of(context)?.customTheme??"" +
                         " ${beans.length + 1}",
                     colorBean: ColorBean.fromColor(_model.customColor),
                   );
@@ -96,7 +97,7 @@ class ThemePageLogic {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(20.0))),
             content:
-                Text(IntlLocalizations.of(_model.context).canNotAddMoreTheme),
+                Text(IntlLocalizations.of(_model.context)?.canNotAddMoreTheme??""),
           );
         });
   }
@@ -128,7 +129,7 @@ class ThemePageLogic {
         decoration: BoxDecoration(
           color: themeBean.themeType == MyTheme.darkTheme
               ? Colors.black
-              : ColorBean.fromBean(themeBean.colorBean),
+              : ColorBean.fromBean(themeBean.colorBean??newObject()),
           shape: BoxShape.rectangle,
           border: isCurrent ? Border.all(color: Colors.grey, width: 3) : null,
           borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -139,7 +140,7 @@ class ThemePageLogic {
 
   Widget getRandomColorBloc(Size size, GlobalModel globalModel) {
     final themeBean = ThemeBean(
-      themeName: IntlLocalizations.of(_model.context).random,
+      themeName: IntlLocalizations.of(_model.context)?.random??"",
       colorBean: ColorBean.fromColor(
           Colors.primaries[Random().nextInt(Colors.primaries.length)]),
       themeType: MyTheme.random,

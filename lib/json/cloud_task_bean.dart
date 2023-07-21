@@ -8,9 +8,9 @@ class CloudTaskBean {
    * taskList : [{"id":16,"taskName":"123123123","taskType":"运动","account":"772565130@qq.com","taskStatus":"0","taskDetailNum":"1","uniqueId":"772565130@qq.com1566799964054","overallProgress":"1.0","changeTimes":"1","createDate":"2019-08-26 14:12:44 下午","finishDate":"2019-08-22T15:57:09.985443","startDate":null,"deadLine":null,"taskIconBean":{"taskName":"运动","iconBean":{"codePoint":58726,"fontFamily":"MaterialIcons","fontPackage":"","iconName":"","matchTextDirection":"false"},"colorBean":{"red":151,"green":215,"blue":178,"opacity":1}},"detailList":[{"taskDetailName":"123123123","itemProgress":1}]}]
    */
 
-  String description;
-  int status;
-  List<TaskBean> taskList;
+  String description = "";
+  int status = 0;
+  List<TaskBean> taskList = [];
 
   static CloudTaskBean fromMap(Map<String, dynamic> map) {
     CloudTaskBean cloudTaskBean = new CloudTaskBean();
@@ -21,7 +21,7 @@ class CloudTaskBean {
   }
 
   static List<CloudTaskBean> fromMapList(dynamic mapList) {
-    List<CloudTaskBean> list =  List.filled(mapList.length, null);
+    List<CloudTaskBean> list =  List.empty();
     for (int i = 0; i < mapList.length; i++) {
       list[i] = fromMap(mapList[i]);
     }

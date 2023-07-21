@@ -29,7 +29,7 @@ class GlobalLogic{
   //当为夜间模式时候，白色背景替换为特定灰色
   Color getBgInDark(){
     final themeType = _model.currentThemeBean.themeType;
-    return themeType == MyTheme.darkTheme ? Colors.grey[800] : Colors.white;
+    return (themeType == MyTheme.darkTheme) ? Colors.grey.withOpacity(0.8) : Colors.white;
   }
 
   //当为夜间模式时候，主题色背景替换为灰色
@@ -39,7 +39,7 @@ class GlobalLogic{
   }
 
   //当为夜间模式时候，主题色背景替换为特定灰色
-  Color getPrimaryInDark(BuildContext context){
+  Color? getPrimaryInDark(BuildContext context){
     final themeType = _model.currentThemeBean.themeType;
     return themeType == MyTheme.darkTheme ? Colors.grey[800] : Theme.of(context).primaryColor;
   }
@@ -212,8 +212,8 @@ class GlobalLogic{
     }
   }
 
-  void getWeatherNow(String position,{BuildContext context, LoadingController controller}){
-    ApiService.instance.getWeatherNow(success : (WeatherBean weatherBean){
+  void getWeatherNow(String position,{required BuildContext context,required LoadingController controller}){
+    ApiService.instance?.getWeatherNow(success : (WeatherBean weatherBean){
       _model.weatherBean = weatherBean;
       _model.enableWeatherShow = true;
       SharedUtil.instance.saveString(Keys.currentPosition, position);

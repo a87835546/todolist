@@ -23,7 +23,7 @@ class IconSettingPageModel extends ChangeNotifier {
   bool isDeleting = false;
   bool isSearching = false;
 
-  IconSettingPageModel() {
+  IconSettingPageModel(this.context,this.logic) {
     logic = IconSettingPageLogic(this);
   }
 

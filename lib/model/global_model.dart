@@ -81,7 +81,11 @@ class GlobalModel extends ChangeNotifier {
   ///是否进入登录页
   bool goToLogin;
 
-  GlobalModel() {
+  GlobalModel(this.logic,this.context,
+      this.mainPageModel,
+      this.taskDetailPageModel,
+      this.searchPageModel,
+      this.goToLogin,this.currentLocale,this.weatherBean) {
     logic = GlobalLogic(this);
   }
 

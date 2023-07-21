@@ -26,25 +26,25 @@ class _AboutPageState extends State<AboutPage> {
   Widget build(BuildContext context) {
     final globalModel = Provider.of<GlobalModel>(context);
     if(descriptions.isEmpty){
-      descriptions.add(IntlLocalizations.of(context).version112);
-      descriptions.add(IntlLocalizations.of(context).version111);
-      descriptions.add(IntlLocalizations.of(context).version110);
-      descriptions.add(IntlLocalizations.of(context).version109);
-      descriptions.add(IntlLocalizations.of(context).version108);
-      descriptions.add(IntlLocalizations.of(context).version107);
-      descriptions.add(IntlLocalizations.of(context).version106);
-      descriptions.add(IntlLocalizations.of(context).version105);
-      descriptions.add(IntlLocalizations.of(context).version104);
-      descriptions.add(IntlLocalizations.of(context).version103);
-      descriptions.add(IntlLocalizations.of(context).version102);
-      descriptions.add(IntlLocalizations.of(context).version101);
-      descriptions.add(IntlLocalizations.of(context).version100);
+      descriptions.add(IntlLocalizations.of(context)?.version112??"");
+      descriptions.add(IntlLocalizations.of(context)?.version111??"");
+      descriptions.add(IntlLocalizations.of(context)?.version110??"");
+      descriptions.add(IntlLocalizations.of(context)?.version109??"");
+      descriptions.add(IntlLocalizations.of(context)?.version108??"");
+      descriptions.add(IntlLocalizations.of(context)?.version107??"");
+      descriptions.add(IntlLocalizations.of(context)?.version106??"");
+      descriptions.add(IntlLocalizations.of(context)?.version105??"");
+      descriptions.add(IntlLocalizations.of(context)?.version104??"");
+      descriptions.add(IntlLocalizations.of(context)?.version103??"");
+      descriptions.add(IntlLocalizations.of(context)?.version102??"");
+      descriptions.add(IntlLocalizations.of(context)?.version101??"");
+      descriptions.add(IntlLocalizations.of(context)?.version100??"");
     }
 
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          IntlLocalizations.of(context).aboutApp,
+          IntlLocalizations.of(context)?.aboutApp??"",
           style: TextStyle(
             color: Colors.grey,
           ),
@@ -75,7 +75,7 @@ class _AboutPageState extends State<AboutPage> {
                         Navigator.of(context).push(CupertinoPageRoute(builder: (ctx) {
                           return WebViewPage(
                             'https://oldchen.top/flutter-blog/#/',
-                            title: IntlLocalizations.of(context).myBlog,
+                            title: IntlLocalizations.of(context)?.myBlog??"",
                           );
                         }));
                       },
@@ -105,7 +105,7 @@ class _AboutPageState extends State<AboutPage> {
                           Expanded(
                             child: Container(
                               child: Text(
-                                IntlLocalizations.of(context).appName,
+                                IntlLocalizations.of(context)?.appName??"",
                                 style: TextStyle(
                                   fontSize: 25,
                                   fontWeight: FontWeight.bold,
@@ -123,7 +123,7 @@ class _AboutPageState extends State<AboutPage> {
                                       future: PackageInfo.fromPlatform(),
                                       builder: (context, snapshot) {
                                         if (snapshot.hasData) {
-                                          PackageInfo packageInfo = snapshot.data;
+                                          PackageInfo packageInfo = snapshot.data as PackageInfo;
                                           return Text(
                                             packageInfo.version,
                                             style: TextStyle(
@@ -182,7 +182,7 @@ class _AboutPageState extends State<AboutPage> {
                                   children: <Widget>[
                                     Text(
                                       IntlLocalizations.of(context)
-                                          .versionDescription,
+                                          ?.versionDescription??"",
                                       style: TextStyle(
                                         fontSize: 15,
                                         fontWeight: FontWeight.bold,
@@ -190,16 +190,16 @@ class _AboutPageState extends State<AboutPage> {
                                     ),
                                     InkWell(
                                       child: Text(
-                                        "✨${IntlLocalizations.of(context).projectLink}✨",
+                                        "✨${IntlLocalizations.of(context)?.projectLink}✨",
                                         style: TextStyle(color: Colors.blue),
                                       ),
                                       onTap: () {
-                                        Navigator.of(context).push(new CupertinoPageRoute(builder: (ctx) {
-                                          return WebViewPage(
-                                            "https://github.com/asjqkkkk/todo-list-app",
-                                            title: IntlLocalizations.of(context).myGithub,
-                                          );
-                                        }));
+                                        // Navigator.of(context).push(new CupertinoPageRoute(builder: (ctx) {
+                                        //   return WebViewPage(
+                                        //     "https://github.com/asjqkkkk/todo-list-app",
+                                        //     title: IntlLocalizations.of(context)?.myGithub??"",
+                                        //   );
+                                        // }));
                                       },
                                     )
                                   ],
@@ -256,12 +256,12 @@ class _AboutPageState extends State<AboutPage> {
           CancelToken cancelToken = CancelToken();
           return NetLoadingWidget(
             loadingController: loadingController,
-            successText: IntlLocalizations.of(context).noUpdate,
+            successText: IntlLocalizations.of(context)?.noUpdate??"",
             onSuccess: () {
               Navigator.pop(context);
             },
             onRequest: () {
-              ApiService.instance.checkUpdate(
+              ApiService.instance?.checkUpdate(
                 success: (UpdateInfoBean updateInfo) async {
                   final packageInfo = await PackageInfo.fromPlatform();
                   bool needUpdate = UpdateInfoBean.needUpdate(
