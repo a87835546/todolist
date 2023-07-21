@@ -106,7 +106,7 @@ class TaskBean {
   }
 
   static TaskBean fromNetMap(Map<String, dynamic> map) {
-    TaskBean taskBean = new TaskBean();
+    TaskBean taskBean = new TaskBean(detailList: []);
     taskBean.taskName = map['taskName'];
     taskBean.taskType = map['taskType'];
     taskBean.taskDetailNum = int.parse(map['taskDetailNum'] ?? '0');

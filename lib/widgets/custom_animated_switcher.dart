@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 
 class CustomAnimatedSwitcher extends StatefulWidget {
-  final Duration duration;
+  final Duration? duration;
   final Widget firstChild;
   final Widget secondChild;
   final bool hasChanged;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
 
-  const CustomAnimatedSwitcher({
-    Key key,
+  const CustomAnimatedSwitcher(
+    Key? key,{
     this.duration,
-    @required this.firstChild,
-    @required this.secondChild,
+    required this.firstChild,
+    required this.secondChild,
     this.hasChanged = false, this.onTap,
   }) : super(key: key);
 
@@ -21,8 +21,8 @@ class CustomAnimatedSwitcher extends StatefulWidget {
 
 class _CustomAnimatedSwitcherState extends State<CustomAnimatedSwitcher> {
 
-  bool hasChanged;
-  Widget theChild;
+  bool hasChanged = false;
+  Widget theChild = Container();
 
   @override
   void initState() {
@@ -36,7 +36,7 @@ class _CustomAnimatedSwitcherState extends State<CustomAnimatedSwitcher> {
     return InkWell(
       onTap: (){
         if(widget.onTap != null){
-          widget.onTap();
+          widget.onTap!();
         }
         setState(() {
           hasChanged = !hasChanged;

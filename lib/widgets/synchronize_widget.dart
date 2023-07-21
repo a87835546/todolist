@@ -12,7 +12,7 @@ class SynchronizeWidget extends StatefulWidget {
 
   final MainPageModel mainPageModel;
 
-  const SynchronizeWidget({Key key, @required this.mainPageModel}) : super(key: key);
+  const SynchronizeWidget(Key? key, {required this.mainPageModel}) : super(key: key);
 
   @override
   _SynchronizeWidgetState createState() => _SynchronizeWidgetState();
@@ -21,10 +21,10 @@ class SynchronizeWidget extends StatefulWidget {
 class _SynchronizeWidgetState extends State< SynchronizeWidget> {
 
   SynFlag synFlag = SynFlag.hasNotSynced;
-  CancelToken cancelToken;
+  CancelToken cancelToken = CancelToken();
 
-  String account;
-  String token;
+  String account = "";
+  String token = "";
 
 
   ///表示需要同步的数量
@@ -89,7 +89,7 @@ class _SynchronizeWidgetState extends State< SynchronizeWidget> {
                   valueColor: AlwaysStoppedAnimation(Colors.white),
                 ),
               ),
-              Text(IntlLocalizations.of(context).clickToSyn,style: TextStyle(color: Colors.white),),
+              Text(IntlLocalizations.of(context)?.clickToSyn??"",style: TextStyle(color: Colors.white),),
               Text("(0 / $needSyncedLength)",style: TextStyle(color: Colors.white, fontSize: 12),),
             ],
           ),
@@ -110,7 +110,7 @@ class _SynchronizeWidgetState extends State< SynchronizeWidget> {
                   valueColor: AlwaysStoppedAnimation(Colors.white),
                 ),
               ),
-              Text(IntlLocalizations.of(context).synchronizing,style: TextStyle(color: Colors.white),),
+              Text(IntlLocalizations.of(context)?.synchronizing??"",style: TextStyle(color: Colors.white),),
               Text("(${needSynTasks.length} / $needSyncedLength)",style: TextStyle(color: Colors.white, fontSize: 12),),
             ],
           ),
@@ -131,7 +131,7 @@ class _SynchronizeWidgetState extends State< SynchronizeWidget> {
                   valueColor: AlwaysStoppedAnimation(Colors.white),
                 ),
               ),
-              Text(IntlLocalizations.of(context).cloudSynchronizing,style: TextStyle(color: Colors.white,fontSize: 12),),
+              Text(IntlLocalizations.of(context)?.cloudSynchronizing??"",style: TextStyle(color: Colors.white,fontSize: 12),),
             ],
           ),
         );
@@ -154,7 +154,7 @@ class _SynchronizeWidgetState extends State< SynchronizeWidget> {
                     valueColor: AlwaysStoppedAnimation(Colors.white),
                   ),
                 ),
-                Text(IntlLocalizations.of(context).synchronizeFailed,style: TextStyle(color: Colors.white),)
+                Text(IntlLocalizations.of(context)?.synchronizeFailed??"",style: TextStyle(color: Colors.white),)
               ],
             ),
           ),
@@ -171,7 +171,7 @@ class _SynchronizeWidgetState extends State< SynchronizeWidget> {
 
   void uploadTask(TaskBean taskBean, String token) async{
     if(synFlag == SynFlag.failSynced) return;
-    ApiService.instance.postCreateTask(
+    ApiService.instance?.postCreateTask(
       taskBean: taskBean,
       success: (UploadTaskBean bean){
         syncedList.add(bean.uniqueId);
@@ -200,15 +200,15 @@ class _SynchronizeWidgetState extends State< SynchronizeWidget> {
   void postUpdateTask(TaskBean taskBean,String token ) async{
 
     final token = await SharedUtil.instance.getString(Keys.token);
-    ApiService.instance.postUpdateTask(
+    ApiService.instance?.postUpdateTask(
       success: (CommonBean bean){
         syncedList.add(taskBean.uniqueId);
         taskBean.needUpdateToCloud = 'false';
-        updateLocalTasks(token);
+        updateLocalTasks(token!);
       },
       failed: (CommonBean bean){
         if(bean.description == "任务不存在"){
-          uploadTask(taskBean, token);
+          uploadTask(taskBean, token!);
           return;
         }
         taskBean.needUpdateToCloud = 'true';
@@ -221,7 +221,7 @@ class _SynchronizeWidgetState extends State< SynchronizeWidget> {
         widget.mainPageModel.refresh();
       },
       taskBean: taskBean,
-      token: token,
+      token: token!,
       cancelToken: cancelToken,
     );
   }
@@ -274,9 +274,9 @@ class _SynchronizeWidgetState extends State< SynchronizeWidget> {
     final token = await SharedUtil.instance.getString(Keys.token);
     for (var task in needSynTasks) {
       if(task.uniqueId == null) {
-        uploadTask(task, token);
+        uploadTask(task, token!);
       } else {
-        postUpdateTask(task, token);
+        postUpdateTask(task, token!);
       }
     }
   }
@@ -285,7 +285,8 @@ class _SynchronizeWidgetState extends State< SynchronizeWidget> {
 
   void getCloudTasks(String account, String token) async{
     if(synFlag == SynFlag.failSynced) return;
-    ApiService.instance.getTasks(
+    ApiService.instance?.getTasks(
+
       params: {
         'account':account,
         'token':token
@@ -341,7 +342,7 @@ class _SynchronizeWidgetState extends State< SynchronizeWidget> {
       return;
     }
     final password = await SharedUtil.instance.getString(Keys.password);
-    ApiService.instance.login(
+    ApiService.instance?.login(
       params: {
         "account": "$account",
         "password": "$password"

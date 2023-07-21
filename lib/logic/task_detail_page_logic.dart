@@ -174,7 +174,7 @@ class TaskDetailPageLogic {
         _showTextDialog(msg, _model.context);
       },
       params: {
-        "token": token,
+        "token": token!,
         "account": account,
         "uniqueId": _model.taskBean.uniqueId,
       },

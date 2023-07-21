@@ -119,7 +119,7 @@ class SearchPageLogic{
             _showTextDialog(msg);
           },
           params: {
-            "token": token,
+            "token": token!,
             "account": account,
             "uniqueId": taskBean.uniqueId,
           },

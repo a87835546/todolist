@@ -12,7 +12,7 @@ class UpdateProgressWidget extends StatefulWidget {
 
   final String updateUrl;
 
-  const UpdateProgressWidget({Key key,@required this.updateUrl}) : super(key: key);
+  const UpdateProgressWidget(Key? key,{required this.updateUrl}) : super(key: key);
 
 
   @override
@@ -21,9 +21,9 @@ class UpdateProgressWidget extends StatefulWidget {
 
 class _UpdateProgressWidgetState extends State<UpdateProgressWidget>
     with SingleTickerProviderStateMixin {
-  AnimationController _controller;
-  Animation<double> _animation;
-  CancelToken token;
+  late AnimationController _controller;
+  late Animation<double> _animation;
+  CancelToken token = CancelToken();
   int _downloadProgress = 0;
   bool isHide = false;
   UploadingFlag uploadingFlag = UploadingFlag.idle;
@@ -73,7 +73,7 @@ class _UpdateProgressWidgetState extends State<UpdateProgressWidget>
                     child: Row(
                       children: <Widget>[
                         Expanded(
-                          child: FlatButton(
+                          child: TextButton(
                               onPressed: () {
                                 if (!isHide) {
                                   _controller.forward();
@@ -106,7 +106,7 @@ class _UpdateProgressWidgetState extends State<UpdateProgressWidget>
                           ),
                         ),
                         Expanded(
-                          child: FlatButton(
+                          child: TextButton(
                               onPressed: () {
                                 OverlayUtil.getInstance().hide();
                               },
@@ -183,7 +183,7 @@ class _UpdateProgressWidgetState extends State<UpdateProgressWidget>
               }
             });
           }
-        },options: Options(sendTimeout: 15*1000,receiveTimeout: 360*1000),);
+        },options: Options(sendTimeout: Duration(seconds: 15),receiveTimeout: Duration(seconds: 360)),);
     } catch (e) {
       if (mounted) {
         setState(() {

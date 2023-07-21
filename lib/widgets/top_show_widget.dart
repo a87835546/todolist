@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class TopAnimationShowWidget extends StatefulWidget {
-  final Widget child;
-  final Duration duration;
-  final double distanceY;
+  final Widget? child;
+  final Duration? duration;
+  final double? distanceY;
 
   TopAnimationShowWidget({this.child, this.duration, this.distanceY = 0})
       : assert(child != null);
@@ -14,8 +14,8 @@ class TopAnimationShowWidget extends StatefulWidget {
 
 class _TopAnimationShowWidgetState extends State<TopAnimationShowWidget>
     with SingleTickerProviderStateMixin {
-  AnimationController _controller;
-  Animation<double> _animation;
+  late AnimationController _controller;
+  late Animation<double> _animation;
 
   @override
   void initState() {
@@ -42,7 +42,7 @@ class _TopAnimationShowWidgetState extends State<TopAnimationShowWidget>
       child: Container(child: widget.child),
       builder: (ctx, child) {
         return Transform.translate(
-          offset: Offset(0, (_animation.value - 1) * (widget.distanceY)),
+          offset: Offset(0, (_animation.value - 1) * (widget.distanceY??0)),
           child: child,
         );
       },

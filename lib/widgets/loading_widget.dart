@@ -3,17 +3,17 @@ import 'package:flutter_svg/svg.dart';
 import 'package:todo_list/i10n/localization_intl.dart';
 
 class LoadingWidget extends StatelessWidget {
-  final Color progressColor;
-  final Color textColor;
-  final double textSize;
-  final String loadingText;
-  final String emptyText;
-  final String errorText;
-  final String idleText;
-  final LoadingFlag flag;
-  final VoidCallback errorCallBack;
-  final Widget successWidget;
-  final double size;
+  final Color? progressColor;
+  final Color? textColor;
+  final double? textSize;
+  final String? loadingText;
+  final String? emptyText;
+  final String? errorText;
+  final String? idleText;
+  final LoadingFlag? flag;
+  final VoidCallback? errorCallBack;
+  final Widget? successWidget;
+  final double? size;
 
   LoadingWidget(
       {this.progressColor,
@@ -37,22 +37,22 @@ class LoadingWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Container(
-                height: size / 2,
-                width: size / 2,
+                height: size??0 / 2,
+                width: size??0 / 2,
                 child: CircularProgressIndicator(
-                  strokeWidth: size / 10,
+                  strokeWidth: size??0 / 10,
                   valueColor: AlwaysStoppedAnimation(
                       progressColor ?? primaryColor),
                 ),
               ),
               SizedBox(
-                height: size / 5,
+                height: size??0 / 5,
               ),
               Text(
-                loadingText ?? IntlLocalizations.of(context).loading,
+                loadingText ?? IntlLocalizations.of(context)?.loading??"",
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    fontSize: textSize ?? size / 5, color: textColor ?? primaryColor),
+                    fontSize: textSize ?? size??0 / 5, color: textColor ?? primaryColor),
               )
             ],
           ),
@@ -70,12 +70,12 @@ class LoadingWidget extends StatelessWidget {
                 height: size,
                 semanticsLabel: 'loading error',
               ),
-              FlatButton(
+              TextButton(
                   onPressed: errorCallBack ?? (){},
                   child: Text(
-                    "${errorText??""}".isEmpty?IntlLocalizations.of(context).reLoading:errorText,
+                    "${errorText??""}".isEmpty?(IntlLocalizations.of(context)?.reLoading??""):errorText!,
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: textSize ?? size / 5, color: textColor ?? primaryColor),
+                    style: TextStyle(fontSize: textSize ?? size??0 / 5, color: textColor ?? primaryColor),
                   )),
             ],
           ),
@@ -97,10 +97,10 @@ class LoadingWidget extends StatelessWidget {
                 semanticsLabel: 'empty list',
               ),
               Text(
-                emptyText ?? IntlLocalizations.of(context).loadingEmpty,
+                emptyText ?? IntlLocalizations.of(context)?.loadingEmpty??"",
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    fontSize: textSize ?? size / 5, color: textColor ?? primaryColor),
+                    fontSize: textSize ?? size??0 / 5, color: textColor ?? primaryColor),
               ),
             ],
           ),
@@ -120,10 +120,10 @@ class LoadingWidget extends StatelessWidget {
                 semanticsLabel: 'idle',
               ),
               Text(
-                idleText ?? IntlLocalizations.of(context).loadingIdle,
+                idleText ?? IntlLocalizations.of(context)?.loadingIdle??"",
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    fontSize: textSize ?? size / 5, color: textColor ?? primaryColor),
+                    fontSize: textSize ?? size??0 / 5, color: textColor ?? primaryColor),
               )
             ],
           ),

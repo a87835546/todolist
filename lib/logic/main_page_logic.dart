@@ -301,9 +301,9 @@ class MainPageLogic {
       case CurrentAvatarType.net:
         final net = await SharedUtil().getString(Keys.netAvatarPath);
         FileUtil.getInstance().downloadFile(
-          url: net,
+          url: net??"",
           filePath: "/avatar/",
-          fileName: net.split('/').last ?? "avatar.png",
+          fileName: net!.split('/').last ?? "avatar.png",
           onComplete: (path) {
             _model.currentAvatarUrl = path;
             _model.currentAvatarType = CurrentAvatarType.local;
@@ -431,7 +431,7 @@ class MainPageLogic {
         Navigator.of(context).pop();
         _showTextDialog(commonBean.description);
       },
-      params: {"account": account, "token": token, "userName": userName},
+      params: {"account": account, "token": token!, "userName": userName},
       token: _model.cancelToken,
     );
   }
@@ -506,7 +506,7 @@ class MainPageLogic {
         DBProvider.db.updateTask(taskBean);
       },
       taskBean: taskBean,
-      token: token,
+      token: token!,
       cancelToken: _model.cancelToken,
     );
   }
@@ -538,7 +538,7 @@ class MainPageLogic {
         DBProvider.db.updateTask(taskBean);
       },
       taskBean: taskBean,
-      token: token,
+      token: token!,
       cancelToken: _model.cancelToken,
     );
   }

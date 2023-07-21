@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 
 class CustomAnimatedIcon extends StatefulWidget {
-  final Color color;
-  final double size;
+  final Color? color;
+  final double? size;
   final AnimatedIconData firstIcon;
   final AnimatedIconData secondIcon;
-  final Duration duration;
-  final VoidCallback onTap;
+  final Duration? duration;
+  final VoidCallback? onTap;
   final bool hasTapped;
 
   const CustomAnimatedIcon(
-      {Key key,
-      this.color,
+      Key? key,{
+        this.color,
       this.size,
-      @required this.firstIcon,
-      @required this.secondIcon,
+      required this.firstIcon,
+      required this.secondIcon,
       this.duration,
       this.onTap, this.hasTapped = false})
       : super(key: key);
@@ -25,9 +25,9 @@ class CustomAnimatedIcon extends StatefulWidget {
 
 class _CustomAnimatedIconState extends State<CustomAnimatedIcon>
     with SingleTickerProviderStateMixin {
-  AnimationController _controller;
-  Animation _animation;
-  bool hasTapped;
+  late AnimationController _controller;
+  late Animation<double> _animation;
+  bool hasTapped = false;
 
   @override
   void initState() {
@@ -53,12 +53,12 @@ class _CustomAnimatedIconState extends State<CustomAnimatedIcon>
       child: AnimatedIcon(
         icon: hasTapped ? widget.secondIcon : widget.firstIcon,
         progress: _animation,
-        color: widget.color ?? iconTheme,
+        color: widget.color,
         size: widget.size ?? iconTheme.size,
       ),
       onTap: () {
         if (widget.onTap != null) {
-          widget.onTap();
+          widget.onTap!();
         }
         if(mounted){
           setState(() {

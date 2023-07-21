@@ -1,3 +1,4 @@
+import 'dart:js_util';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -13,7 +14,7 @@ class BottomShowWidget extends StatefulWidget {
   final VoidCallback onExit;
   final List<TaskIconBean> taskIconBeans;
 
-  BottomShowWidget({this.onExit, this.taskIconBeans});
+  BottomShowWidget({required this.onExit, required this.taskIconBeans});
 
   @override
   _BottomShowWidgetState createState() => _BottomShowWidgetState();
@@ -21,8 +22,8 @@ class BottomShowWidget extends StatefulWidget {
 
 class _BottomShowWidgetState extends State<BottomShowWidget>
     with SingleTickerProviderStateMixin {
-  AnimationController _controller;
-  Animation<double> _animation;
+  late AnimationController _controller;
+  late Animation<double> _animation;
   List<TaskIconBean> _children = [];
 
   @override
@@ -106,7 +107,7 @@ class _BottomShowWidgetState extends State<BottomShowWidget>
                                 builder: (ctx) {
                                   return ProviderConfig.getInstance()
                                       .getEditTaskPage(
-                                    _children[index],
+                                    _children[index], taskDetailPageModel: newObject(), taskBean: newObject(),
                                   );
                                 },
                               ),

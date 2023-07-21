@@ -4,10 +4,10 @@ import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
 class TextColorPicker extends StatefulWidget {
 
-  final Color initialColor;
+  final Color? initialColor;
   final ValueChanged<Color> onColorChanged;
 
-  const TextColorPicker({Key key, this.initialColor,@required this.onColorChanged}) : super(key: key);
+  const TextColorPicker(Key? key, {this.initialColor,required this.onColorChanged}) : super(key: key);
 
   @override
   _TextColorPickerState createState() => _TextColorPickerState();
@@ -31,7 +31,7 @@ class _TextColorPickerState extends State<TextColorPicker> {
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(20.0))),
       elevation: 0.0,
-      title: Text(IntlLocalizations.of(context).pickAColor),
+      title: Text(IntlLocalizations.of(context)?.pickAColor??""),
       content: SingleChildScrollView(
         child: ColorPicker(
           pickerColor: defaultColor,
@@ -42,17 +42,17 @@ class _TextColorPickerState extends State<TextColorPicker> {
         ),
       ),
       actions: <Widget>[
-        FlatButton(
+        TextButton(
           child: Text(
-            IntlLocalizations.of(context).cancel,
+            IntlLocalizations.of(context)?.cancel??"",
             style: TextStyle(color: Colors.redAccent),
           ),
           onPressed: () {
             Navigator.of(context).pop();
           },
         ),
-        FlatButton(
-          child: Text(IntlLocalizations.of(context).ok),
+        TextButton(
+          child: Text(IntlLocalizations.of(context)?.ok??""),
           onPressed: () {
             widget.onColorChanged(defaultColor);
             setState(() {});

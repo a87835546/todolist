@@ -7,7 +7,7 @@ import 'bottom_to_top_widget.dart';
 class LoginWidget extends StatelessWidget {
   final LoginPageModel loginPageModel;
 
-  const LoginWidget({Key key, @required this.loginPageModel}) : super(key: key);
+  const LoginWidget(Key key, {required this.loginPageModel}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,16 +26,17 @@ class LoginWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 BottomToTopWidget(
+                  null,
                   child: TextFormField(
                     validator: (email) =>
-                        loginPageModel.logic.validatorEmail(email),
+                        loginPageModel.logic.validatorEmail(email!),
                     keyboardType: TextInputType.text,
                     controller: loginPageModel.emailController,
                     textDirection: TextDirection.ltr,
                     style: TextStyle(textBaseline: TextBaseline.alphabetic),
                     decoration: InputDecoration(
-                        hintText: IntlLocalizations.of(context).inputEmail,
-                        labelText: IntlLocalizations.of(context).email,
+                        hintText: IntlLocalizations.of(context)?.inputEmail,
+                        labelText: IntlLocalizations.of(context)?.email,
                         labelStyle: TextStyle(fontWeight: FontWeight.bold),
                         prefixIcon: Icon(
                           Icons.email,
@@ -51,28 +52,29 @@ class LoginWidget extends StatelessWidget {
                   index: 0,
                 ),
                 BottomToTopWidget(
+                  null,
                   child: TextFormField(
                     validator: (password) =>
-                        loginPageModel.logic.validatePassword(password),
+                        loginPageModel.logic.validatePassword(password!),
                     controller: loginPageModel.passwordController,
                     keyboardType: TextInputType.text,
                     textDirection: TextDirection.ltr,
                     style: TextStyle(textBaseline: TextBaseline.alphabetic),
                     decoration: InputDecoration(
-                      hintText: IntlLocalizations.of(context).inputPassword,
-                      labelText: IntlLocalizations.of(context).password,
+                      hintText: IntlLocalizations.of(context)?.inputPassword,
+                      labelText: IntlLocalizations.of(context)?.password,
                       labelStyle: TextStyle(fontWeight: FontWeight.bold),
                       prefixIcon: Icon(
                         Icons.lock,
                       ),
 
-                      suffixIcon: FlatButton(
-                        highlightColor: primaryColorLight,
-                        colorBrightness: Brightness.dark,
-                        splashColor: Colors.grey,
+                      suffixIcon: OutlinedButton(
+                        // highlightColor: primaryColorLight,
+                        // colorBrightness: Brightness.dark,
+                        // splashColor: Colors.grey,
                         onPressed: loginPageModel.logic.onForget,
                         child: Text(
-                          IntlLocalizations.of(context).forget,
+                          IntlLocalizations.of(context)?.forget??"",
                           style: TextStyle(color: Colors.black),
                           textAlign: TextAlign.center,
                         ),
@@ -86,25 +88,26 @@ class LoginWidget extends StatelessWidget {
                   height: 20,
                 ),
                 BottomToTopWidget(
+                  null,
                   index: 2,
                   child: Container(
                     height: 60,
                     width: size.width - 80,
-                    child: FlatButton(
-                      color: primaryColor,
-                      highlightColor: primaryColorLight,
-                      colorBrightness: Brightness.dark,
-                      splashColor: Colors.grey,
+                    child: OutlinedButton(
+                      // color: primaryColor,
+                      // highlightColor: primaryColorLight,
+                      // colorBrightness: Brightness.dark,
+                      // splashColor: Colors.grey,
                       child: Text(
-                        IntlLocalizations.of(context).logIn,
+                        IntlLocalizations.of(context)?.logIn??"",
                         style: TextStyle(
                           fontSize: 20,
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(40.0)),
+                      // shape: RoundedRectangleBorder(
+                      //     borderRadius: BorderRadius.circular(40.0)),
                       onPressed: loginPageModel.logic.onLogin,
                     ),
                   ),
@@ -113,26 +116,27 @@ class LoginWidget extends StatelessWidget {
                   height: 20,
                 ),
                 BottomToTopWidget(
+                  null,
                   index: 2,
                   child: Container(
                     height: 60,
                     width: size.width - 80,
-                    child: FlatButton(
-                      color: primaryColor.withOpacity(0.3),
-                      highlightColor: primaryColorLight,
-                      colorBrightness: Brightness.dark,
-                      splashColor: Colors.grey,
+                    child: OutlinedButton(
+                      // color: primaryColor.withOpacity(0.3),
+                      // highlightColor: primaryColorLight,
+                      // colorBrightness: Brightness.dark,
+                      // splashColor: Colors.grey,
                       child: Text(
-                        IntlLocalizations.of(context).haveNoAccount,
+                        IntlLocalizations.of(context)?.haveNoAccount??"",
                         style: TextStyle(
                           fontSize: 20,
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(40.0),
-                          side: BorderSide(color: primaryColorDark)),
+                      // shape: RoundedRectangleBorder(
+                      //     borderRadius: BorderRadius.circular(40.0),
+                      //     side: BorderSide(color: primaryColorDark)),
                       onPressed: loginPageModel.logic.onRegister,
                     ),
                   ),
@@ -141,14 +145,15 @@ class LoginWidget extends StatelessWidget {
                   height: 20,
                 ),
                 loginPageModel.isFirst ? BottomToTopWidget(
-                    child: FlatButton(
-                      color: primaryColor,
-                      highlightColor: primaryColorLight,
-                      colorBrightness: Brightness.dark,
-                      splashColor: Colors.grey,
-                      child: Text(IntlLocalizations.of(context).skip),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0)),
+                  null,
+                    child: OutlinedButton(
+                      // color: primaryColor,
+                      // highlightColor: primaryColorLight,
+                      // colorBrightness: Brightness.dark,
+                      // splashColor: Colors.grey,
+                      child: Text(IntlLocalizations.of(context)?.skip??""),
+                      // shape: RoundedRectangleBorder(
+                      //     borderRadius: BorderRadius.circular(20.0)),
                       onPressed: loginPageModel.logic.onSkip,
                     ),
                     index: 3) : Container(),

@@ -4,11 +4,11 @@ import 'package:todo_list/i10n/localization_intl.dart';
 import 'package:todo_list/utils/theme_util.dart';
 
 class CustomIconWidget extends StatefulWidget {
-  final IconData iconData;
-  final Function onApplyTap;
-  final Color pickerColor;
-  final ValueChanged<String> onTextChange;
-  final String iconName;
+  final IconData? iconData;
+  final Function? onApplyTap;
+  final Color? pickerColor;
+  final ValueChanged<String>? onTextChange;
+  final String? iconName;
 
   CustomIconWidget({
     this.iconData,
@@ -35,13 +35,13 @@ class _CustomIconWidgetState extends State<CustomIconWidget> {
     MyThemeColor.defaultColor,
   ];
 
-  Color currentIconColor;
-  int currentSelectIndex;
+  Color currentIconColor = Colors.white;
+  int currentSelectIndex = 0;
 
   @override
   void initState() {
     super.initState();
-    currentIconColor = widget.pickerColor;
+    currentIconColor = widget.pickerColor??Colors.grey;
     currentSelectIndex = -1;
   }
 
@@ -59,12 +59,14 @@ class _CustomIconWidgetState extends State<CustomIconWidget> {
               child: TextFormField(
                 initialValue: widget.iconName ?? null,
                 validator: (text){
-                  widget.onTextChange(text);
+                  if(widget.onTextChange != null) {
+                    widget.onTextChange!(text!);
+                  }
                   return null;
                 },
                 style: TextStyle(textBaseline: TextBaseline.alphabetic),
                 decoration: InputDecoration(
-                  hintText: IntlLocalizations.of(context).setIconName,
+                  hintText: IntlLocalizations.of(context)?.setIconName,
                   prefixIcon: Icon(
                     widget.iconData,
                     color: currentIconColor,
@@ -134,9 +136,9 @@ class _CustomIconWidgetState extends State<CustomIconWidget> {
                     flex: 2,
                     child: Container(
                       alignment: Alignment.centerRight,
-                      child: FlatButton(
+                      child: TextButton(
                         child: Text(
-                          IntlLocalizations.of(context).cancel,
+                          IntlLocalizations.of(context)?.cancel??"",
                           style: TextStyle(color: Colors.redAccent),
                         ),
                         onPressed: () {
@@ -148,13 +150,15 @@ class _CustomIconWidgetState extends State<CustomIconWidget> {
                   flex: 2,
                   child: Container(
                     alignment: Alignment.centerRight,
-                    child: FlatButton(
+                    child: TextButton(
                       child: Text(
-                        IntlLocalizations.of(context).ok,
+                        IntlLocalizations.of(context)?.ok??"",
                         style: TextStyle(color: Colors.black),
                       ),
                       onPressed: () {
-                        widget.onApplyTap(currentIconColor);
+                        if(widget.onApplyTap != null) {
+                          widget.onApplyTap!(currentIconColor);
+                        }
                         Navigator.of(context).pop();
                       },
                     ),
@@ -176,7 +180,7 @@ class _CustomIconWidgetState extends State<CustomIconWidget> {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(20.0))),
             elevation: 0.0,
-            title: Text(IntlLocalizations.of(context).pickAColor),
+            title: Text(IntlLocalizations.of(context)?.pickAColor??""),
             content: SingleChildScrollView(
               child: ColorPicker(
                 pickerColor: currentIconColor,
@@ -188,19 +192,21 @@ class _CustomIconWidgetState extends State<CustomIconWidget> {
               ),
             ),
             actions: <Widget>[
-              FlatButton(
+              TextButton(
                 child: Text(
-                  IntlLocalizations.of(context).cancel,
+                  IntlLocalizations.of(context)?.cancel??"",
                   style: TextStyle(color: Colors.redAccent),
                 ),
                 onPressed: () {
-                  currentIconColor = widget.pickerColor;
+                  if(widget.pickerColor != null){
+                    currentIconColor = widget.pickerColor!;
+                  }
                   currentSelectIndex = -1;
                   Navigator.of(context).pop();
                 },
               ),
-              FlatButton(
-                child: Text(IntlLocalizations.of(context).ok),
+              TextButton(
+                child: Text(IntlLocalizations.of(context)?.ok??""),
                 onPressed: () {
                   setState(() {});
                   Navigator.of(context).pop();

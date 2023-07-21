@@ -39,8 +39,9 @@ class FeedbackItem extends StatelessWidget {
                     onTap: (){
                       Navigator.of(context).push(new MaterialPageRoute(builder: (ctx){
                         return ImagePage(
+                          null,
                           imageUrls: [avatarUrl],
-                          heroTag: "avatar_$index",
+                          heroTag: "avatar_$index", initialPageIndex: 0, onSelect: (page){},
                         );
                       }));
                     },
@@ -53,7 +54,7 @@ class FeedbackItem extends StatelessWidget {
                         child: ClipRRect(
                           child: avatarUrl == null ? Image.asset(
                             "images/icon.png",
-                          ) : CustomCacheImage(url: avatarUrl,),
+                          ) : CustomCacheImage(null,url: avatarUrl,),
                           borderRadius: BorderRadius.all(Radius.circular(25)),
                         ),
                       ),

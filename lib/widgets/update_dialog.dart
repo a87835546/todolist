@@ -11,8 +11,8 @@ class UpdateDialog extends StatefulWidget {
   final String updateInfo;
   final String updateUrl;
   final bool isForce;
-  final Color backgroundColor;
-  final Color updateInfoColor;
+  final Color? backgroundColor;
+  final Color? updateInfoColor;
 
   UpdateDialog({
     this.version = "1.0.0",
@@ -29,7 +29,7 @@ class UpdateDialog extends StatefulWidget {
 
 class UpdateDialogState extends State<UpdateDialog> {
   int _downloadProgress = 0;
-  CancelToken token;
+  CancelToken token = CancelToken();
   UploadingFlag uploadingFlag = UploadingFlag.idle;
 
   @override
@@ -58,7 +58,7 @@ class UpdateDialogState extends State<UpdateDialog> {
                   margin: EdgeInsets.fromLTRB(5, 30, 5, 5),
                   child: Material(
                     child: Text(
-                      IntlLocalizations.of(context).newVersionIsComing,
+                      IntlLocalizations.of(context)?.newVersionIsComing??"",
                       style: TextStyle(
                           color: widget.updateInfoColor ?? Colors.white,
                           fontSize: 20),
@@ -98,12 +98,12 @@ class UpdateDialogState extends State<UpdateDialog> {
                     !widget.isForce
                         ? Expanded(
                             flex: 1,
-                            child: FlatButton(
+                            child: TextButton(
                                 onPressed: () {
                                   Navigator.of(context).pop();
                                 },
                                 child: Text(
-                                  IntlLocalizations.of(context).cancel,
+                                  IntlLocalizations.of(context)?.cancel??"",
                                   style: TextStyle(
                                       color: Colors.grey, fontSize: 16),
                                 )),
@@ -117,7 +117,7 @@ class UpdateDialogState extends State<UpdateDialog> {
                         : SizedBox(),
                     Expanded(
                       flex: 1,
-                      child: FlatButton(
+                      child: TextButton(
                           onPressed: () async {
                             if (uploadingFlag == UploadingFlag.uploading)
                               return;
@@ -128,7 +128,7 @@ class UpdateDialogState extends State<UpdateDialog> {
                             return;
                           },
                           child: Text(
-                            IntlLocalizations.of(context).update,
+                            IntlLocalizations.of(context)?.update??"",
                             style: TextStyle(color: Colors.black, fontSize: 16),
                           )),
                     ),
@@ -172,7 +172,7 @@ class UpdateDialogState extends State<UpdateDialog> {
             ),
             Material(
               child: Text(
-                IntlLocalizations.of(context).waiting,
+                IntlLocalizations.of(context)?.waiting??"",
                 style: TextStyle(color: widget.updateInfoColor ?? Colors.white),
               ),
               color: Colors.transparent,
@@ -198,7 +198,7 @@ class UpdateDialogState extends State<UpdateDialog> {
               ),
               Material(
                 child: Text(
-                  IntlLocalizations.of(context).timeOut,
+                  IntlLocalizations.of(context)?.timeOut??"",
                   style:
                       TextStyle(color: widget.updateInfoColor ?? Colors.white),
                 ),
@@ -214,7 +214,7 @@ class UpdateDialogState extends State<UpdateDialog> {
   void _showOverlay() {
     OverlayUtil.getInstance().show(context,
         showWidget: TopAnimationShowWidget(
-          child: UpdateProgressWidget(updateUrl: widget.updateUrl,),
+          child: UpdateProgressWidget(null,updateUrl: widget.updateUrl,),
           distanceY: 100,
         ),duration: Duration(seconds: 4));
   }

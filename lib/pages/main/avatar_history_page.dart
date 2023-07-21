@@ -92,7 +92,7 @@ class _AvatarHistoryPageState extends State<AvatarHistoryPage> {
                       String transFormName =
                           Uri.encodeFull(fileName).replaceAll("%", "");
                       uploadAvatar(
-                          account, token, path, transFormName, context);
+                          account, token!, path, transFormName, context);
                     }
                   },
                   child: ClipRRect(

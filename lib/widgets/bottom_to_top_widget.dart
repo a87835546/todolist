@@ -4,7 +4,7 @@ class BottomToTopWidget extends StatefulWidget {
   final Widget child;
   final int index;
 
-  const BottomToTopWidget({Key key, @required this.child,@required this.index})
+  const BottomToTopWidget(Key? key, {required this.child,required this.index})
       : super(key: key);
 
   @override
@@ -13,8 +13,8 @@ class BottomToTopWidget extends StatefulWidget {
 
 class _BottomToTopWidgetState extends State<BottomToTopWidget>
     with SingleTickerProviderStateMixin {
-  AnimationController _controller;
-  Animation _animation;
+  late AnimationController _controller;
+  late Animation _animation;
 
   @override
   void initState() {

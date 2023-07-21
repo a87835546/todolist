@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class ScaleWidget extends StatefulWidget {
   final Widget child;
 
-  const ScaleWidget({Key key, @required this.child}) : super(key: key);
+  const ScaleWidget(Key? key, {required this.child}) : super(key: key);
 
   @override
   _ScaleWidgetState createState() => _ScaleWidgetState();
@@ -11,8 +11,8 @@ class ScaleWidget extends StatefulWidget {
 
 class _ScaleWidgetState extends State<ScaleWidget>
     with SingleTickerProviderStateMixin {
-  AnimationController _controller;
-  Animation animation;
+  late AnimationController _controller;
+  late Animation animation;
 
   @override
   void initState() {

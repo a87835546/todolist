@@ -16,8 +16,8 @@ class BackgroundSlider extends StatefulWidget {
 
 class _BackgroundSliderState extends State<BackgroundSlider> {
 
-  double transparency;
-  bool enableTaskDetailOpacity;
+  double transparency = 0;
+  bool enableTaskDetailOpacity = false;
 
   @override
   void initState() {
@@ -29,7 +29,7 @@ class _BackgroundSliderState extends State<BackgroundSlider> {
   @override
   Widget build(BuildContext context) {
     return ExpansionTile(
-      title: Text(IntlLocalizations.of(context).cartOpacity),
+      title: Text(IntlLocalizations.of(context)?.cartOpacity??""),
       leading: Icon(Icons.opacity),
       children: <Widget>[
         ListTile(
@@ -46,7 +46,7 @@ class _BackgroundSliderState extends State<BackgroundSlider> {
             },),
         ),
         SwitchListTile(
-          title: Text(IntlLocalizations.of(context).enableTaskDetailOpacity),
+          title: Text(IntlLocalizations.of(context)?.enableTaskDetailOpacity??""),
           value: enableTaskDetailOpacity,
           activeColor: Theme.of(context).primaryColor,
           onChanged: (value) {

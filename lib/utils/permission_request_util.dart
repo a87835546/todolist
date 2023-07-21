@@ -44,8 +44,8 @@ class PermissionReqUtil {
           showDialog,
           context,
           reqPermissions,
-          deniedDes ,
-          openSetting ,
+          deniedDes! ,
+          openSetting! ,
           showOpenSettingButton: true,
         );
         break;
@@ -55,18 +55,18 @@ class PermissionReqUtil {
           disabled();
           return;
         }
-        toShow(showDialog, context, reqPermissions, disabledDes,openSetting);
+        toShow(showDialog, context, reqPermissions, disabledDes??"",openSetting??"");
         break;
       case PermissionStatus.restricted:
         debugPrint("restricted权限:$reqPermissions");
         if (restricted != null) restricted();
-        toShow(showDialog, context, reqPermissions, restrictedDes,openSetting,
+        toShow(showDialog, context, reqPermissions, restrictedDes??"",openSetting??"",
             showOpenSettingButton: true);
         break;
       case PermissionStatus.limited:
         debugPrint("未知权限:$reqPermissions");
         if (unknown != null) unknown();
-        toShow(showDialog, context, reqPermissions, unknownDes,openSetting);
+        toShow(showDialog, context, reqPermissions, unknownDes!,openSetting!);
         break;
     }
   }

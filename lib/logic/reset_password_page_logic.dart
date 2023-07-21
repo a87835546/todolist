@@ -184,8 +184,8 @@ class ResetPasswordPageLogic {
     final encryptConfirmPW = EncryptUtil.instance.encrypt(confirmPassword);
     ApiService.instance?.postResetPassword(
       params: {
-        "account": account,
-        "token": token,
+        "account": account!,
+        "token": token!,
         "oldPassword": encryptOldPW,
         "newPassword": encryptNewPW,
         "confirmPassword": encryptConfirmPW,

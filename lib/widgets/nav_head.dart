@@ -8,8 +8,8 @@ class NavHead extends StatefulWidget {
 }
 
 class _NavHeadState extends State<NavHead> with SingleTickerProviderStateMixin {
-  AnimationController _controller;
-  Animation _animation;
+  late AnimationController _controller;
+  late Animation _animation;
 
   @override
   void initState() {
@@ -159,7 +159,7 @@ class _NavHeadState extends State<NavHead> with SingleTickerProviderStateMixin {
     );
   }
 
-  List<Color> getRandomColor(BuildContext context, {int times}) {
+  List<Color> getRandomColor(BuildContext context, {int? times}) {
     final List<Color> randomColorList = [
       Theme.of(context).primaryColor,
       Theme.of(context).primaryColorDark,

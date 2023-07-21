@@ -381,21 +381,27 @@ class ApiService {
   }
 
   ///获取所有task
-  void getTasks(Map<String, String> params, Function success,
-    Function failed, Function error, CancelToken token){
+  void getTasks({ required Map<String, String> params, Function? success,
+    Function? failed, Function? error, CancelToken? token}){
     ApiStrategy.getInstance().post(
       "oneDayTask/getTasks",
           (data) {
             CloudTaskBean bean = CloudTaskBean.fromMap(data);
         if (bean.status == requestSucceed) {
-          success(bean);
+          if (success != null) {
+            success(bean);
+          }
         } else {
-          failed(bean);
+          if (failed != null) {
+            failed(bean);
+          }
         }
       },
       params: params,
       errorCallBack: (errorMessage) {
-        error("获取出错：$errorMessage");
+        if (error != null) {
+          error("获取出错：$errorMessage");
+        }
       },
       token: token,
     );

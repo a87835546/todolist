@@ -36,8 +36,8 @@ class ShowAnimateWidget extends StatefulWidget {
 
 class _ShowAnimateWidgetState extends State<ShowAnimateWidget>
     with SingleTickerProviderStateMixin {
-  AnimationController _controller;
-  Animation<double> _animation;
+ late AnimationController _controller;
+  late Animation<double> _animation;
 
   @override
   void initState() {

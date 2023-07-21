@@ -1,3 +1,5 @@
+import 'dart:js_util';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
@@ -11,13 +13,13 @@ import 'package:todo_list/i10n/localization_intl.dart';
 import 'package:todo_list/widgets/text_color_picker.dart';
 
 class PopMenuBt extends StatelessWidget {
-  final Color iconColor;
-  final VoidCallback onDelete;
-  final VoidCallback onEdit;
-  final TaskBean taskBean;
+  final Color? iconColor;
+  final VoidCallback? onDelete;
+  final VoidCallback? onEdit;
+  final TaskBean? taskBean;
 
-  const PopMenuBt({
-    Key key,
+  const PopMenuBt(
+    Key? key,{
     this.iconColor,
     this.onDelete,
     this.onEdit,
@@ -27,30 +29,29 @@ class PopMenuBt extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final globalModel = Provider.of<GlobalModel>(context);
-
-    return PopupMenuButton(
+    return PopupMenuButton<String>(
       onSelected: (a) {
         switch (a) {
           case "edit":
-            if (onEdit != null) onEdit();
+            if (onEdit != null) onEdit!();
             break;
           case "delete":
-            if (onDelete != null) onDelete();
+            if (onDelete != null) onDelete!();
             break;
           case "background":
             Navigator.of(context).push(new CupertinoPageRoute(builder: (ctx) {
               return ProviderConfig.getInstance().getNetPicturesPage(
                 useType: NetPicturesUseType.taskCardBackground,
-                taskBean: taskBean,
+                taskBean: taskBean??newObject(), accountPageModel: newObject(),
               );
             }));
             break;
           case "clearBackground":
-            taskBean.backgroundUrl = null;
+            taskBean?.backgroundUrl = "";
             refreshTaskCard(globalModel);
             break;
           case "textColor":
-            _showColorPicker(context,globalModel,ColorBean.fromBean(taskBean.taskIconBean.colorBean));
+            _showColorPicker(context,globalModel,ColorBean.fromBean(taskBean!.taskIconBean!.colorBean));
             break;
         }
       },
@@ -59,7 +60,7 @@ class PopMenuBt extends StatelessWidget {
           PopupMenuItem(
             value: "edit",
             child: ListTile(
-              title: Text(IntlLocalizations.of(context).editTask),
+              title: Text(IntlLocalizations.of(context)?.editTask??""),
               leading: Icon(
                 Icons.edit,
                 color: iconColor,
@@ -69,29 +70,27 @@ class PopMenuBt extends StatelessWidget {
           PopupMenuItem(
               value: "delete",
               child: ListTile(
-                title: Text(IntlLocalizations.of(context).deleteTask),
+                title: Text(IntlLocalizations.of(context)?.deleteTask??""),
                 leading: Icon(Icons.delete, color: iconColor),
               )),
           PopupMenuItem(
             value: "background",
             child: ListTile(
-              title: Text(IntlLocalizations.of(context).setBackground),
+              title: Text(IntlLocalizations.of(context)?.setBackground??""),
               leading: Icon(Icons.image, color: iconColor),
             ),
           ),
-          taskBean.backgroundUrl == null
-              ? null
-              : PopupMenuItem(
-                  value: "clearBackground",
-                  child: ListTile(
-                    title: Text(IntlLocalizations.of(context).clearBackground),
-                    leading: Icon(Icons.clear, color: iconColor),
-                  ),
-                ),
+          PopupMenuItem(
+            value: "clearBackground",
+            child: ListTile(
+              title: Text(IntlLocalizations.of(context)?.clearBackground??""),
+              leading: Icon(Icons.clear, color: iconColor),
+            ),
+          ),
           PopupMenuItem(
             value: "textColor",
             child: ListTile(
-              title: Text(IntlLocalizations.of(context).textColor),
+              title: Text(IntlLocalizations.of(context)?.textColor??""),
               leading: Icon(Icons.format_color_text, color: iconColor),
             ),
           ),
@@ -105,7 +104,7 @@ class PopMenuBt extends StatelessWidget {
   }
 
   void refreshTaskCard(GlobalModel globalModel) {
-     DBProvider.db.updateTask(taskBean);
+     DBProvider.db.updateTask(taskBean!);
     final searchModel = globalModel.searchPageModel;
     final taskDetailPageModel = globalModel.taskDetailPageModel;
     taskDetailPageModel?.refresh();
@@ -126,10 +125,11 @@ class PopMenuBt extends StatelessWidget {
         context: context,
         builder: (ctx) {
           return TextColorPicker(
+            null,
             initialColor: initialColor,
             onColorChanged: (Color color) {
               final colorBean = ColorBean.fromColor(color);
-              taskBean.textColor = colorBean;
+              taskBean?.textColor = colorBean;
               refreshTaskCard(globalModel);
             },
           );

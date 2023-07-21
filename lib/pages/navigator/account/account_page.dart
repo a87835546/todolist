@@ -33,7 +33,7 @@ class AccountPage extends StatelessWidget {
                     "svgs/bg.svg",
                     fit: BoxFit.cover,
                   )
-                : CustomCacheImage(null,url: model.backgroundUrl)
+                : CustomCacheImage(null,url: model.backgroundUrl!)
           ),
           model.isExisting
               ? Container()
