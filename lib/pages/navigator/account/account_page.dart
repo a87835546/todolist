@@ -46,7 +46,7 @@ class AccountPage extends StatelessWidget {
                   ),
                 ),
           GestureDetector(
-            onTap: model.logic.onBackgroundTap,
+            onTap: model.logic?.onBackgroundTap,
             child: Scaffold(
               backgroundColor: Colors.transparent,
               appBar: AppBar(
@@ -61,7 +61,7 @@ class AccountPage extends StatelessWidget {
                     children: <Widget>[
                       Center(
                         child: GestureDetector(
-                          child: model.logic.getAvatar(primaryColor),
+                          child: model.logic?.getAvatar(primaryColor),
                           onTap: () {},
                         ),
                       ),
@@ -91,7 +91,7 @@ class AccountPage extends StatelessWidget {
                         child: Text(IntlLocalizations.of(context)?.logout??""),
                         // shape: RoundedRectangleBorder(
                         //     borderRadius: BorderRadius.circular(20.0)),
-                        onPressed: model.logic.onLogoutPressed,
+                        onPressed: model.logic?.onLogoutPressed,
                       ),
                       TextButton(
                         // color: primaryColor,
@@ -102,7 +102,7 @@ class AccountPage extends StatelessWidget {
                             Text(IntlLocalizations.of(context)?.resetPassword??""),
                         // shape: RoundedRectangleBorder(
                         //     borderRadius: BorderRadius.circular(20.0)),
-                        onPressed: model.logic.onResetPasswordPressed,
+                        onPressed: model.logic?.onResetPasswordPressed,
                       )
                     ],
                   ),

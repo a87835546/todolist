@@ -23,7 +23,7 @@ class NetPicturesPage extends StatelessWidget {
             : IntlLocalizations.of(context)?.accountBackgroundSetting??""),
         actions: <Widget>[
           PopupMenuButton<PopItemType>(
-            onSelected: (value) => model.logic.onPopItemSelect(value),
+            onSelected: (value) => model.logic?.onPopItemSelect(value),
             itemBuilder: (ctx) {
               return [
                 PopupMenuItem(
@@ -52,10 +52,10 @@ class NetPicturesPage extends StatelessWidget {
                   controller: model.refreshController,
                   enablePullDown: false,
                   enablePullUp: true,
-                  onLoading: model.logic.loadMorePhoto,
+                  onLoading: model.logic?.loadMorePhoto,
                   footer: CustomFooter(
                     builder: (BuildContext context, LoadStatus? mode) =>
-                        model.logic.getRefreshFooter(context, mode),
+                        model.logic!.getRefreshFooter(context, mode),
                   ),
                   child: GridView.builder(
                     itemCount: model.photos.length,
@@ -71,7 +71,7 @@ class NetPicturesPage extends StatelessWidget {
                           .toList();
                       return InkWell(
                         onTap: () =>
-                            model.logic.onPictureTap(urls, index, globalModel),
+                            model.logic!.onPictureTap(urls, index, globalModel),
                         child: Container(
                           margin: EdgeInsets.all(10),
                           child: Hero(
@@ -94,7 +94,7 @@ class NetPicturesPage extends StatelessWidget {
                   errorCallBack: () {
                     model.loadingFlag = LoadingFlag.loading;
                     model.refresh();
-                    model.logic.getPhotos(cancelToken: model.cancelToken);
+                    model.logic!.getPhotos(cancelToken: model.cancelToken);
                   },
                 )),
     );

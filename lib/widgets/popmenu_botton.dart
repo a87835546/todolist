@@ -1,4 +1,4 @@
-import 'dart:js_util';
+
 
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,6 +11,8 @@ import 'package:todo_list/model/global_model.dart';
 import 'package:todo_list/config/provider_config.dart';
 import 'package:todo_list/i10n/localization_intl.dart';
 import 'package:todo_list/widgets/text_color_picker.dart';
+
+import '../model/account_page_model.dart';
 
 class PopMenuBt extends StatelessWidget {
   final Color? iconColor;
@@ -42,7 +44,7 @@ class PopMenuBt extends StatelessWidget {
             Navigator.of(context).push(new CupertinoPageRoute(builder: (ctx) {
               return ProviderConfig.getInstance().getNetPicturesPage(
                 useType: NetPicturesUseType.taskCardBackground,
-                taskBean: taskBean??newObject(), accountPageModel: newObject(),
+                taskBean: taskBean??TaskBean(detailList: []), accountPageModel: AccountPageModel(context: ctx, isExisting: false),
               );
             }));
             break;
@@ -51,7 +53,7 @@ class PopMenuBt extends StatelessWidget {
             refreshTaskCard(globalModel);
             break;
           case "textColor":
-            _showColorPicker(context,globalModel,ColorBean.fromBean(taskBean!.taskIconBean!.colorBean));
+            _showColorPicker(context,globalModel,ColorBean.fromBean(taskBean!.taskIconBean!.colorBean??ColorBean()));
             break;
         }
       },

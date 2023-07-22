@@ -37,7 +37,7 @@ class FeedbackWallPage extends StatelessWidget {
           errorCallBack: (){
             model.loadingFlag = LoadingFlag.loading;
             model.refresh();
-            model.logic.getSuggestions();
+            model.logic?.getSuggestions();
           },
         ) : AnimationLimiter(
           child: ListView.builder(

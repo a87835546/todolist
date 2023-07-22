@@ -23,7 +23,7 @@ class AvatarPage extends StatelessWidget {
         title: Text(IntlLocalizations.of(context)?.avatar??""),
         actions: <Widget>[
           PopupMenuButton<AvatarType>(
-            onSelected: (value) => model.logic.onAvatarSelect(value, context),
+            onSelected: (value) => model.logic?.onAvatarSelect(value, context),
             itemBuilder: (ctx) {
               return [
                 PopupMenuItem(
@@ -55,7 +55,7 @@ class AvatarPage extends StatelessWidget {
                 padding: EdgeInsets.all(20),
                 child: Crop(
                   key: model.cropKey,
-                  image: model.logic.getAvatarProvider(),
+                  image: model.logic!.getAvatarProvider(),
                   aspectRatio: 1.0,
                   maximumScale: 1.0,
                 ),
@@ -72,7 +72,7 @@ class AvatarPage extends StatelessWidget {
               child: Text(IntlLocalizations.of(context)?.save??""),
               // shape: RoundedRectangleBorder(
               //     borderRadius: BorderRadius.circular(20.0)),
-              onPressed: model.logic.onSaveTap,
+              onPressed: model.logic?.onSaveTap,
             ),
           )
         ],

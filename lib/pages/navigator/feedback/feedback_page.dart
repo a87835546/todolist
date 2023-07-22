@@ -14,8 +14,8 @@ class FeedbackPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final globalModel = Provider.of<GlobalModel>(context);
     final model = Provider.of<FeedbackPageModel>(context)..setContext(context);
-    final primaryColor = globalModel.logic.getPrimaryInDark(context);
-    final bool isDarkNow = globalModel.logic.isDarkNow();
+    final primaryColor = globalModel.logic?.getPrimaryInDark(context);
+    final bool isDarkNow = globalModel.logic?.isDarkNow()??false;
     final size = MediaQuery.of(context).size;
     final feedbackFormHeight =
         (size.height / 2 - 100) < 300.0 ? 300.0 : (size.height / 2 - 100.0);
@@ -29,7 +29,7 @@ class FeedbackPage extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.check),
             onPressed: () =>
-                model.logic.onFeedbackSubmit(feedbackWallPageModel),
+                model.logic?.onFeedbackSubmit(feedbackWallPageModel),
           )
         ],
       ),
@@ -44,9 +44,9 @@ class FeedbackPage extends StatelessWidget {
                   return InkWell(
                     child: Transform.scale(
                       scale: model.currentSelectSvg == index ? 1.5 : 1,
-                      child: model.logic.getSvg(model.svgPaths[index]),
+                      child: model.logic?.getSvg(model.svgPaths[index]),
                     ),
-                    onTap: () => model.logic.onSvgTap(index),
+                    onTap: () => model.logic?.onSvgTap(index),
                   );
                 }),
               ),

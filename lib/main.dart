@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo_list/config/provider_config.dart';
+import 'package:todo_list/json/theme_bean.dart';
 import 'package:todo_list/model/all_model.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
     final model = Provider.of<GlobalModel>(context)..setContext(context);
 
     return MaterialApp(
-      title: model.appName,
+      title: model.appName??"TODO LIST",
       localizationsDelegates: [
         // ... app-specific localization delegate[s] here
         GlobalMaterialLocalizations.delegate,
@@ -62,8 +63,10 @@ class MyApp extends StatelessWidget {
         return model.currentLocale;
       },
       locale: model.currentLocale,
-      theme: ThemeUtil.getInstance().getTheme(model.currentThemeBean),
-      home: getHomePage(model.goToLogin, model.enableSplashAnimation),
+      theme: ThemeUtil.getInstance().getTheme(model.currentThemeBean??ThemeBean(themeName: IntlLocalizations.of(context)?.pink??"",
+        colorBean: ColorBean.fromColor(MyThemeColor.defaultColor),
+        themeType: MyTheme.defaultTheme,)),
+      home: getHomePage(model.goToLogin??false, model.enableSplashAnimation??true),
     );
   }
 

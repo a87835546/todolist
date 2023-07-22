@@ -1,4 +1,5 @@
-import 'dart:js_util';
+
+
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,9 @@ import 'package:todo_list/model/search_page_model.dart';
 import 'package:todo_list/utils/shared_util.dart';
 import 'package:todo_list/widgets/loading_widget.dart';
 import 'package:todo_list/widgets/net_loading_widget.dart';
+
+import '../json/task_icon_bean.dart';
+import '../model/task_detail_page_model.dart';
 
 class SearchPageLogic{
   final SearchPageModel _model;
@@ -46,7 +50,7 @@ class SearchPageLogic{
           return ProviderConfig.getInstance()
               .getTaskDetailPage(taskBean.id, taskBean, searchPageModel: _model);
         },
-        opaque: !globalModel.mainPageModel.enableTaskPageOpacity,
+        opaque: !(globalModel.mainPageModel?.enableTaskPageOpacity??false),
         transitionDuration: Duration(milliseconds: 800)));
   }
 
@@ -72,7 +76,9 @@ class SearchPageLogic{
   void doDelete(TaskBean task, GlobalModel globalModel) {
     DBProvider.db.deleteTask(task.id);
     final mainPageModel = globalModel.mainPageModel;
-    removeTask(mainPageModel, task.id);
+    if(mainPageModel!=null) {
+      removeTask(mainPageModel!, task.id);
+    }
     onEditingComplete();
   }
 
@@ -81,8 +87,8 @@ class SearchPageLogic{
       new CupertinoPageRoute(
         builder: (ctx) {
           return ProviderConfig.getInstance().getEditTaskPage(
-              taskBean.taskIconBean??newObject(),
-              taskBean: taskBean, taskDetailPageModel: newObject(),);
+              taskBean.taskIconBean??TaskIconBean(taskName: '', iconBean: null, colorBean: null),
+              taskBean: taskBean, taskDetailPageModel: TaskDetailPageModel(context: ctx),);
         },
       ),
     );
@@ -99,7 +105,7 @@ class SearchPageLogic{
       } else {
         final token = await SharedUtil.instance.getString(Keys.token);
         showDialog(context: _model.context, builder: (ctx){
-          return NetLoadingWidget();
+          return NetLoadingWidget(null);
         });
         ApiService.instance?.postDeleteTask(
           success: (CommonBean bean) {

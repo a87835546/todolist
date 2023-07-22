@@ -19,7 +19,7 @@ class SplashPage extends StatelessWidget {
           callback: (animation) {
             Navigator.of(context).pushAndRemoveUntil(
                 new MaterialPageRoute(builder: (context) {
-                    return getHomePage(model.goToLogin);
+                    return getHomePage(model.goToLogin??false);
                 }), (router) => router == null);
           },
         ),

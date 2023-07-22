@@ -119,6 +119,7 @@ class ResetPasswordPageLogic {
       }
       showDialog(context: context, builder: (ctx){
         return NetLoadingWidget(
+          null,
           onRequest: (){
             _onResetPasswordRequest();
           },
@@ -143,6 +144,7 @@ class ResetPasswordPageLogic {
       }
       showDialog(context: context, builder: (ctx){
         return NetLoadingWidget(
+          null,
           onRequest: (){
             _onForgetPasswordRequest();
           },

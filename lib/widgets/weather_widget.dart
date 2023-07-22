@@ -9,9 +9,9 @@ import 'loading_widget.dart';
 
 class WeatherWidget extends StatefulWidget {
 
-  final GlobalModel globalModel;
+  final GlobalModel? globalModel;
 
-  const WeatherWidget({Key key, this.globalModel}) : super(key: key);
+  const WeatherWidget(Key? key, {this.globalModel}) : super(key: key);
 
   @override
   _WeatherWidgetState createState() => _WeatherWidgetState();
@@ -20,13 +20,13 @@ class WeatherWidget extends StatefulWidget {
 class _WeatherWidgetState extends State<WeatherWidget> {
 
   LoadingFlag loadingFlag = LoadingFlag.loading;
-  CancelToken cancelToken;
+  CancelToken cancelToken = CancelToken();
 
   @override
   void initState() {
     cancelToken = CancelToken();
-    if(widget.globalModel.weatherBean == null){
-      getWeatherNow(widget.globalModel);
+    if(widget.globalModel?.weatherBean == null){
+      getWeatherNow(widget.globalModel!);
     }
     super.initState();
   }
@@ -40,9 +40,9 @@ class _WeatherWidgetState extends State<WeatherWidget> {
   @override
   Widget build(BuildContext context) {
     final globalModel = widget.globalModel;
-    final color = globalModel.logic.isDarkNow() ? Colors.white : Colors.grey;
-    final WeatherBean weatherBean = globalModel.weatherBean;
-    if (globalModel.weatherBean == null) {
+    final color = globalModel?.logic?.isDarkNow()??false ? Colors.white : Colors.grey;
+    final WeatherBean? weatherBean = globalModel?.weatherBean;
+    if (globalModel?.weatherBean == null) {
       return Padding(
         padding: EdgeInsets.all(10),
         child: LoadingWidget(
@@ -52,15 +52,15 @@ class _WeatherWidgetState extends State<WeatherWidget> {
             setState(() {
               loadingFlag = LoadingFlag.loading;
             });
-            getWeatherNow(globalModel);
+            getWeatherNow(globalModel!);
           },
         ),
       );
     }
-    final BasicBean basicBean =
-        weatherBean.heWeather6[weatherBean.heWeather6.length - 1].basic;
-    final NowBean nowBean =
-        weatherBean.heWeather6[weatherBean.heWeather6.length - 1].now;
+    final BasicBean? basicBean =
+        weatherBean?.heWeather6[weatherBean.heWeather6.length - 1].basic;
+    final NowBean? nowBean =
+        weatherBean?.heWeather6[weatherBean.heWeather6.length - 1].now;
     return Container(
       margin: EdgeInsets.only(left: 5, top: 5),
       child: Row(
@@ -68,7 +68,7 @@ class _WeatherWidgetState extends State<WeatherWidget> {
         children: <Widget>[
           Container(
             child: Image.asset(
-              "images/weather/${nowBean.condCode}.png",
+              "images/weather/${nowBean?.condCode}.png",
               color: color,
               width: 60,
               height: 60,
@@ -82,7 +82,7 @@ class _WeatherWidgetState extends State<WeatherWidget> {
               children: <Widget>[
                 Container(
                   child: Text(
-                    "${basicBean.location}",
+                    "${basicBean?.location}",
                     style: TextStyle(
                       fontSize: 16,
                       color: color,
@@ -92,7 +92,7 @@ class _WeatherWidgetState extends State<WeatherWidget> {
                   ),
                 ),
                 Text(
-                  "${nowBean.tmp} ℃   ${nowBean.condTxt}",
+                  "${nowBean?.tmp} ℃   ${nowBean?.condTxt}",
                   style: TextStyle(
                     fontSize: 16,
                     color: color,
@@ -111,8 +111,8 @@ class _WeatherWidgetState extends State<WeatherWidget> {
 
   void getWeatherNow(GlobalModel globalModel) {
     final position = globalModel.currentPosition;
-    final languageCode = globalModel.currentLocale.languageCode;
-    ApiService.instance.getWeatherNow( success : (WeatherBean weatherBean) {
+    final languageCode = globalModel.currentLocale?.languageCode??"EN";
+    ApiService.instance?.getWeatherNow( success : (WeatherBean weatherBean) {
       globalModel.weatherBean = weatherBean;
       SharedUtil.instance.saveString(Keys.currentPosition, position);
       SharedUtil.instance.saveBoolean(Keys.enableWeatherShow, true);

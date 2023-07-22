@@ -1,14 +1,15 @@
-import 'dart:js_util';
+
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_list/json/task_bean.dart';
 import 'package:todo_list/json/task_icon_bean.dart';
+import 'package:todo_list/logic/reset_password_page_logic.dart';
 import 'package:todo_list/model/all_model.dart';
 import 'package:todo_list/pages/all_page.dart';
 
 class ProviderConfig {
-  static ProviderConfig _instance = newObject();
+  static ProviderConfig _instance = ProviderConfig.getInstance();
 
   static ProviderConfig getInstance() {
     if (_instance == null) {
@@ -22,7 +23,7 @@ class ProviderConfig {
   ///全局provider
   ChangeNotifierProvider<GlobalModel> getGlobal(Widget child) {
     return ChangeNotifierProvider<GlobalModel>(
-      create: (context) => GlobalModel(),
+      create: (context) => GlobalModel( context: context,mainPageModel: MainPageModel(null,context: context)),
       child: child,
     );
   }
@@ -30,7 +31,7 @@ class ProviderConfig {
   ///主页provider
   ChangeNotifierProvider<MainPageModel> getMainPage() {
     return ChangeNotifierProvider<MainPageModel>(
-      create: (context) => MainPageModel(),
+      create: (context) => MainPageModel(null,context: context),
       child: MainPage(),
     );
   }
@@ -44,7 +45,8 @@ class ProviderConfig {
   }) {
     return ChangeNotifierProvider<TaskDetailPageModel>(
       create: (context) => TaskDetailPageModel(
-        taskBean,
+        context: context,
+        taskBean:taskBean,
         doneTaskPageModel: doneTaskPageModel,
         searchPageModel: searchPageModel,
         heroTag: index,
@@ -59,7 +61,7 @@ class ProviderConfig {
       {required TaskDetailPageModel taskDetailPageModel,
       required TaskBean taskBean}) {
     return ChangeNotifierProvider<EditTaskPageModel>(
-      create: (context) => EditTaskPageModel(oldTaskBean: taskBean),
+      create: (context) => EditTaskPageModel(oldTaskBean: taskBean,context: context),
       child: EditTaskPage(
         taskIcon,
         taskDetailPageModel: taskDetailPageModel,
@@ -70,7 +72,7 @@ class ProviderConfig {
   ///图标设置页provider
   ChangeNotifierProvider<IconSettingPageModel> getIconSettingPage() {
     return ChangeNotifierProvider<IconSettingPageModel>(
-      create: (context) => IconSettingPageModel(),
+      create: (context) => IconSettingPageModel(context: context),
       child: IconSettingPage(),
     );
   }
@@ -78,7 +80,7 @@ class ProviderConfig {
   ///主题设置页provider
   ChangeNotifierProvider<ThemePageModel> getThemePage() {
     return ChangeNotifierProvider<ThemePageModel>(
-      create: (context) => ThemePageModel(),
+      create: (context) => ThemePageModel(context: context),
       child: ThemePage(),
     );
   }
@@ -87,8 +89,9 @@ class ProviderConfig {
   ChangeNotifierProvider<AvatarPageModel> getAvatarPage(
       {required MainPageModel mainPageModel}) {
     return ChangeNotifierProvider<AvatarPageModel>(
-      create: (context) => AvatarPageModel(),
+      create: (context) => AvatarPageModel(context: context),
       child: AvatarPage(
+        null,
         mainPageModel: mainPageModel,
       ),
     );
@@ -97,7 +100,7 @@ class ProviderConfig {
   ///完成列表页provider
   ChangeNotifierProvider<DoneTaskPageModel> getDoneTaskPage() {
     return ChangeNotifierProvider<DoneTaskPageModel>(
-      create: (context) => DoneTaskPageModel(),
+      create: (context) => DoneTaskPageModel(context: context),
       child: DoneTaskPage(),
     );
   }
@@ -105,7 +108,7 @@ class ProviderConfig {
   ///搜索任务页provider
   ChangeNotifierProvider<SearchPageModel> getSearchPage() {
     return ChangeNotifierProvider<SearchPageModel>(
-      create: (context) => SearchPageModel(),
+      create: (context) => SearchPageModel(null,context: context),
       child: SearchPage(),
     );
   }
@@ -114,7 +117,7 @@ class ProviderConfig {
   ChangeNotifierProvider<FeedbackPageModel> getFeedbackPage(
       FeedbackWallPageModel feedbackWallPageModel) {
     return ChangeNotifierProvider<FeedbackPageModel>(
-      create: (context) => FeedbackPageModel(),
+      create: (context) => FeedbackPageModel(context: context),
       child: FeedbackPage(feedbackWallPageModel),
     );
   }
@@ -122,7 +125,7 @@ class ProviderConfig {
   ///意见反馈墙页provider
   ChangeNotifierProvider<FeedbackWallPageModel> getFeedbackWallPage() {
     return ChangeNotifierProvider<FeedbackWallPageModel>(
-      create: (context) => FeedbackWallPageModel(),
+      create: (context) => FeedbackWallPageModel(context: context),
       child: FeedbackWallPage(),
     );
   }
@@ -130,7 +133,7 @@ class ProviderConfig {
   ///登录页provider
   ChangeNotifierProvider<LoginPageModel> getLoginPage({bool isFirst = false}) {
     return ChangeNotifierProvider<LoginPageModel>(
-      create: (context) => LoginPageModel(isFirst: isFirst),
+      create: (context) => LoginPageModel(isFirst: isFirst, context: context),
       child: LoginPage(),
     );
   }
@@ -138,7 +141,7 @@ class ProviderConfig {
   ///注册页provider
   ChangeNotifierProvider<RegisterPageModel> getRegisterPage() {
     return ChangeNotifierProvider<RegisterPageModel>(
-      create: (context) => RegisterPageModel(),
+      create: (context) => RegisterPageModel(context: context),
       child: RegisterPage(),
     );
   }
@@ -147,7 +150,7 @@ class ProviderConfig {
   ChangeNotifierProvider<ResetPasswordPageModel> getResetPasswordPage(
       {bool isReset = true}) {
     return ChangeNotifierProvider<ResetPasswordPageModel>(
-      create: (context) => ResetPasswordPageModel(isReset),
+      create: (context) => ResetPasswordPageModel(context: context,isReset: isReset),
       child: ResetPasswordPage(),
     );
   }
@@ -159,6 +162,7 @@ class ProviderConfig {
       required TaskBean taskBean}) {
     return ChangeNotifierProvider<NetPicturesPageModel>(
       create: (context) => NetPicturesPageModel(
+        context:context,
         useType: useType,
         accountPageModel: accountPageModel,
         taskBean: taskBean,
@@ -170,7 +174,7 @@ class ProviderConfig {
   ///账号页面的provider
   ChangeNotifierProvider<AccountPageModel> getAccountPage() {
     return ChangeNotifierProvider<AccountPageModel>(
-      create: (context) => AccountPageModel(),
+      create: (context) => AccountPageModel(context: context, isExisting: false ),
       child: AccountPage(),
     );
   }

@@ -61,7 +61,7 @@ class LoginPageLogic {
       return;
     }
     showDialog(context: _model.context, builder: (ctx){
-      return NetLoadingWidget();
+      return NetLoadingWidget(null);
     });
     _onLoginRequest(context);
   }

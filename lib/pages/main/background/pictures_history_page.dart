@@ -60,6 +60,7 @@ class _PicturesHistoryPagState extends State<PicturesHistoryPage> {
             margin: EdgeInsets.only(right: 20),
             child: pictureUrls.isNotEmpty
                 ? CustomAnimatedSwitcher(
+              null,
                     firstChild: Icon(
                       Icons.border_color,
                       size: 20,
@@ -83,7 +84,7 @@ class _PicturesHistoryPagState extends State<PicturesHistoryPage> {
         child: pictureUrls.isEmpty ? Center(
           child: SvgPicture.asset(
             "svgs/empty_list.svg",
-            color: globalModel.logic.getPrimaryGreyInDark(context),
+            color: globalModel.logic?.getPrimaryGreyInDark(context),
             width: theMin,
             height: theMin,
             semanticsLabel: 'empty list',

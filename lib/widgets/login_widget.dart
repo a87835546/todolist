@@ -7,7 +7,7 @@ import 'bottom_to_top_widget.dart';
 class LoginWidget extends StatelessWidget {
   final LoginPageModel loginPageModel;
 
-  const LoginWidget(Key key, {required this.loginPageModel}) : super(key: key);
+  const LoginWidget(Key? key, {required this.loginPageModel}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class LoginWidget extends StatelessWidget {
                   null,
                   child: TextFormField(
                     validator: (email) =>
-                        loginPageModel.logic.validatorEmail(email!),
+                        loginPageModel.logic?.validatorEmail(email!),
                     keyboardType: TextInputType.text,
                     controller: loginPageModel.emailController,
                     textDirection: TextDirection.ltr,
@@ -55,7 +55,7 @@ class LoginWidget extends StatelessWidget {
                   null,
                   child: TextFormField(
                     validator: (password) =>
-                        loginPageModel.logic.validatePassword(password!),
+                        loginPageModel.logic?.validatePassword(password!),
                     controller: loginPageModel.passwordController,
                     keyboardType: TextInputType.text,
                     textDirection: TextDirection.ltr,
@@ -72,7 +72,7 @@ class LoginWidget extends StatelessWidget {
                         // highlightColor: primaryColorLight,
                         // colorBrightness: Brightness.dark,
                         // splashColor: Colors.grey,
-                        onPressed: loginPageModel.logic.onForget,
+                        onPressed: loginPageModel.logic?.onForget,
                         child: Text(
                           IntlLocalizations.of(context)?.forget??"",
                           style: TextStyle(color: Colors.black),
@@ -108,7 +108,7 @@ class LoginWidget extends StatelessWidget {
                       ),
                       // shape: RoundedRectangleBorder(
                       //     borderRadius: BorderRadius.circular(40.0)),
-                      onPressed: loginPageModel.logic.onLogin,
+                      onPressed: loginPageModel.logic?.onLogin,
                     ),
                   ),
                 ),
@@ -137,7 +137,7 @@ class LoginWidget extends StatelessWidget {
                       // shape: RoundedRectangleBorder(
                       //     borderRadius: BorderRadius.circular(40.0),
                       //     side: BorderSide(color: primaryColorDark)),
-                      onPressed: loginPageModel.logic.onRegister,
+                      onPressed: loginPageModel.logic?.onRegister,
                     ),
                   ),
                 ),
@@ -154,7 +154,7 @@ class LoginWidget extends StatelessWidget {
                       child: Text(IntlLocalizations.of(context)?.skip??""),
                       // shape: RoundedRectangleBorder(
                       //     borderRadius: BorderRadius.circular(20.0)),
-                      onPressed: loginPageModel.logic.onSkip,
+                      onPressed: loginPageModel.logic?.onSkip,
                     ),
                     index: 3) : Container(),
               ],

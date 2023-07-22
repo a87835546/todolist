@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'dart:js_util';
+
 import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
@@ -129,7 +129,7 @@ class ThemePageLogic {
         decoration: BoxDecoration(
           color: themeBean.themeType == MyTheme.darkTheme
               ? Colors.black
-              : ColorBean.fromBean(themeBean.colorBean??newObject()),
+              : ColorBean.fromBean(themeBean.colorBean??ColorBean()),
           shape: BoxShape.rectangle,
           border: isCurrent ? Border.all(color: Colors.grey, width: 3) : null,
           borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -182,19 +182,19 @@ class ThemePageLogic {
           backgroundColor: Colors.transparent,
           context: _model.context,
           builder: (ctx) {
-            return CustomTimePicker(callBack: (start, end){
+            return CustomTimePicker(null,callBack: (start, end){
               globalModel.enableAutoDarkMode = value;
               globalModel.autoDarkModeTimeRange = '$start/$end';
               SharedUtil.instance.saveBoolean(Keys.autoDarkMode, globalModel.enableAutoDarkMode);
               SharedUtil.instance.saveString(Keys.autoDarkModeTimeRange, globalModel.autoDarkModeTimeRange);
-              globalModel.logic.chooseTheme();
+              globalModel.logic?.chooseTheme();
               globalModel.refresh();
             },);
           });
     } else {
       globalModel.enableAutoDarkMode = value;
       SharedUtil.instance.saveBoolean(Keys.autoDarkMode, globalModel.enableAutoDarkMode);
-      globalModel.logic.getCurrentTheme().then((value) => globalModel.refresh());
+      globalModel.logic?.getCurrentTheme().then((value) => globalModel.refresh());
     }
   }
 

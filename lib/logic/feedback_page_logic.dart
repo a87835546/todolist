@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:todo_list/config/api_service.dart';
@@ -44,11 +45,11 @@ class FeedbackPageLogic {
     final context = _model.context;
 
     ///限制建议内容不能为空，长度不能小于10
-    if (_model.feedbackContent.isEmpty) {
+    if (_model.feedbackContent?.isEmpty??true) {
       showWrongDialog(
           context, IntlLocalizations.of(context)?.feedbackCantBeNull??"");
       return;
-    } else if (_model.feedbackContent.length < 10) {
+    } else if ( _model.feedbackContent!.length < 10) {
       showWrongDialog(
           context, IntlLocalizations.of(context)?.feedbackIsTooLittle??"error");
       return;
@@ -71,13 +72,14 @@ class FeedbackPageLogic {
     final suggestion = _model.feedbackContent;
     final avatarPath = await SharedUtil.instance.getString(Keys.localAvatarPath) ;
     ///由于写后端的时候忘记添加表情的字段，现在把它放这里面
-    final connectWay = "${(_model.contactWay ?? "") + "<emoji>${_model.currentSelectSvg + 1}<emoji>"}";
+    final connectWay = "${(_model.contactWay ?? "") + "<emoji>${_model.currentSelectSvg??-99 + 1}<emoji>"}";
     final account = await SharedUtil.instance.getString(Keys.account);
 
     showDialog(
         context: context,
         builder: (ctx) {
           return NetLoadingWidget(
+            null,
             onRequest: () async {
               _model.loadingController.setFlag(LoadingFlag.loading);
               ApiService.instance?.postSuggestionWithAvatar(
@@ -91,7 +93,7 @@ class FeedbackPageLogic {
                 success: (bean){
                   SharedUtil.instance.saveString(Keys.lastSuggestTime, DateTime.now().toIso8601String());
                   _model.loadingController.setFlag(LoadingFlag.success);
-                  feedbackWallPageModel.logic.getSuggestions();
+                  feedbackWallPageModel.logic?.getSuggestions();
                 },
                 failed: (bean){
                   _model.loadingController.setFlag(LoadingFlag.error);

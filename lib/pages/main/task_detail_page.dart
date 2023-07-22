@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'dart:js_util';
+
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -21,21 +21,21 @@ class TaskDetailPage extends StatelessWidget {
       ..setContext(context, globalModel);
 
     globalModel.setTaskDetailPageModel(model);
-    final taskColor = globalModel.isCardChangeWithBg
+    final taskColor = globalModel.isCardChangeWithBg??false
         ? Theme.of(context).primaryColor
-        : ColorBean.fromBean(model.taskBean.taskIconBean?.colorBean??newObject());
+        : ColorBean.fromBean(model.taskBean?.taskIconBean?.colorBean??ColorBean());
 
-    final textColor = model.logic.getTextColor(context);
+    final textColor = model.logic?.getTextColor(context);
 
-    final int heroTag = model.heroTag;
+    final int heroTag = model.heroTag??0;
     final size = MediaQuery.of(context).size;
-    final bgUrl = model.taskBean.backgroundUrl;
+    final bgUrl = model.taskBean?.backgroundUrl;
     final opacity = mainPageModel.currentTransparency;
     final enableOpacity = model.doneTaskPageModel == null ? mainPageModel.enableTaskPageOpacity : false;
 
     return WillPopScope(
       onWillPop: () {
-        model.logic.exitPage();
+        model.logic?.exitPage();
         return Future.value(false);
       },
       child: Stack(
@@ -45,7 +45,7 @@ class TaskDetailPage extends StatelessWidget {
             child: Container(
                 decoration: BoxDecoration(
               color: globalModel.logic
-                  .getBgInDark()
+                  ?.getBgInDark()
                   .withOpacity(enableOpacity ? opacity : 1.0),
               borderRadius: BorderRadius.circular(15.0),
               image: bgUrl == null
@@ -70,7 +70,7 @@ class TaskDetailPage extends StatelessWidget {
                       icon: Icon(Platform.isAndroid
                           ? Icons.arrow_back
                           : Icons.arrow_back_ios),
-                      onPressed: model.logic.exitPage,
+                      onPressed: model.logic?.exitPage,
                     )
                   : SizedBox(),
               elevation: 0,
@@ -81,10 +81,11 @@ class TaskDetailPage extends StatelessWidget {
                     child: Material(
                         color: Colors.transparent,
                         child: PopMenuBt(
+                          null,
                           iconColor: taskColor,
                           taskBean: model.taskBean,
-                          onDelete: () => model.logic.deleteTask(mainPageModel),
-                          onEdit: () => model.logic.editTask(mainPageModel),
+                          onDelete: () => model.logic?.deleteTask(mainPageModel),
+                          onEdit: () => model.logic?.editTask(mainPageModel),
                         ))),
               ],
             ),
@@ -99,7 +100,7 @@ class TaskDetailPage extends StatelessWidget {
                   child: TaskInfoWidget(
                     heroTag,
                     taskBean: model.taskBean,
-                    isCardChangeWithBg: globalModel.isCardChangeWithBg,
+                    isCardChangeWithBg: globalModel.isCardChangeWithBg??false,
                     isExisting: model.isExiting,
                   ),
                 ),
@@ -117,10 +118,10 @@ class TaskDetailPage extends StatelessWidget {
                                 model?.taskBean?.detailList?.length ?? 0,
                                 (index) {
                                   TaskDetailBean taskDetailBean =
-                                      model.taskBean.detailList[index];
+                                      model.taskBean?.detailList[index]??TaskDetailBean();
                                   return Container(
                                     margin: EdgeInsets.only(
-                                        bottom: (index ==model.taskBean.detailList.length - 1)? 20: 0,
+                                        bottom: (index ==model.taskBean!.detailList.length - 1)? 20: 0,
                                         left: 50,
                                         right: 50),
                                     child: TaskDetailItem(
@@ -130,16 +131,16 @@ class TaskDetailPage extends StatelessWidget {
                                       itemProgress: taskDetailBean.itemProgress,
                                       itemName: taskDetailBean.taskDetailName,
                                       iconColor: taskColor,
-                                      textColor: textColor,
+                                      textColor: textColor??Colors.grey,
                                       onProgressChanged: (progress) {
-                                        model.logic.refreshProgress(
+                                        model.logic?.refreshProgress(
                                             taskDetailBean,
                                             progress,
                                             mainPageModel);
                                         model.refresh();
                                       },
                                       onChecked: (progress) {
-                                        model.logic.refreshProgress(
+                                        model.logic?.refreshProgress(
                                             taskDetailBean,
                                             progress,
                                             mainPageModel);

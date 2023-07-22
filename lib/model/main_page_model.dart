@@ -1,4 +1,4 @@
-import 'dart:js_util';
+
 
 import 'package:flutter/material.dart';
 import 'package:todo_list/config/api_service.dart';
@@ -8,7 +8,7 @@ import 'package:todo_list/json/task_bean.dart';
 import 'global_model.dart';
 
 class MainPageModel extends ChangeNotifier {
-  MainPageLogic logic;
+  MainPageLogic? logic;
   BuildContext context;
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   List<TaskBean> tasks = [];
@@ -53,25 +53,25 @@ class MainPageModel extends ChangeNotifier {
 
 
   ///用于在mainPage销毁后将GlobalModel中的mainPageModel销毁
-  GlobalModel _globalModel;
+  GlobalModel? _globalModel;
 
-  MainPageModel(this.logic,this.context,this._globalModel) {
+  MainPageModel(this._globalModel,{this.logic,required this.context,}) {
     logic = MainPageLogic(this);
   }
 
   void setContext(BuildContext context, {required GlobalModel globalModel}) {
     if (this.context == null) {
       this.context = context;
-      logic.checkUpdate(globalModel);
+      logic?.checkUpdate(globalModel);
       this._globalModel = globalModel;
-      logic.getAvatarType().then((value) {
+      logic?.getAvatarType().then((value) {
         Future.wait(
           [
-            logic.getTasks(),
-            logic.getCurrentAvatar(),
-            logic.getCurrentUserName(),
-            logic.getCurrentTransparency(),
-            logic.getEnableCardPageOpacity(),
+            logic!.getTasks(),
+            logic!.getCurrentAvatar(),
+            logic!.getCurrentUserName(),
+            logic!.getCurrentTransparency(),
+            logic!.getEnableCardPageOpacity(),
           ],
         ).then((value) {
           refresh();
@@ -85,7 +85,7 @@ class MainPageModel extends ChangeNotifier {
     super.dispose();
     scaffoldKey?.currentState?.dispose();
     if(!cancelToken.isCancelled) cancelToken.cancel();
-    _globalModel.mainPageModel = newObject();
+    _globalModel?.mainPageModel = MainPageModel(null,context: context);
     debugPrint("MainPageModel销毁了");
   }
 

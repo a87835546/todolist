@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'dart:js_util';
+
 
 import 'package:todo_list/json/task_icon_bean.dart';
 
@@ -68,7 +68,7 @@ class TaskBean {
       });
 
   static TaskBean fromMap(Map<String, dynamic> map) {
-    TaskBean taskBean = new TaskBean(detailList:newObject());
+    TaskBean taskBean = new TaskBean(detailList:[]);
     taskBean.id = map['id'];
     taskBean.taskName = map['taskName'];
     taskBean.taskType = map['taskType'];

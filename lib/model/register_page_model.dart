@@ -4,7 +4,7 @@ import 'package:todo_list/logic/all_logic.dart';
 
 class RegisterPageModel extends ChangeNotifier{
 
-  RegisterPageLogic logic;
+  RegisterPageLogic? logic;
   BuildContext context;
 
   String userName = "";
@@ -36,7 +36,7 @@ class RegisterPageModel extends ChangeNotifier{
 
 
 
-  RegisterPageModel(this.logic,this.context){
+  RegisterPageModel({this.logic,required this.context}){
     logic = RegisterPageLogic(this);
   }
 

@@ -21,9 +21,9 @@ class MainPage extends StatelessWidget {
     globalModel.setMainPageModel(model);
 
     return GestureDetector(
-      onLongPress: () => model.logic.onBackGroundTap(globalModel),
+      onLongPress: () => model.logic?.onBackGroundTap(globalModel),
       child: Container(
-        decoration: model.logic.getBackground(globalModel),
+        decoration: model.logic?.getBackground(globalModel),
         child: Scaffold(
           key: model.scaffoldKey,
           backgroundColor: Colors.transparent,
@@ -33,7 +33,7 @@ class MainPage extends StatelessWidget {
             title: Text(IntlLocalizations.of(context)?.appName??""),
             leading: !canHideWidget
                 ? TextButton(
-                    child: MenuIcon(globalModel.logic.getWhiteInDark()),
+                    child: MenuIcon(globalModel.logic!.getWhiteInDark()),
                     onPressed: () {
                       model.scaffoldKey.currentState?.openDrawer();
                     },
@@ -45,9 +45,9 @@ class MainPage extends StatelessWidget {
                       icon: Icon(
                         Icons.search,
                         size: 28,
-                        color: globalModel.logic.getWhiteInDark(),
+                        color: globalModel.logic?.getWhiteInDark(),
                       ),
-                      onPressed: () => model.logic.onSearchTap(),
+                      onPressed: () => model.logic?.onSearchTap(),
                     )
                   : Container()
             ],
@@ -69,8 +69,8 @@ class MainPage extends StatelessWidget {
                   },
                   child: AnimatedFloatingButton(
                     null,
-                    bgColor: globalModel.isBgChangeWithCard
-                        ? model.logic.getCurrentCardColor()
+                    bgColor: globalModel.isBgChangeWithCard??false
+                        ? model.logic?.getCurrentCardColor()??Colors.grey
                         : Colors.grey,
                   ),
                 )
@@ -93,14 +93,14 @@ class MainPage extends StatelessWidget {
                                 child: Container(
                                   alignment: Alignment.centerLeft,
                                   child: InkWell(
-                                    onTap: model.logic.onAvatarTap,
+                                    onTap: model.logic?.onAvatarTap,
                                     child: Hero(
                                       tag: 'avatar',
                                       child: Container(
                                         width: 60,
                                         height: 60,
                                         child: ClipRRect(
-                                          child: model.logic.getAvatarWidget(),
+                                          child: model.logic?.getAvatarWidget(),
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(30)),
                                         ),
@@ -115,6 +115,7 @@ class MainPage extends StatelessWidget {
                                   alignment: Alignment.centerRight,
                                   child: model.needSyn
                                       ? SynchronizeWidget(
+                                    null,
                                           mainPageModel: model,
                                         )
                                       : Container(),
@@ -134,13 +135,13 @@ class MainPage extends StatelessWidget {
                                     child: InkWell(
                                       onTap: model.currentUserName.isEmpty
                                           ? null
-                                          : model.logic.onUserNameTap,
+                                          : model.logic?.onUserNameTap,
                                       child: Text(
                                         "${IntlLocalizations.of(context)?.welcomeWord}${model.currentUserName}",
                                         style: TextStyle(
                                             fontSize: 30,
                                             color: globalModel.logic
-                                                .getWhiteInDark()),
+                                                ?.getWhiteInDark()),
                                         maxLines: 3,
                                         overflow: TextOverflow.ellipsis,
                                       ),
@@ -151,9 +152,9 @@ class MainPage extends StatelessWidget {
                                           icon: Icon(
                                             Icons.account_circle,
                                             color: globalModel.logic
-                                                .getWhiteInDark(),
+                                                ?.getWhiteInDark(),
                                           ),
-                                          onPressed: model.logic.onUserNameTap,
+                                          onPressed: model.logic?.onUserNameTap,
                                         )
                                       : SizedBox()
                                 ],
@@ -169,7 +170,7 @@ class MainPage extends StatelessWidget {
                               "${IntlLocalizations.of(context)?.taskItems(model.tasks.length)}",
                               style: TextStyle(
                                   fontSize: 15,
-                                  color: globalModel.logic.getWhiteInDark()),
+                                  color: globalModel.logic?.getWhiteInDark()),
                             ),
                           ),
                         ),
@@ -177,11 +178,11 @@ class MainPage extends StatelessWidget {
                     ),
                   ),
                   model.tasks.length == 0
-                      ? model.logic.getEmptyWidget(globalModel)
+                      ? model.logic?.getEmptyWidget(globalModel)??Container()
                       : Container(
                           margin: EdgeInsets.only(top: 40, bottom: 40),
                           child: CarouselSlider(
-                            items: model.logic.getCards(context),
+                            items: model.logic?.getCards(context),
                             options: CarouselOptions(
                               aspectRatio: 16 / 9,
                               height: min(size.width, size.height) - 100,
@@ -195,7 +196,7 @@ class MainPage extends StatelessWidget {
                               scrollDirection: Axis.horizontal,
                               onPageChanged: (index, reason) {
                                 model.currentCardIndex = index;
-                                if (globalModel.isBgChangeWithCard)
+                                if (globalModel.isBgChangeWithCard??false)
                                   model.refresh();
                               },
                             ),

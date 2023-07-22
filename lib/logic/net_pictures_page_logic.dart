@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -121,35 +120,35 @@ class NetPicturesPageLogic {
                     Keys.currentAccountBackgroundType,
                     AccountBGType.netPicture);
                 final accountPageModel = _model.accountPageModel;
-                accountPageModel.backgroundUrl = currentUrl;
-                accountPageModel.backgroundType = AccountBGType.netPicture;
-                accountPageModel.refresh();
+                accountPageModel?.backgroundUrl = currentUrl;
+                accountPageModel?.backgroundType = AccountBGType.netPicture;
+                accountPageModel?.refresh();
                 break;
               case NetPicturesUseType.navigatorHeader:
                 SharedUtil.instance
                     .saveString(Keys.currentNetPicUrl, currentUrl!);
                 SharedUtil.instance
-                    .saveString(Keys.currentNavHeader, _model.useType);
-                globalModel.currentNetPicUrl = currentUrl;
-                globalModel.currentNavHeader = _model.useType;
-                globalModel.refresh();
+                    .saveString(Keys.currentNavHeader, _model.useType??"");
+                globalModel?.currentNetPicUrl = currentUrl;
+                globalModel?.currentNavHeader = _model.useType??"";
+                globalModel?.refresh();
                 break;
               case NetPicturesUseType.taskCardBackground:
                 _model.taskBean.backgroundUrl = currentUrl!;
                 DBProvider.db.updateTask(_model.taskBean);
-                final searchModel = globalModel.searchPageModel;
-                searchModel.refresh();
-                final mainPageModel = globalModel.mainPageModel;
-                mainPageModel.refresh();
+                final searchModel = globalModel?.searchPageModel;
+                searchModel?.refresh();
+                final mainPageModel = globalModel?.mainPageModel;
+                mainPageModel?.refresh();
                 break;
               default:
                 SharedUtil.instance
                     .saveString(Keys.currentMainPageBackgroundUrl, currentUrl!);
                 SharedUtil.instance
                     .saveBoolean(Keys.enableNetPicBgInMainPage, true);
-                globalModel.currentMainPageBgUrl = currentUrl;
-                globalModel.enableNetPicBgInMainPage = true;
-                globalModel.refresh();
+                globalModel?.currentMainPageBgUrl = currentUrl;
+                globalModel?.enableNetPicBgInMainPage = true;
+                globalModel?.refresh();
                 break;
             }
             Navigator.of(_model.context).pop();
@@ -161,9 +160,9 @@ class NetPicturesPageLogic {
     Navigator.of(_model.context).push(new CupertinoPageRoute(builder: (ctx) {
       return PicturesHistoryPage(
         null,
-        useType: _model.useType,
+        useType: _model.useType??"",
         taskBean: _model.taskBean,
-        accountPageModel: _model.accountPageModel,
+        accountPageModel: _model.accountPageModel??AccountPageModel(context: ctx, isExisting: false)
       );
     }));
   }
@@ -192,34 +191,34 @@ class NetPicturesPageLogic {
         SharedUtil.instance.saveString(
             Keys.currentAccountBackgroundType, AccountBGType.netPicture);
         final accountPageModel = _model.accountPageModel;
-        accountPageModel.backgroundUrl = currentUrl;
-        accountPageModel.backgroundType = AccountBGType.netPicture;
-        accountPageModel.refresh();
+        accountPageModel?.backgroundUrl = currentUrl;
+        accountPageModel?.backgroundType = AccountBGType.netPicture;
+        accountPageModel?.refresh();
         break;
       case NetPicturesUseType.navigatorHeader:
         SharedUtil.instance.saveString(Keys.currentNetPicUrl, currentUrl);
-        SharedUtil.instance.saveString(Keys.currentNavHeader, _model.useType);
-        globalModel.currentNetPicUrl = currentUrl;
-        globalModel.currentNavHeader = _model.useType;
-        globalModel.refresh();
+        SharedUtil.instance.saveString(Keys.currentNavHeader, _model.useType??"");
+        globalModel?.currentNetPicUrl = currentUrl;
+        globalModel?.currentNavHeader = _model.useType??"";
+        globalModel?.refresh();
         break;
       case NetPicturesUseType.taskCardBackground:
         _model.taskBean?.backgroundUrl = currentUrl;
         DBProvider.db.updateTask(_model.taskBean);
-        final searchModel = globalModel.searchPageModel;
+        final searchModel = globalModel?.searchPageModel;
         searchModel?.refresh();
-        final taskDetailPageModel = globalModel.taskDetailPageModel;
+        final taskDetailPageModel = globalModel?.taskDetailPageModel;
         taskDetailPageModel?.refresh();
-        final mainPageModel = globalModel.mainPageModel;
+        final mainPageModel = globalModel?.mainPageModel;
         mainPageModel?.refresh();
         break;
       default:
         SharedUtil.instance
             .saveString(Keys.currentMainPageBackgroundUrl, currentUrl);
         SharedUtil.instance.saveBoolean(Keys.enableNetPicBgInMainPage, true);
-        globalModel.currentMainPageBgUrl = currentUrl;
-        globalModel.enableNetPicBgInMainPage = true;
-        globalModel.refresh();
+        globalModel?.currentMainPageBgUrl = currentUrl;
+        globalModel?.enableNetPicBgInMainPage = true;
+        globalModel?.refresh();
         break;
     }
     Navigator.of(context).pop();

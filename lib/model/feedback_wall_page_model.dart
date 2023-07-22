@@ -6,7 +6,7 @@ import 'package:todo_list/widgets/loading_widget.dart';
 
 class FeedbackWallPageModel extends ChangeNotifier{
 
-  FeedbackWallPageLogic logic;
+  FeedbackWallPageLogic? logic;
   BuildContext context;
   CancelToken cancelToken = CancelToken();
 
@@ -16,15 +16,15 @@ class FeedbackWallPageModel extends ChangeNotifier{
 
   bool hasCache = false;
 
-  FeedbackWallPageModel(this.logic,this.context){
+  FeedbackWallPageModel({this.logic,required this.context}){
     logic = FeedbackWallPageLogic(this);
   }
 
   void setContext(BuildContext context){
     if(this.context == null){
         this.context = context;
-        logic.getCacheSuggestions();
-        logic.getSuggestions();
+        logic!.getCacheSuggestions();
+        logic!.getSuggestions();
     }
   }
 

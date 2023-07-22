@@ -4,7 +4,7 @@ import 'package:todo_list/logic/all_logic.dart';
 import 'package:todo_list/widgets/net_loading_widget.dart';
 
 class ResetPasswordPageModel extends ChangeNotifier {
-  ResetPasswordPageLogic logic;
+  ResetPasswordPageLogic? logic;
   BuildContext context;
 
   ///true表示重新设置密码，false表示忘记密码
@@ -41,7 +41,8 @@ class ResetPasswordPageModel extends ChangeNotifier {
 
 
 
-  ResetPasswordPageModel(this.logic,this.context, this.isReset) {
+  ResetPasswordPageModel(
+  {this.logic,required this.context,required  this.isReset}) {
     logic = ResetPasswordPageLogic(this);
     this.isReset = isReset;
   }

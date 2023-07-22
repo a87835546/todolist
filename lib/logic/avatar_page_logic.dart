@@ -35,7 +35,7 @@ class AvatarPageLogic {
       case AvatarType.history:
         Navigator.of(context).push(new CupertinoPageRoute(builder: (ctx) {
           return AvatarHistoryPage(null,
-            currentAvatarUrl: _model.mainPageModel.currentAvatarUrl,
+            currentAvatarUrl: _model.mainPageModel?.currentAvatarUrl??"",
             avatarPageModel: _model,
           );
         }));
@@ -72,7 +72,7 @@ class AvatarPageLogic {
 
   void onSaveTap() async {
     final croppedFile = await ImageCrop.cropImage(
-      file: File(_model.currentAvatarUrl),
+      file: File(_model.currentAvatarUrl??""),
       area: _model.cropKey.currentState!.area!,
     );
     await _saveImage(croppedFile);
@@ -102,9 +102,9 @@ class AvatarPageLogic {
   Future _saveImageData(String filePath) async {
     await SharedUtil.instance.saveString(Keys.localAvatarPath,filePath);
     await SharedUtil.instance.saveInt(Keys.currentAvatarType, CurrentAvatarType.local);
-    _model.mainPageModel.currentAvatarType = CurrentAvatarType.local;
-    _model.mainPageModel.currentAvatarUrl = filePath;
-    _model.mainPageModel.refresh();
+    _model.mainPageModel?.currentAvatarType = CurrentAvatarType.local;
+    _model.mainPageModel?.currentAvatarUrl = filePath;
+    _model.mainPageModel?.refresh();
     Navigator.of(_model.context).pop();
   }
 
@@ -135,7 +135,7 @@ class AvatarPageLogic {
 
   void _showLoadingDialog(BuildContext context) {
     showDialog(context: context, builder: (ctx){
-      return NetLoadingWidget();
+      return NetLoadingWidget(null);
     });
   }
 
@@ -162,7 +162,7 @@ class AvatarPageLogic {
         return AssetImage("images/icon.png");
         break;
       case CurrentAvatarType.local:
-        File file = File(url);
+        File file = File(url!);
         if (file.existsSync()) {
           return FileImage(file);
         } else {
@@ -170,7 +170,7 @@ class AvatarPageLogic {
         }
         break;
       case CurrentAvatarType.net:
-        return NetworkImage(url);
+        return NetworkImage(url!);
         break;
     }
     return AssetImage("images/icon.png");

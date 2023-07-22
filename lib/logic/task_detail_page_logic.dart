@@ -1,4 +1,4 @@
-import 'dart:js_util';
+
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -19,12 +19,12 @@ class TaskDetailPageLogic {
   TaskDetailPageLogic(this._model);
 
   double _getOverallProgress() {
-    int length = _model.taskBean.detailList?.length??0;
+    int length = _model.taskBean?.detailList.length??0;
     double overallProgress = 0.0;
     for (int i = 0; i < length; i++) {
-      overallProgress += _model.taskBean.detailList?[i].itemProgress??0 / length;
+      overallProgress += _model.taskBean?.detailList[i].itemProgress??0 / length;
     }
-    _model.taskBean.overallProgress =
+    _model.taskBean?.overallProgress =
         overallProgress > 0.999 ? 1.0 : overallProgress;
     return overallProgress;
   }
@@ -39,7 +39,7 @@ class TaskDetailPageLogic {
 
   Color getTextColor(BuildContext context){
     final taskBean = _model.taskBean;
-    final textColor = taskBean.textColor;
+    final textColor = taskBean?.textColor;
     if(textColor != null) return ColorBean.fromBean(textColor);
     return DefaultTextStyle.of(context).style.backgroundColor??Colors.grey;
   }
@@ -47,13 +47,13 @@ class TaskDetailPageLogic {
   //页面退出需要执行的逻辑,isDeleting表示这个页面是否执行了删除当前任务的操作
   void exitPage({bool isDeleting = false}) {
     final context = _model.context;
-    final mainPageModel = _model.globalModel.mainPageModel;
-    mainPageModel.canHideWidget = false;
+    final mainPageModel = _model.globalModel?.mainPageModel;
+    mainPageModel?.canHideWidget = false;
     bool needUpdate = needUpdateDatabase();
     if (needUpdate && !isDeleting) {
       ///如果一个任务中的所有任务项都完成了,因为主页面都是未完成任务，所以删除主页面的该任务
-      if (_model.taskBean.overallProgress >= 1.0) {
-        _model.taskBean.finishDate = DateTime.now().toIso8601String();
+      if (_model.taskBean!.overallProgress >= 1.0) {
+        _model.taskBean?.finishDate = DateTime.now().toIso8601String();
 
         ///下面这个延时操作，目的如下，如果一个任务完成了，主页面会把这个任务去除掉
         ///这个时候主页任务卡片的herotag就消失了，因为herotag不一致，会导致hero动画失效
@@ -62,75 +62,75 @@ class TaskDetailPageLogic {
               milliseconds: 800,
             ), () {
           debugPrint("删除了");
-          removeTask(mainPageModel);
+          removeTask(mainPageModel!);
           debugPrint("刷新main");
           mainPageModel.refresh();
         });
       }
-      _model.taskBean.changeTimes++;
-      DBProvider.db.updateTask(_model.taskBean).then((value) async {
+      _model.taskBean?.changeTimes++;
+      DBProvider.db.updateTask(_model.taskBean??TaskBean(detailList: [])).then((value) async {
         final account =
             await SharedUtil.instance.getString(Keys.account) ?? 'default';
         if (account != 'default') {
-          _model.taskBean.uniqueId == null
-              ? mainPageModel.logic.postCreateTask(_model.taskBean)
-              : mainPageModel.logic.postUpdateTask(_model.taskBean);
+          _model.taskBean?.uniqueId == null
+              ? mainPageModel?.logic?.postCreateTask(_model.taskBean!)
+              : mainPageModel?.logic?.postUpdateTask(_model.taskBean!);
         }
 
         ///如果是从"完成列表"过来
         if (_model.doneTaskPageModel != null) {
-          mainPageModel.logic.getTasks();
-          _model.doneTaskPageModel!.logic.getDoneTasks().then((value) {
+          mainPageModel?.logic?.getTasks();
+          _model.doneTaskPageModel!.logic?.getDoneTasks().then((value) {
             _model.doneTaskPageModel!.refresh();
-            Navigator.of(context).pop();
+            Navigator.of(context!).pop();
           });
         }
         ///如果是从"搜索页面"过来
         else if (_model.searchPageModel != null) {
           _model.isExiting = true;
           _model.refresh();
-          mainPageModel.logic.getTasks();
-          _model.searchPageModel!.logic.onEditingComplete();
-          Navigator.of(context).pop();
+          mainPageModel?.logic?.getTasks();
+          _model.searchPageModel!.logic?.onEditingComplete();
+          Navigator.of(context!).pop();
         } else {
           debugPrint("退出了");
           _model.isExiting = true;
           _model.refresh();
-          Navigator.of(context).pop();
+          Navigator.of(context!).pop();
         }
       });
       return;
     }
     _model.isExiting = true;
     _model.refresh();
-    mainPageModel.refresh();
+    mainPageModel?.refresh();
     if(isDeleting){
       Future.delayed(
           Duration(
             milliseconds: 800,
           ), () {
         debugPrint("删除了");
-        removeTask(mainPageModel);
+        removeTask(mainPageModel!);
         debugPrint("刷新main");
         mainPageModel.refresh();
       });
     }
-    Navigator.of(context).pop();
+    Navigator.of(context!).pop();
 
   }
 
   bool needUpdateDatabase() {
-    return _model.progress != _model.taskBean.overallProgress;
+    return _model.progress != _model.taskBean?.overallProgress;
   }
 
   void deleteTask(MainPageModel mainPageModel) async {
     final account =
         await SharedUtil.instance.getString(Keys.account) ?? 'default';
     showDialog(
-        context: _model.context,
+        context: _model.context!,
         builder: (ctx) {
           return AlertDialog(
-            title: Text("${IntlLocalizations.of(_model.context)?.doDelete}${_model.taskBean.taskName}"),
+            title: Text("${IntlLocalizations.of(_model.context)?.doDelete}${_model.taskBean?.taskName}"),
             actions: <Widget>[
               TextButton(onPressed: (){
                 Navigator.of(_model.context).pop();
@@ -153,7 +153,7 @@ class TaskDetailPageLogic {
     showDialog(
         context: _model.context,
         builder: (ctx) {
-          return NetLoadingWidget();
+          return NetLoadingWidget(null);
         });
     final token = await SharedUtil.instance.getString(Keys.token);
     ApiService.instance?.postDeleteTask(
@@ -176,7 +176,7 @@ class TaskDetailPageLogic {
       params: {
         "token": token!,
         "account": account,
-        "uniqueId": _model.taskBean.uniqueId,
+        "uniqueId": _model.taskBean?.uniqueId??"",
       },
       token: _model.cancelToken,
     );
@@ -184,12 +184,12 @@ class TaskDetailPageLogic {
 
   void deleteAndExit(MainPageModel mainPageModel) {
 //    removeTask(mainPageModel);
-    DBProvider.db.deleteTask(_model.taskBean.id);
+    DBProvider.db.deleteTask(_model.taskBean!.id);
 //    _model.refresh();
     //如果是从“完成列表”过来
     final doneTaskPageModel = _model.doneTaskPageModel;
     if (doneTaskPageModel != null) {
-      doneTaskPageModel.doneTasks.removeAt(doneTaskPageModel.currentTapIndex);
+      doneTaskPageModel.doneTasks?.removeAt(doneTaskPageModel.currentTapIndex??0);
       doneTaskPageModel.refresh();
     }
     //如果是从"搜索界面"过来
@@ -204,7 +204,7 @@ class TaskDetailPageLogic {
   void removeTask(MainPageModel mainPageModel) {
     for (var i = 0; i < mainPageModel.tasks.length; i++) {
       var task = mainPageModel.tasks[i];
-      if (task.id == _model.taskBean.id) {
+      if (task.id == _model.taskBean?.id) {
         mainPageModel.tasks.removeAt(i);
         break;
       }
@@ -216,8 +216,8 @@ class TaskDetailPageLogic {
       new CupertinoPageRoute(
         builder: (ctx) {
           return ProviderConfig.getInstance().getEditTaskPage(
-            _model.taskBean.taskIconBean??newObject(),
-            taskBean: _model.taskBean,
+            _model.taskBean?.taskIconBean??TaskIconBean(taskName: '', iconBean: null, colorBean: null),
+            taskBean: _model.taskBean!,
             taskDetailPageModel: _model,
           );
         },

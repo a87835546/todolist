@@ -5,11 +5,11 @@ import 'package:todo_list/widgets/net_loading_widget.dart';
 
 class FeedbackPageModel extends ChangeNotifier{
 
-  FeedbackPageLogic logic;
+  FeedbackPageLogic? logic;
   BuildContext context;
   final LoadingController loadingController = LoadingController();
 
-  int currentSelectSvg = -99;
+  int? currentSelectSvg = -99;
 
   final List<String> svgPaths = [
     "svgs/mood_1.svg",
@@ -19,12 +19,12 @@ class FeedbackPageModel extends ChangeNotifier{
     "svgs/mood_5.svg",
   ];
 
-  String feedbackContent = "";
-  String contactWay = "";
+  String? feedbackContent = "";
+  String? contactWay = "";
   final CancelToken cancelToken = CancelToken();
 
-  FeedbackPageModel(this.logic,this.context,this.contactWay,
-      this.currentSelectSvg,this.feedbackContent){
+  FeedbackPageModel({this.logic,required this.context,this.contactWay,
+      this.currentSelectSvg,this.feedbackContent}){
     logic = FeedbackPageLogic(this);
   }
 

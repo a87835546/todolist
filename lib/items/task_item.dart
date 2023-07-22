@@ -23,11 +23,11 @@ class TaskItem extends StatelessWidget {
       taskBean: taskBean,
       onDelete: onDelete,
       onEdit: onEdit,
-      isCardChangeWithBg: globalModel.isCardChangeWithBg,
+      isCardChangeWithBg: globalModel.isCardChangeWithBg??false,
     );
 
     final bgUrl = taskBean.backgroundUrl;
-    final opacity = globalModel.mainPageModel.currentTransparency;
+    final opacity = globalModel.mainPageModel?.currentTransparency;
 
     return Container(
       margin: EdgeInsets.all(10),
@@ -37,7 +37,7 @@ class TaskItem extends StatelessWidget {
             tag: "task_bg$index",
             child: Container(
               decoration: BoxDecoration(
-                color: globalModel.logic.getBgInDark().withOpacity(opacity),
+                color: globalModel.logic?.getBgInDark().withOpacity(opacity!),
                 borderRadius: BorderRadius.circular(15.0),
                 border: Border.all(color: Theme.of(context).cardColor),
                 image: bgUrl == null
@@ -45,7 +45,7 @@ class TaskItem extends StatelessWidget {
                     : DecorationImage(
                         image: getProvider(bgUrl),
                         colorFilter: new ColorFilter.mode(
-                            Colors.black.withOpacity(opacity), BlendMode.dstATop),
+                            Colors.black.withOpacity(opacity??10), BlendMode.dstATop),
                         fit: BoxFit.cover,
                       ),
               ),

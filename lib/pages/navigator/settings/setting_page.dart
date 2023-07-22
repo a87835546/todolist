@@ -1,4 +1,4 @@
-import 'dart:js_util';
+
 import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
@@ -14,6 +14,8 @@ import 'package:todo_list/widgets/background_slider.dart';
 import 'package:todo_list/widgets/edit_dialog.dart';
 import 'package:todo_list/widgets/net_loading_widget.dart';
 
+import '../../../json/task_bean.dart';
+import '../../../model/account_page_model.dart';
 import '../../all_page.dart';
 import 'navigator_setting_page.dart';
 
@@ -36,13 +38,13 @@ void onNetPicBgSelect(
   if (value) {
     Navigator.of(context).push(new CupertinoPageRoute(builder: (ctx) {
       return ProviderConfig.getInstance().getNetPicturesPage(
-        useType: NetPicturesUseType.mainPageBackground, accountPageModel: newObject(), taskBean: newObject(),
+        useType: NetPicturesUseType.mainPageBackground, accountPageModel: AccountPageModel(context: context, isExisting: false), taskBean: TaskBean(detailList: []),
       );
     }));
   } else {
-    globalModel.enableNetPicBgInMainPage = false;
+    globalModel?.enableNetPicBgInMainPage = false;
     SharedUtil.instance.saveBoolean(Keys.enableNetPicBgInMainPage, false);
-    globalModel.refresh();
+    globalModel?.refresh();
   }
 }
 
@@ -52,25 +54,27 @@ void onWeatherOpen(bool value, BuildContext context, GlobalModel globalModel) {
       context: context,
       builder: (ctx1) {
         return EditDialog(
+          null,
           positiveWithPop: false,
           title: IntlLocalizations.of(context)?.enableWeatherShow??"",
           hintText: IntlLocalizations.of(context)?.inputCurrentCity??"",
-          initialValue: globalModel.currentPosition,
+          initialValue: globalModel?.currentPosition,
           onValueChanged: (text) {
-            globalModel.currentPosition = text;
+            globalModel?.currentPosition = text;
           },
-          sureTextStyle: TextStyle(color: globalModel.logic.getbwInDark()),
+          sureTextStyle: TextStyle(color: globalModel?.logic?.getbwInDark()),
           onPositive: () {
-            if (globalModel.currentPosition.isEmpty) return;
+            if (globalModel!.currentPosition.isEmpty) return;
             CancelToken cancelToken = CancelToken();
             showDialog(
                 context: ctx1,
                 builder: (ctx2) {
                   return NetLoadingWidget(
+                    null,
                     onRequest: () {
-                      globalModel.logic.getWeatherNow(
-                          globalModel.currentPosition,
-                          controller: globalModel.loadingController, context: context);
+                      globalModel?.logic?.getWeatherNow(
+                          globalModel!.currentPosition,
+                          controller: globalModel!.loadingController, context: context);
                     },
                     cancelToken: cancelToken,
                     errorText: IntlLocalizations.of(context)?.weatherGetWrong??"",
@@ -80,7 +84,7 @@ void onWeatherOpen(bool value, BuildContext context, GlobalModel globalModel) {
                       Navigator.of(context).pop();
                       Navigator.of(context).pop();
                     },
-                    loadingController: globalModel.loadingController,
+                    loadingController: globalModel?.loadingController,
                   );
                 });
           },
@@ -88,9 +92,9 @@ void onWeatherOpen(bool value, BuildContext context, GlobalModel globalModel) {
       },
     );
   } else {
-    globalModel.enableWeatherShow = false;
+    globalModel?.enableWeatherShow = false;
     SharedUtil.instance.saveBoolean(Keys.enableWeatherShow, false);
-    globalModel.refresh();
+    globalModel?.refresh();
   }
 }
 
@@ -102,13 +106,13 @@ ListView buildSettingListView(BuildContext context, GlobalModel globalModel) {
         secondary: const Icon(
           Icons.invert_colors,
         ),
-        value: globalModel.isBgGradient,
+        value: globalModel.isBgGradient??false,
         activeColor: Theme.of(context).primaryColor,
         onChanged: (value) {
-          globalModel.isBgGradient = value;
+          globalModel?.isBgGradient = value;
           SharedUtil.instance
-              .saveBoolean(Keys.backgroundGradient, globalModel.isBgGradient);
-          globalModel.refresh();
+              .saveBoolean(Keys.backgroundGradient, globalModel.isBgGradient??false);
+          globalModel?.refresh();
         },
       ),
       SwitchListTile(
@@ -116,17 +120,17 @@ ListView buildSettingListView(BuildContext context, GlobalModel globalModel) {
         secondary: const Icon(
           Icons.format_color_fill,
         ),
-        value: globalModel.isBgChangeWithCard,
+        value: globalModel.isBgChangeWithCard??false,
         activeColor: Theme.of(context).primaryColor,
         onChanged: (value) {
           globalModel.isBgChangeWithCard = value;
-          if (globalModel.isCardChangeWithBg && value) {
-            globalModel.isCardChangeWithBg = false;
+          if (globalModel?.isCardChangeWithBg??false && value) {
+            globalModel?.isCardChangeWithBg = false;
             SharedUtil.instance
                 .saveBoolean(Keys.cardChangeWithBackground, false);
           }
           SharedUtil.instance.saveBoolean(
-              Keys.backgroundChangeWithCard, globalModel.isBgChangeWithCard);
+              Keys.backgroundChangeWithCard, globalModel.isBgChangeWithCard??false);
           globalModel.refresh();
         },
       ),
@@ -144,13 +148,13 @@ ListView buildSettingListView(BuildContext context, GlobalModel globalModel) {
         onChanged: (value) {
           globalModel.isCardChangeWithBg = value;
           if (globalModel.isBgChangeWithCard && value) {
-            globalModel.isBgChangeWithCard = false;
+            globalModel?.isBgChangeWithCard = false;
             SharedUtil.instance
                 .saveBoolean(Keys.backgroundChangeWithCard, false);
           }
           SharedUtil.instance.saveBoolean(
               Keys.cardChangeWithBackground, globalModel.isCardChangeWithBg);
-          globalModel.refresh();
+          globalModel?.refresh();
         },
       ),
       SwitchListTile(

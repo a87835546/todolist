@@ -22,31 +22,31 @@ class GlobalLogic{
 
   //当为夜间模式时候，白色替换为灰色
   Color getWhiteInDark(){
-    final themeType = _model.currentThemeBean.themeType;
+    final themeType = _model.currentThemeBean?.themeType;
     return themeType == MyTheme.darkTheme ? Colors.grey : Colors.white;
   }
 
   //当为夜间模式时候，白色背景替换为特定灰色
   Color getBgInDark(){
-    final themeType = _model.currentThemeBean.themeType;
+    final themeType = _model.currentThemeBean?.themeType;
     return (themeType == MyTheme.darkTheme) ? Colors.grey.withOpacity(0.8) : Colors.white;
   }
 
   //当为夜间模式时候，主题色背景替换为灰色
   Color getPrimaryGreyInDark(BuildContext context){
-    final themeType = _model.currentThemeBean.themeType;
+    final themeType = _model.currentThemeBean?.themeType;
     return themeType == MyTheme.darkTheme ? Colors.grey : Theme.of(context).primaryColor;
   }
 
   //当为夜间模式时候，主题色背景替换为特定灰色
   Color? getPrimaryInDark(BuildContext context){
-    final themeType = _model.currentThemeBean.themeType;
+    final themeType = _model.currentThemeBean?.themeType;
     return themeType == MyTheme.darkTheme ? Colors.grey[800] : Theme.of(context).primaryColor;
   }
 
   //当为夜间模式时候，黑色替换为白色
   Color getbwInDark(){
-    final themeType = _model.currentThemeBean.themeType;
+    final themeType = _model.currentThemeBean?.themeType;
     return themeType == MyTheme.darkTheme ? Colors.white : Colors.black;
   }
 
@@ -73,7 +73,7 @@ class GlobalLogic{
     ThemeBean themeBean = ThemeBean.fromMap(jsonDecode(theme));
     if(themeBean.themeType == MyTheme.random){
       themeBean.colorBean = ColorBean.fromColor(Colors.primaries[Random().nextInt(Colors.primaries.length)]);
-    } else if(themeBean.themeType == _model.currentThemeBean.themeType) return;
+    } else if(themeBean.themeType == _model.currentThemeBean?.themeType) return;
     _model.currentThemeBean = themeBean;
   }
 
@@ -229,12 +229,12 @@ class GlobalLogic{
     }, params : {
       "key": "d381a4276ed349daa3bf63646f12d8ae",
       "location": position,
-      "lang":_model.currentLocale.languageCode
+      "lang":_model.currentLocale?.languageCode??"en"
     }, token: CancelToken());
   }
 
   bool isDarkNow(){
-    return _model.currentThemeBean.themeType == MyTheme.darkTheme;
+    return _model.currentThemeBean?.themeType == MyTheme.darkTheme;
   }
 
 }

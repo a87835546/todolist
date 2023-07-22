@@ -6,19 +6,19 @@ import 'package:todo_list/model/main_page_model.dart';
 
 class AvatarPageModel extends ChangeNotifier{
 
-  AvatarPageLogic logic;
+  AvatarPageLogic? logic;
   BuildContext context;
-  MainPageModel mainPageModel;
-  CancelToken cancelToken = CancelToken();
+  MainPageModel? mainPageModel;
+  CancelToken? cancelToken = CancelToken();
 
   //当前头像的类型
-  int currentAvatarType = CurrentAvatarType.defaultAvatar;
+  int? currentAvatarType = CurrentAvatarType.defaultAvatar;
   //当前的头像url,比如本地的就是本地路径，网络就是网络地址
-  String currentAvatarUrl = "images/icon.png";
+  String? currentAvatarUrl = "images/icon.png";
 
   final cropKey = GlobalKey<CropState>();
 
-  AvatarPageModel(this.logic,this.context,this.mainPageModel,this.cancelToken,this.currentAvatarType,this.currentAvatarUrl){
+  AvatarPageModel({this.logic,required this.context,this.mainPageModel,this.cancelToken,this.currentAvatarType,this.currentAvatarUrl}){
     logic = AvatarPageLogic(this);
   }
 

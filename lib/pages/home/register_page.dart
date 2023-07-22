@@ -13,7 +13,7 @@ class RegisterPage extends StatelessWidget {
       appBar: AppBar(
         title: Text(IntlLocalizations.of(context)?.signUp??""),
         actions: <Widget>[
-          IconButton(icon: Icon(Icons.check), onPressed: model.logic.onSubmit,)
+          IconButton(icon: Icon(Icons.check), onPressed: model.logic?.onSubmit,)
         ],
       ),
       body: Container(
@@ -32,7 +32,7 @@ class RegisterPage extends StatelessWidget {
                       model.emailKey.currentState?.validate();
                     }
                   }),
-                  validator: (text) => model.logic.validatorEmail(text??""),
+                  validator: (text) => model.logic?.validatorEmail(text??""),
                   decoration: InputDecoration(
                     filled: true,
                     prefixIcon: Icon(Icons.email),
@@ -53,7 +53,7 @@ class RegisterPage extends StatelessWidget {
                       model.userNameKey.currentState?.validate();
                     }
                   }),
-                  validator: (text) => model.logic.validatorUserName(text??""),
+                  validator: (text) => model.logic?.validatorUserName(text??""),
                   maxLength: 20,
                   textCapitalization: TextCapitalization.words,
                   decoration: InputDecoration(
@@ -78,7 +78,7 @@ class RegisterPage extends StatelessWidget {
                   }),
                   maxLength: 20,
                   validator: (password) =>
-                      model.logic.validatePassword(password??""),
+                      model.logic?.validatePassword(password??""),
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: Colors.transparent,
@@ -101,7 +101,7 @@ class RegisterPage extends StatelessWidget {
                   }),
                   maxLength: 20,
                   validator: (rePassword) =>
-                      model.logic.validateRePassword(rePassword??""),
+                      model.logic?.validateRePassword(rePassword??""),
                   style: TextStyle(textBaseline: TextBaseline.alphabetic),
                   decoration: InputDecoration(
                     filled: true,
@@ -123,7 +123,7 @@ class RegisterPage extends StatelessWidget {
                     }
                   }),
                   validator: (verifyCode) =>
-                      model.logic.validatorVerifyCode(verifyCode??""),
+                      model.logic?.validatorVerifyCode(verifyCode??""),
                   maxLength: 6,
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
@@ -134,6 +134,7 @@ class RegisterPage extends StatelessWidget {
                       IntlLocalizations.of(context)?.inputVerifyCode,
                       labelText: IntlLocalizations.of(context)?.verifyCode,
                       suffixIcon: VerifyCodeWidget(
+                        null,
                         account: model.email,
                         isEmailOk: model.isEmailOk,
                         isUserNameOk: model.isUserNameOk,

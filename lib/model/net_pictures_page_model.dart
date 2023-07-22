@@ -13,9 +13,9 @@ import 'package:flutter/painting.dart' as painting;
 class NetPicturesPageModel extends ChangeNotifier{
 
 
-  NetPicturesPageLogic logic;
+  NetPicturesPageLogic? logic;
   BuildContext context;
-  GlobalModel globalModel;
+  GlobalModel? globalModel;
 
   List<PhotoBean> photos = [];
   String loadingErrorText = "";
@@ -29,15 +29,15 @@ class NetPicturesPageModel extends ChangeNotifier{
   bool isDisposed = false;
 
   ///表示这个网络图片是用来干嘛的,比如用来设置账号页面的背景、侧滑栏的头部图片
-  String useType;
+  String? useType;
 
   ///[accountPageModel]是从'我的账号'页面进入时传过来的值
-  AccountPageModel accountPageModel;
+  AccountPageModel? accountPageModel;
 
   ///[taskBean]表示当前背景设置页是为任务卡片设置背景
   TaskBean taskBean;
 
-  NetPicturesPageModel(this.context,this.logic,this.globalModel,this.useType, this.accountPageModel,this.taskBean){
+  NetPicturesPageModel({required this.context,this.logic,this.globalModel,this.useType,required this.accountPageModel,required this.taskBean}){
     this.useType = useType;
     this.accountPageModel = accountPageModel;
     this.taskBean = taskBean;
@@ -48,8 +48,8 @@ class NetPicturesPageModel extends ChangeNotifier{
     if(this.context == null){
         this.context = context;
         this.globalModel = globalModel;
-        logic.getCachePhotos().then((v){
-          logic.getPhotos(cancelToken: cancelToken);
+        logic?.getCachePhotos().then((v){
+          logic?.getPhotos(cancelToken: cancelToken);
         });
     }
   }

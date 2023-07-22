@@ -18,7 +18,7 @@ class ResetPasswordPage extends StatelessWidget {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.check),
-            onPressed: model.logic.onSubmit,
+            onPressed: model.logic?.onSubmit,
           )
         ],
       ),
@@ -41,7 +41,7 @@ class ResetPasswordPage extends StatelessWidget {
                               model.emailKey.currentState?.validate();
                             }
                           }),
-                        validator: (text) => model.logic.validatorEmail(text??""),
+                        validator: (text) => model.logic?.validatorEmail(text??""),
                         decoration: InputDecoration(
                           filled: true,
                           prefixIcon: Icon(Icons.email),
@@ -65,7 +65,7 @@ class ResetPasswordPage extends StatelessWidget {
                           }
                         }),
                         validator: (verifyCode) =>
-                            model.logic.validatorVerifyCode(verifyCode??""),
+                            model.logic?.validatorVerifyCode(verifyCode??""),
                         maxLength: 6,
                         keyboardType: TextInputType.number,
                         style: TextStyle(textBaseline: TextBaseline.alphabetic),
@@ -77,6 +77,7 @@ class ResetPasswordPage extends StatelessWidget {
                                 IntlLocalizations.of(context)?.inputVerifyCode,
                             labelText: IntlLocalizations.of(context)?.verifyCode,
                             suffixIcon: VerifyCodeWidget(
+                              null,
                               account: model.emailAccount,
                               isEmailOk: model.isEmailOk,
                               isForgetPassword: true,
@@ -96,7 +97,7 @@ class ResetPasswordPage extends StatelessWidget {
                         style: TextStyle(textBaseline: TextBaseline.alphabetic),
                         maxLength: 20,
                         validator: (password) =>
-                            model.logic.validateOldPassword(password??""),
+                            model.logic?.validateOldPassword(password??""),
                         decoration: InputDecoration(
                           filled: true,
                           fillColor: Colors.transparent,
@@ -120,7 +121,7 @@ class ResetPasswordPage extends StatelessWidget {
                   }),
                   maxLength: 20,
                   validator: (password) =>
-                      model.logic.validateNewPassword(password??""),
+                      model.logic?.validateNewPassword(password??""),
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: Colors.transparent,
@@ -143,7 +144,7 @@ class ResetPasswordPage extends StatelessWidget {
                   }),
                   maxLength: 20,
                   validator: (rePassword) =>
-                      model.logic.validateRePassword(rePassword??""),
+                      model.logic?.validateRePassword(rePassword??""),
                   decoration: InputDecoration(
                     filled: true,
                     prefixIcon: Icon(Icons.lock),

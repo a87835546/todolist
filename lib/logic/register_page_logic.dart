@@ -121,7 +121,7 @@ class RegisterPageLogic{
       return;
     }
     showDialog(context: context, builder: (ctx){
-      return NetLoadingWidget();
+      return NetLoadingWidget(null);
     });
     _registerEmail(model, context);
   }

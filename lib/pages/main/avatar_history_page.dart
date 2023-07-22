@@ -44,6 +44,7 @@ class _AvatarHistoryPageState extends State<AvatarHistoryPage> {
             margin: EdgeInsets.only(right: 20),
             child: avatarPaths.isNotEmpty
                 ? CustomAnimatedSwitcher(
+              null,
                     firstChild: Icon(
                       Icons.border_color,
                       size: 20,
@@ -140,12 +141,12 @@ class _AvatarHistoryPageState extends State<AvatarHistoryPage> {
   Future onAvatarSelect(String url, BuildContext context) async {
     final avatarPageModel = widget.avatarPageModel;
     final mainPageModel = avatarPageModel.mainPageModel;
-    mainPageModel.currentAvatarUrl = url;
-    mainPageModel.currentAvatarType = CurrentAvatarType.local;
+    mainPageModel?.currentAvatarUrl = url;
+    mainPageModel?.currentAvatarType = CurrentAvatarType.local;
     await SharedUtil.instance.saveString(Keys.localAvatarPath, url);
     await SharedUtil.instance
         .saveInt(Keys.currentAvatarType, CurrentAvatarType.local);
-    mainPageModel.refresh();
+    mainPageModel?.refresh();
     Navigator.of(context).popUntil((route) => route.isFirst);
   }
 
@@ -178,7 +179,7 @@ class _AvatarHistoryPageState extends State<AvatarHistoryPage> {
     showDialog(
         context: context,
         builder: (ctx) {
-          return NetLoadingWidget();
+          return NetLoadingWidget(null);
         });
   }
 

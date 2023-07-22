@@ -1,4 +1,4 @@
-import 'dart:js_util';
+
 
 import 'package:flutter/cupertino.dart';
 import 'package:todo_list/config/api_service.dart';
@@ -10,8 +10,8 @@ import 'package:todo_list/widgets/loading_widget.dart';
 class SearchPageModel extends ChangeNotifier{
 
   BuildContext context;
-  SearchPageLogic logic;
-  GlobalModel _globalModel;
+  SearchPageLogic? logic;
+  GlobalModel? _globalModel;
 
   List<TaskBean> searchTasks = [];
   final TextEditingController textEditingController = TextEditingController();
@@ -23,7 +23,7 @@ class SearchPageModel extends ChangeNotifier{
   CancelToken cancelToken = CancelToken();
 
 
-  SearchPageModel(this.logic,this.context,this._globalModel){
+  SearchPageModel(this._globalModel,{this.logic,required this.context}){
     logic = SearchPageLogic(this);
   }
 
@@ -41,7 +41,7 @@ class SearchPageModel extends ChangeNotifier{
     textEditingController?.dispose();
     if(!cancelToken.isCancelled) cancelToken.cancel();
     super.dispose();
-    _globalModel.searchPageModel = newObject();
+    _globalModel?.searchPageModel = null;
     debugPrint("SearchPageModel销毁了");
   }
 

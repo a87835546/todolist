@@ -12,8 +12,8 @@ class SearchPage extends StatelessWidget {
     final globalModel = Provider.of<GlobalModel>(context);
     final model = Provider.of<SearchPageModel>(context)..setContext(context,globalModel);
     globalModel.setSearchPageModel(model);
-    final primaryColor = globalModel.logic.getPrimaryInDark(context);
-    final bgColor = globalModel.logic.getWhiteInDark();
+    final primaryColor = globalModel.logic?.getPrimaryInDark(context);
+    final bgColor = globalModel.logic?.getWhiteInDark()??Colors.grey;
 
     return Scaffold(
       backgroundColor: primaryColor,
@@ -27,7 +27,7 @@ class SearchPage extends StatelessWidget {
           textInputAction: TextInputAction.search,
           autofocus: true,
           controller: model.textEditingController,
-          onEditingComplete: model.logic.onEditingComplete,
+          onEditingComplete: model.logic?.onEditingComplete,
           decoration: new InputDecoration(
             hintText: IntlLocalizations.of(context)?.tryToSearch,
             hintStyle: new TextStyle(color: bgColor),
@@ -58,7 +58,7 @@ class SearchPage extends StatelessWidget {
               child: LoadingWidget(
                 flag: model.loadingFlag,
                 progressColor: bgColor,
-                textColor: globalModel.logic.getWhiteInDark(),
+                textColor: globalModel.logic?.getWhiteInDark(),
               ),
             ),
           )
@@ -67,14 +67,14 @@ class SearchPage extends StatelessWidget {
                 children: List.generate(model.searchTasks.length, (index) {
                   final task = model.searchTasks[index];
                   return GestureDetector(
-                    onTap: () => model.logic.onTaskTap(index, task, globalModel),
+                    onTap: () => model.logic?.onTaskTap(index, task, globalModel),
                     child: AspectRatio(
                       aspectRatio: 1,
                       child: TaskItem(
                         task.id,
                         task,
-                        onDelete: () => model.logic.onDelete(globalModel, task),
-                        onEdit: () => model.logic.onEdit(task, globalModel.mainPageModel),
+                        onDelete: () => model.logic?.onDelete(globalModel, task),
+                        onEdit: () => model.logic?.onEdit(task, globalModel.mainPageModel),
                       ),
                     ),
                   );

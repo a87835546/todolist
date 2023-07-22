@@ -4,21 +4,21 @@ import 'package:todo_list/logic/all_logic.dart';
 
 class ThemePageModel extends ChangeNotifier{
 
-  ThemePageLogic logic;
+  ThemePageLogic? logic;
   BuildContext context;
   Color customColor = Colors.black;
 
   List<ThemeBean> themes = [];
   bool isDeleting = false;
 
-  ThemePageModel(this.logic,this.context){
+  ThemePageModel({this.logic,required this.context}){
     logic = ThemePageLogic(this);
   }
 
   void setContext(BuildContext context){
     if(this.context == null){
         this.context = context;
-        logic.getThemeList();
+        logic?.getThemeList();
     }
   }
 

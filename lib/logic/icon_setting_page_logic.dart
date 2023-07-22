@@ -184,7 +184,7 @@ class IconSettingPageLogic {
   }
 
   AppBar getSearchBar(GlobalModel globalModel) {
-    final textColor = globalModel.logic.getWhiteInDark();
+    final textColor = globalModel.logic?.getWhiteInDark();
 
     return AppBar(
       title: TextField(

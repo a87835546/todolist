@@ -19,18 +19,20 @@ class ThemePage extends StatelessWidget {
         actions: <Widget>[
           model.themes.length > 7
               ? CustomAnimatedSwitcher(
+            null,
                   firstChild: IconButton(
+
                     icon: Icon(
                       Icons.border_color,
                       size: 18,
-                      color: globalModel.logic.getWhiteInDark(),
+                      color: globalModel.logic?.getWhiteInDark(),
                     ),
                     onPressed: null,
                   ),
                   secondChild: IconButton(
                     icon: Icon(
                       Icons.check,
-                      color: globalModel.logic.getWhiteInDark(),
+                      color: globalModel.logic?.getWhiteInDark(),
                     ),
                     onPressed: null,
                   ),
@@ -47,14 +49,14 @@ class ThemePage extends StatelessWidget {
         alignment: Alignment.topCenter,
         child: ListView(
           children: <Widget>[
-            model.logic.getRandomColorBloc(size, globalModel),
+            model.logic?.getRandomColorBloc(size, globalModel)??Container(),
             ...List.generate(model.themes.length, (index) {
               final themeBean = model.themes[index];
               return Stack(
                 children: <Widget>[
                   AbsorbPointer(
                     absorbing: model.isDeleting,
-                    child: model.logic.getThemeBloc(
+                    child: model.logic?.getThemeBloc(
                       themeBean,
                       size,
                       globalModel,
@@ -69,7 +71,7 @@ class ThemePage extends StatelessWidget {
                               Icons.cancel,
                               color: Colors.redAccent,
                             ),
-                            onPressed: () => model.logic.removeIcon(index),
+                            onPressed: () => model.logic?.removeIcon(index),
                           )
                         : Container(),
                   )
@@ -99,7 +101,7 @@ class ThemePage extends StatelessWidget {
                 title: Text(
                   '    ' +
                       '${IntlLocalizations.of(context)?.autoDarkMode}'+
-                      ' ${model.logic.getTimeRangeText(globalModel.autoDarkModeTimeRange, globalModel.enableAutoDarkMode)}',
+                      ' ${model.logic?.getTimeRangeText(globalModel.autoDarkModeTimeRange, globalModel.enableAutoDarkMode)}',
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 12),
                 ),
@@ -112,13 +114,13 @@ class ThemePage extends StatelessWidget {
                 value: globalModel.enableAutoDarkMode,
                 activeColor: Colors.black,
                 onChanged: (value) =>
-                    model.logic.onAutoThemeChanged(globalModel, value),
+                    model.logic?.onAutoThemeChanged(globalModel, value),
               ),
             ),
             model.isDeleting
                 ? Container()
                 : InkWell(
-                    onTap: model.logic.createCustomTheme,
+                    onTap: model.logic?.createCustomTheme,
                     child: Container(
                       height: (size.width - 140) / 4,
                       margin: EdgeInsets.fromLTRB(20, 10, 20, 10),

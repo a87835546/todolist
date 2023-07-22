@@ -310,7 +310,7 @@ class _SynchronizeWidgetState extends State< SynchronizeWidget> {
         }
         await DBProvider.db.updateTasks(needUpdateTasks);
         await DBProvider.db.createTasks(needCreateTasks);
-        widget.mainPageModel.logic.getTasks().then((v){
+        widget.mainPageModel.logic?.getTasks().then((v){
           widget.mainPageModel.needSyn = false;
           widget.mainPageModel.refresh();
         });
@@ -364,7 +364,7 @@ class _SynchronizeWidgetState extends State< SynchronizeWidget> {
               SharedUtil.instance.saveInt(Keys.currentAvatarType, CurrentAvatarType.net);
               widget.mainPageModel.currentAvatarUrl = ApiStrategy.baseUrl + loginBean.avatarUrl;
               widget.mainPageModel.currentAvatarType = CurrentAvatarType.net;
-              widget.mainPageModel.logic.getCurrentAvatar();
+              widget.mainPageModel.logic?.getCurrentAvatar();
             }
           }
           widget.mainPageModel.currentUserName = loginBean.username;

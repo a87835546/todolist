@@ -4,7 +4,7 @@ import 'package:todo_list/logic/all_logic.dart';
 
 class LoginPageModel extends ChangeNotifier{
 
-  LoginPageLogic logic;
+  LoginPageLogic? logic;
   BuildContext context;
 
 
@@ -25,7 +25,7 @@ class LoginPageModel extends ChangeNotifier{
 
   CancelToken cancelToken = CancelToken();
 
-  LoginPageModel(this.logic,this.context, this.isFirst){
+  LoginPageModel({this.logic,required this.context,required this.isFirst}){
     logic = LoginPageLogic(this);
     this.isFirst = isFirst;
   }

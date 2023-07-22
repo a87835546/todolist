@@ -14,7 +14,7 @@ class IconSettingPage extends StatelessWidget {
     final globalModel = Provider.of<GlobalModel>(context);
 
     return Scaffold(
-      appBar: model.isSearching ? model.logic.getSearchBar(globalModel) : AppBar(
+      appBar: model.isSearching ? model.logic?.getSearchBar(globalModel) : AppBar(
         title: Text(IntlLocalizations.of(context)?.iconSetting??""),
         actions: <Widget>[
           IconButton(icon: Icon(Icons.search), onPressed: () {
@@ -39,6 +39,7 @@ class IconSettingPage extends StatelessWidget {
                 child: Container(
                   child: model.taskIcons.length > 6
                       ? CustomAnimatedSwitcher(
+                    super.key,
                           firstChild: Icon(
                             Icons.border_color,
                             size: 20,
@@ -82,15 +83,15 @@ class IconSettingPage extends StatelessWidget {
                             children: <Widget>[
                               InkWell(
                                   child: Icon(
-                                    IconBean.fromBean(taskIcon.iconBean),
+                                    IconBean.fromBean(taskIcon.iconBean??IconBean(codePoint: 0, fontFamily: '', fontPackage: '', iconName: '', matchTextDirection: null)),
                                     color:
-                                        ColorBean.fromBean(taskIcon.colorBean),
+                                        ColorBean.fromBean(taskIcon.colorBean??ColorBean()),
                                     size: 40,
                                   ),
                                   onTap: () {
 
-                                    model.logic.onIconPress(
-                                      model.taskIcons[index].iconBean,
+                                    model.logic?.onIconPress(
+                                      model.taskIcons[index].iconBean??IconBean(codePoint: 0, fontFamily: '', fontPackage: '', iconName: '', matchTextDirection: null),
                                       colorBean:
                                           model.taskIcons[index].colorBean,
                                       name: model.taskIcons[index].taskName,
@@ -118,7 +119,7 @@ class IconSettingPage extends StatelessWidget {
                           child: Opacity(
                             opacity: model.isDeleting ? 1.0 : 0.0,
                             child: GestureDetector(
-                              onTap: () => model.logic.removeIcon(index),
+                              onTap: () => model.logic?.removeIcon(index),
                               child: Icon(
                                 Icons.cancel,
                                 color: Colors.redAccent,
@@ -140,7 +141,7 @@ class IconSettingPage extends StatelessWidget {
           Expanded(
             child: Container(
               alignment: Alignment.center,
-              child: model.logic.getIconsWidget()
+              child: model.logic?.getIconsWidget()
             ),
           )
         ],

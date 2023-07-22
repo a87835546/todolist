@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'dart:js_util';
+
 
 import 'package:flutter/material.dart';
 import 'package:todo_list/config/api_service.dart';
@@ -11,11 +11,11 @@ import 'package:todo_list/model/search_page_model.dart';
 import 'global_model.dart';
 
 class TaskDetailPageModel extends ChangeNotifier {
-  TaskDetailPageLogic logic;
+  TaskDetailPageLogic? logic;
   BuildContext context;
-  GlobalModel globalModel;
+  GlobalModel? globalModel;
 
-  int heroTag;
+  int? heroTag;
 
   //是否正在退出中，如果是，任务详情列表就消失，如果不是就展示
   bool isExiting = false;
@@ -24,14 +24,14 @@ class TaskDetailPageModel extends ChangeNotifier {
   bool isAnimationComplete = false;
 
   //这个定时器是为了配合hero动画定时的
-  Timer timer;
-  TaskBean taskBean;
+  Timer? timer;
+  TaskBean? taskBean;
 
   CancelToken cancelToken = CancelToken();
 
 
   //这个progress用于判断进度是否改变，当被改变后退出的时候就更新数据库
-  double progress;
+  double? progress;
 
   //如果不为空，表示是否从"完成列表"过来的
   DoneTaskPageModel? doneTaskPageModel;
@@ -39,24 +39,24 @@ class TaskDetailPageModel extends ChangeNotifier {
   //如果不为空，表示是否从"搜索界面"过来的
   SearchPageModel? searchPageModel;
 
-  TaskDetailPageModel(
-      this.logic,
-    this.context,
-     this.taskBean,
-      this.globalModel,
-      this.timer,
-      this.progress,
-      this.doneTaskPageModel,
-      this.searchPageModel,
-      this.heroTag
+  TaskDetailPageModel({
+    this.logic,
+    required this.context,
+    this.taskBean,
+    this.globalModel,
+    this.timer,
+    this.progress,
+    this.doneTaskPageModel,
+    this.searchPageModel,
+    this.heroTag
 
-      ) {
+  }) {
     logic = TaskDetailPageLogic(this);
     this.taskBean = taskBean;
     this.heroTag = heroTag;
     this.doneTaskPageModel = doneTaskPageModel;
     this.searchPageModel = searchPageModel;
-    this.progress = taskBean.overallProgress;
+    this.progress = taskBean?.overallProgress;
     //如果是从"完成列表"进来，就不搞hero动画了
     if (doneTaskPageModel != null) {
       isAnimationComplete = true;
@@ -86,7 +86,7 @@ class TaskDetailPageModel extends ChangeNotifier {
     timer?.cancel();
     if(!cancelToken.isCancelled) cancelToken.cancel();
     super.dispose();
-    globalModel.taskDetailPageModel = newObject();
+    globalModel?.taskDetailPageModel = null;
     debugPrint("TaskDetailPageModel销毁了");
 
   }

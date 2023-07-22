@@ -2,32 +2,33 @@ import 'package:flutter/material.dart';
 import 'package:todo_list/config/all_types.dart';
 import 'package:todo_list/json/theme_bean.dart';
 import 'package:todo_list/json/weather_bean.dart';
-import 'package:todo_list/logic/all_logic.dart';
 import 'package:todo_list/model/all_model.dart';
 import 'package:todo_list/model/main_page_model.dart';
 import 'package:todo_list/utils/theme_util.dart';
 import 'package:todo_list/widgets/net_loading_widget.dart';
 
+import '../logic/global_logic.dart';
+
 class GlobalModel extends ChangeNotifier {
-  GlobalLogic logic;
+  GlobalLogic? logic;
   BuildContext context;
   ///GlobalModel可以用来统一管理所有的model，这里只管理了一部分
   MainPageModel mainPageModel;
-  SearchPageModel searchPageModel;
-  TaskDetailPageModel taskDetailPageModel;
+  SearchPageModel? searchPageModel;
+  TaskDetailPageModel? taskDetailPageModel;
 
   ///app的名字
-  String appName = '一日';
+  String? appName = '一日';
 
   ///当前的主题颜色数据
-  ThemeBean currentThemeBean = ThemeBean(
+  ThemeBean? currentThemeBean = ThemeBean(
     themeName: 'pink',
     colorBean: ColorBean.fromColor(MyThemeColor.defaultColor),
     themeType: MyTheme.defaultTheme,
   );
 
   ///是否开启主页背景渐变
-  bool isBgGradient = false;
+  bool? isBgGradient = false;
 
 
 
@@ -62,7 +63,7 @@ class GlobalModel extends ChangeNotifier {
   String currentPosition = '';
 
   ///当前天气的json
-  WeatherBean weatherBean;
+  WeatherBean? weatherBean;
 
   ///设置页面，用于控制天气获取的loading加载框
   LoadingController loadingController = LoadingController();
@@ -70,22 +71,22 @@ class GlobalModel extends ChangeNotifier {
   ///当前语言
   List<String> currentLanguageCode = ['zh', 'CN'];
   String currentLanguage = '中文';
-  Locale currentLocale;
+  Locale? currentLocale;
 
   ///当前导航栏头部背景
   String currentNavHeader = NavHeadType.meteorShower;
 
   ///导航栏头部选择网络图片时的图片地址
-  String currentNetPicUrl = "";
+  String? currentNetPicUrl = "";
 
   ///是否进入登录页
-  bool goToLogin;
+  bool? goToLogin;
 
-  GlobalModel(this.logic,this.context,
-      this.mainPageModel,
+  GlobalModel({this.logic,required this.context,
+      required this.mainPageModel,
       this.taskDetailPageModel,
       this.searchPageModel,
-      this.goToLogin,this.currentLocale,this.weatherBean) {
+      this.goToLogin,this.currentLocale,this.weatherBean}) {
     logic = GlobalLogic(this);
   }
 
@@ -93,28 +94,28 @@ class GlobalModel extends ChangeNotifier {
     if (this.context == null) {
       this.context = context;
       Future.wait([
-        logic.getCurrentTheme(),
-        logic.getAppName(),
-        logic.getCurrentLanguageCode(),
-        logic.getCurrentLanguage(),
-        logic.getIsBgGradient(),
-        logic.getCurrentNavHeader(),
-        logic.getCurrentNetPicUrl(),
-        logic.getIsBgChangeWithCard(),
-        logic.getIsCardChangeWithBg(),
-        logic.getEnableInfiniteScroll(),
-        logic.getEnableSplashAnimation(),
-        logic.getEnableWeatherShow(),
-        logic.getAutoDarkMode(),
-        logic.getLoginState(),
-        logic.getCurrentMainPageBgUrl(),
-        logic.getEnableNetPicBgInMainPage(),
-        logic.getCurrentPosition(),
+        logic!.getCurrentTheme(),
+        logic!.getAppName(),
+        logic!.getCurrentLanguageCode(),
+        logic!.getCurrentLanguage(),
+        logic!.getIsBgGradient(),
+        logic!.getCurrentNavHeader(),
+        logic!.getCurrentNetPicUrl(),
+        logic!.getIsBgChangeWithCard(),
+        logic!.getIsCardChangeWithBg(),
+        logic!.getEnableInfiniteScroll(),
+        logic!.getEnableSplashAnimation(),
+        logic!.getEnableWeatherShow(),
+        logic!.getAutoDarkMode(),
+        logic!.getLoginState(),
+        logic!.getCurrentMainPageBgUrl(),
+        logic!.getEnableNetPicBgInMainPage(),
+        logic!.getCurrentPosition(),
       ]).then((value) {
-        logic.chooseTheme();
+        logic!.chooseTheme();
         currentLocale = Locale(currentLanguageCode[0], currentLanguageCode[1]);
         refresh();
-        logic.getRefreshDailyPicTime();
+        logic!.getRefreshDailyPicTime();
       });
     }
   }

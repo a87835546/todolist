@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'dart:js_util';
+
 import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
@@ -14,6 +14,7 @@ import 'package:todo_list/items/task_item.dart';
 import 'package:todo_list/json/color_bean.dart';
 import 'package:todo_list/json/common_bean.dart';
 import 'package:todo_list/json/task_bean.dart';
+import 'package:todo_list/json/task_icon_bean.dart';
 import 'package:todo_list/json/update_info_bean.dart';
 import 'package:todo_list/model/all_model.dart';
 import 'package:todo_list/utils/file_util.dart';
@@ -38,7 +39,7 @@ class MainPageLogic {
         child: TaskItem(
           taskBean.id,
           taskBean,
-          onEdit: () => _model.logic.editTask(taskBean),
+          onEdit: () => _model.logic?.editTask(taskBean),
           onDelete: () => showDialog(
               context: _model.context,
               builder: (ctx) {
@@ -49,7 +50,7 @@ class MainPageLogic {
                     TextButton(
                         onPressed: () {
                           Navigator.of(context).pop();
-                          _model.logic.deleteTask(taskBean);
+                          _model.logic?.deleteTask(taskBean);
                         },
                         child: Text(
                           IntlLocalizations.of(_model.context)?.delete??"delete",
@@ -135,8 +136,8 @@ class MainPageLogic {
   }
 
   Decoration getBackground(GlobalModel globalModel) {
-    bool isBgGradient = globalModel.isBgGradient;
-    bool isBgChangeWithCard = globalModel.isBgChangeWithCard;
+    bool isBgGradient = globalModel.isBgGradient??false;
+    bool isBgChangeWithCard = globalModel.isBgChangeWithCard??false;
     bool enableBg = globalModel.enableNetPicBgInMainPage;
     final bgUrl = globalModel.currentMainPageBgUrl;
 
@@ -190,7 +191,7 @@ class MainPageLogic {
     int taskLength = _model.tasks.length;
     if (taskLength == 0) return primaryColor;
     if (index > taskLength - 1) return primaryColor;
-    return ColorBean.fromBean(_model.tasks[index].taskIconBean?.colorBean??newObject());
+    return ColorBean.fromBean(_model.tasks[index].taskIconBean?.colorBean??ColorBean());
   }
 
   void deleteTask(TaskBean taskBean) async {
@@ -206,7 +207,7 @@ class MainPageLogic {
         showDialog(
             context: _model.context,
             builder: (ctx) {
-              return NetLoadingWidget();
+              return NetLoadingWidget(null);
             });
         ApiService.instance?.postDeleteTask(
           success: (CommonBean bean) {
@@ -249,7 +250,7 @@ class MainPageLogic {
       new CupertinoPageRoute(
         builder: (ctx) {
           return ProviderConfig.getInstance()
-              .getEditTaskPage(taskBean.taskIconBean??newObject(), taskBean: taskBean, taskDetailPageModel: newObject());
+              .getEditTaskPage(taskBean.taskIconBean??TaskIconBean(taskName: "", iconBean: null, colorBean: null), taskBean: taskBean, taskDetailPageModel: TaskDetailPageModel(context: ctx));
         },
       ),
     );
@@ -265,7 +266,7 @@ class MainPageLogic {
       alignment: Alignment.center,
       child: SvgPicture.asset(
         "svgs/empty_list.svg",
-        color: globalModel.logic.getWhiteInDark(),
+        color: globalModel.logic?.getWhiteInDark(),
         width: theMin,
         height: theMin,
         semanticsLabel: 'empty list',
@@ -369,6 +370,7 @@ class MainPageLogic {
         context: context,
         builder: (ctx) {
           return EditDialog(
+            null,
             title: IntlLocalizations.of(context)?.customUserName??"",
             hintText: IntlLocalizations.of(context)?.inputUserName??"",
             positiveWithPop: false,
@@ -440,7 +442,7 @@ class MainPageLogic {
     showDialog(
         context: context,
         builder: (ctx) {
-          return NetLoadingWidget();
+          return NetLoadingWidget(null);
         });
   }
 
@@ -467,16 +469,16 @@ class MainPageLogic {
                   version: updateInfo.appVersion,
                   updateUrl: updateInfo.downloadUrl,
                   updateInfo: updateInfo.updateInfo,
-                  updateInfoColor: globalModel.logic.getBgInDark(),
+                  updateInfoColor: globalModel.logic?.getBgInDark(),
                   backgroundColor:
-                      globalModel.logic.getPrimaryGreyInDark(context),
+                      globalModel.logic?.getPrimaryGreyInDark(context),
                 );
               });
         }
       },
       error: (msg) {},
       params: {
-        "language": globalModel.currentLocale.languageCode,
+        "language": globalModel.currentLocale?.languageCode??"en",
         "appId": "001"
       },
       token: cancelToken,
@@ -516,7 +518,7 @@ class MainPageLogic {
     showDialog(
         context: _model.context,
         builder: (ctx) {
-          return NetLoadingWidget();
+          return NetLoadingWidget(null);
         });
     final token = await SharedUtil.instance.getString(Keys.token);
     ApiService.instance?.postCreateTask(
@@ -546,7 +548,7 @@ class MainPageLogic {
   void onBackGroundTap(GlobalModel globalModel) {
     Navigator.of(_model.context).push(new CupertinoPageRoute(builder: (ctx) {
       return ProviderConfig.getInstance().getNetPicturesPage(
-        useType: NetPicturesUseType.mainPageBackground, accountPageModel: newObject(), taskBean: newObject(),
+        useType: NetPicturesUseType.mainPageBackground, accountPageModel: AccountPageModel(context: ctx, isExisting: false), taskBean: TaskBean(detailList: []),
       );
     }));
   }

@@ -14,11 +14,11 @@ class DoneTaskPageLogic {
     final tasks = await DBProvider.db.getTasks(isDone: true, account: '');
     if (tasks.length == 0) {
       _model.loadingFlag = LoadingFlag.empty;
-      _model.doneTasks.clear();
+      _model.doneTasks?.clear();
       return;
     }
-    _model.doneTasks.clear();
-    _model.doneTasks.addAll(tasks);
+    _model.doneTasks?.clear();
+    _model.doneTasks?.addAll(tasks);
     _model.loadingFlag = LoadingFlag.success;
   }
 

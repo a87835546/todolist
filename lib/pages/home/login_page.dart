@@ -1,4 +1,4 @@
-import 'dart:js_util';
+
 import 'dart:ui';
 import 'dart:io';
 import 'package:flutter/material.dart';
@@ -16,12 +16,12 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final model = Provider.of<LoginPageModel>(context)..setContext(context);
     final globalModel = Provider.of<GlobalModel>(context);
-    final bgColor = globalModel.logic.getBgInDark();
+    final bgColor = globalModel.logic?.getBgInDark();
 
     bool isDartNow =
-        globalModel.currentThemeBean.themeType == MyTheme.darkTheme;
+        globalModel.currentThemeBean?.themeType == MyTheme.darkTheme;
     final iconColor = isDartNow
-        ? ColorBean.fromBean(globalModel.currentThemeBean.colorBean??newObject())
+        ? ColorBean.fromBean(globalModel.currentThemeBean?.colorBean??ColorBean())
         : Theme.of(context).primaryColor;
 
     return Scaffold(
@@ -39,7 +39,7 @@ class LoginPage extends StatelessWidget {
                 icon: Icon(Platform.isAndroid
                     ? Icons.arrow_back
                     : Icons.arrow_back_ios, color: iconColor,),
-                onPressed: model.logic.onExit,
+                onPressed: model.logic?.onExit,
               ),
       ),
       body: Stack(
@@ -59,6 +59,7 @@ class LoginPage extends StatelessWidget {
           ),
           model.showLoginWidget
               ? LoginWidget(
+            null,
                   loginPageModel: model,
                 )
               : Container(),

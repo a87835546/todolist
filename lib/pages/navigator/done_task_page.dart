@@ -23,12 +23,12 @@ class DoneTaskPage extends StatelessWidget {
     final itemHeight =  minSize / 4;
     final textSize = itemHeight / 10;
 
-    final textColor = globalModel.logic.getWhiteInDark();
+    final textColor = globalModel.logic?.getWhiteInDark();
 
     bool isDartNow =
-        globalModel.currentThemeBean.themeType == MyTheme.darkTheme;
+        globalModel.currentThemeBean?.themeType == MyTheme.darkTheme;
     final bgColor = isDartNow
-        ? ColorBean.fromBean(globalModel.currentThemeBean.colorBean!)
+        ? ColorBean.fromBean(globalModel.currentThemeBean!.colorBean!)
         : Theme
         .of(context)
         .primaryColor;
@@ -36,7 +36,7 @@ class DoneTaskPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: globalModel.logic.getBgInDark(),
+        backgroundColor: globalModel.logic?.getBgInDark(),
         title: Text(
           IntlLocalizations
               .of(context)
@@ -50,16 +50,16 @@ class DoneTaskPage extends StatelessWidget {
         ),
       ),
       body: Container(
-        color: globalModel.logic.getBgInDark(),
+        color: globalModel.logic?.getBgInDark(),
         alignment: Alignment.center,
-        child: model.doneTasks.isNotEmpty
+        child: model.doneTasks?.isNotEmpty??false
             ? AnimationLimiter(
           child: ListView.builder(
-              itemCount: model.doneTasks.length,
+              itemCount: model.doneTasks?.length,
               itemBuilder: (ctx, index) {
-                final task = model.doneTasks[index];
-                final colorBean = task.taskIconBean?.colorBean;
-                final iconBean = task.taskIconBean?.iconBean;
+                final task = model.doneTasks![index];
+                final colorBean = task?.taskIconBean?.colorBean;
+                final iconBean = task?.taskIconBean?.iconBean;
                 final color = isDartNow
                     ? Colors.black.withOpacity(0.2)
                     : ColorBean.fromBean(colorBean!);
@@ -73,7 +73,7 @@ class DoneTaskPage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           InkWell(
-                            onTap: () => model.logic.onTaskTap(index, task),
+                            onTap: () => model.logic?.onTaskTap(index, task),
                             child: Container(
                               height: itemHeight,
                               width: itemHeight * 1.3,
@@ -114,7 +114,7 @@ class DoneTaskPage extends StatelessWidget {
                                       Text(
                                         "${IntlLocalizations
                                             .of(context)
-                                            ?.createDate}:${model.logic.getTimeText(
+                                            ?.createDate}:${model.logic?.getTimeText(
                                             task.createDate)}",
                                         style: TextStyle(
                                           fontSize: textSize,
@@ -159,7 +159,7 @@ class DoneTaskPage extends StatelessWidget {
                                   color: color,
                                 ),
                               ),
-                              index == model.doneTasks.length - 1
+                              index == model.doneTasks!.length - 1
                                   ? SizedBox(
                                 height: itemHeight / 2,
                               )
@@ -176,7 +176,7 @@ class DoneTaskPage extends StatelessWidget {
                             color: color,
                           ),
                           InkWell(
-                            onTap: () => model.logic.onTaskTap(index, task),
+                            onTap: () => model.logic?.onTaskTap(index, task),
                             child: Container(
                               height: itemHeight,
                               width: itemHeight * 1.3,
@@ -195,7 +195,7 @@ class DoneTaskPage extends StatelessWidget {
                                         child: Text(
                                           "${IntlLocalizations
                                               .of(context)
-                                              ?.spendTime}:${model.logic.getDiffTimeText(
+                                              ?.spendTime}:${model.logic?.getDiffTimeText(
                                               task.createDate, task.finishDate)}",
                                           maxLines: 3,
                                           style: TextStyle(
@@ -219,7 +219,7 @@ class DoneTaskPage extends StatelessWidget {
                                       Text(
                                         "${IntlLocalizations
                                             .of(context)
-                                            ?.completeDate}:${model.logic.getTimeText(
+                                            ?.completeDate}:${model.logic?.getTimeText(
                                             task.finishDate)}",
                                         style: TextStyle(
                                           fontSize: textSize,
@@ -243,8 +243,8 @@ class DoneTaskPage extends StatelessWidget {
               }),
         )
             : LoadingWidget(
-          progressColor: globalModel.logic.getPrimaryGreyInDark(context),
-          textColor: globalModel.logic.getPrimaryGreyInDark(context),
+          progressColor: globalModel.logic?.getPrimaryGreyInDark(context),
+          textColor: globalModel.logic?.getPrimaryGreyInDark(context),
           flag: model.loadingFlag,
           errorCallBack: () {},
           emptyText: IntlLocalizations

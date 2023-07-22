@@ -27,7 +27,7 @@ class VerifyCodeWidget extends StatefulWidget {
 class _VerifyCodeWidgetState extends State<VerifyCodeWidget> {
   String verifyTextShow = "";
   Color codeColor = Colors.green;
-  Timer _timer = Timer.run(() { });
+  Timer _timer = Timer.periodic(Duration(seconds: 1), (timer) { });
   bool isGettingCode = false;
   CancelToken cancelToken = CancelToken();
 
@@ -48,30 +48,30 @@ class _VerifyCodeWidgetState extends State<VerifyCodeWidget> {
     final globalModel = Provider.of<GlobalModel>(context);
 
     if (verifyTextShow == null) {
-      verifyTextShow = IntlLocalizations.of(context).getVerifyCode;
+      verifyTextShow = IntlLocalizations.of(context)?.getVerifyCode??"";
     }
     return TextButton(
       onPressed: () {
         if (isGettingCode) return;
-        if (!widget.isEmailOk) {
+        if (widget.isEmailOk !=null) {
           _showTextDialog(
               IntlLocalizations.of(context)?.checkYourEmail??"", context);
           return;
         }
-        if (!widget.isUserNameOk) {
+        if (widget.isUserNameOk != null) {
           _showTextDialog(
-              IntlLocalizations.of(context).checkYourUserName, context);
+              IntlLocalizations.of(context)?.checkYourUserName??"", context);
           return;
         }
         setState(() {
-          verifyTextShow = IntlLocalizations.of(context).waiting;
+          verifyTextShow = IntlLocalizations.of(context)?.waiting??"";
           codeColor = Colors.grey;
           isGettingCode = true;
         });
-        ApiService.instance.getVerifyCode(
+        ApiService.instance?.getVerifyCode(
           params: {
-            "account": widget.account,
-            "why": widget.isForgetPassword ? "emailForget" : "emailRegister",
+            "account": widget.account??"",
+            "why": widget.isForgetPassword??false ? "emailForget" : "emailRegister",
             "language": globalModel.currentLanguageCode[0]
           },
           success: (CommonBean bean) {
@@ -87,7 +87,7 @@ class _VerifyCodeWidgetState extends State<VerifyCodeWidget> {
               } else {
                 timer.cancel();
                 isGettingCode = false;
-                verifyTextShow = IntlLocalizations.of(context).getVerifyCode;
+                verifyTextShow = IntlLocalizations.of(context)?.getVerifyCode??"";
                 codeColor = Colors.green;
                 setState(() {});
               }
@@ -117,7 +117,7 @@ class _VerifyCodeWidgetState extends State<VerifyCodeWidget> {
   }
 
   void initialCodeData(BuildContext context) {
-    verifyTextShow = IntlLocalizations.of(context).getVerifyCode;
+    verifyTextShow = IntlLocalizations.of(context)?.getVerifyCode??"";
     codeColor = Colors.green;
     isGettingCode = false;
   }

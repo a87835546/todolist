@@ -28,6 +28,7 @@ class NavPage extends StatelessWidget {
         getNavHeader(globalModel, context),
         globalModel.enableWeatherShow
             ? WeatherWidget(
+            null,
                 globalModel: globalModel,
               )
             : SizedBox(),
@@ -114,7 +115,7 @@ class NavPage extends StatelessWidget {
         onTap: () {
           Navigator.of(context).push(CupertinoPageRoute(builder: (ctx) {
             return ImagePage(null,
-              imageUrls: [isDailyPic ? NavHeadType.DAILY_PIC_URL : url], initialPageIndex: 0  , onSelect: (page){
+              imageUrls: [isDailyPic ? NavHeadType.DAILY_PIC_URL : url??""], initialPageIndex: 0  , onSelect: (page){
               }, heroTag: '',
             );
           }));
@@ -123,7 +124,7 @@ class NavPage extends StatelessWidget {
             tag: "tag_0",
             child: Container(
               height: netImageHeight,
-              child: CustomCacheImage(null,url: isDailyPic ? NavHeadType.DAILY_PIC_URL : url,cacheManager: isDailyPic ? CustomCacheManager():null,)
+              child: CustomCacheImage(null,url: isDailyPic ? NavHeadType.DAILY_PIC_URL : url??"",cacheManager: isDailyPic ? CustomCacheManager():null,)
             )),
       );
     }

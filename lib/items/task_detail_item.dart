@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'dart:js_interop';
+
 
 import 'package:flutter/material.dart';
 
@@ -91,7 +91,7 @@ class _TaskDetailItemState extends State<TaskDetailItem>
                     value: currentProgress == 1.0,
                     onChanged: (value) {
                       setState(() {
-                        if (value.isNull) {
+                        if (value == null) {
                           currentProgress = 1.0;
                         } else {
                           currentProgress = 0.0;

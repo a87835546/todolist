@@ -1,4 +1,4 @@
-import 'dart:js_util';
+
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +11,9 @@ import 'package:todo_list/model/global_model.dart';
 import 'package:todo_list/utils/shared_util.dart';
 import 'package:todo_list/widgets/custom_cache_image.dart';
 import 'package:todo_list/widgets/nav_head.dart';
+
+import '../../../json/task_bean.dart';
+import '../../../model/account_page_model.dart';
 
 
 class NavSettingPage extends StatelessWidget {
@@ -48,10 +51,10 @@ class NavSettingPage extends StatelessWidget {
               subtitle: globalModel.currentNetPicUrl == "" ? null : GestureDetector(
                 onTap: (){
                   Navigator.of(context).push(new CupertinoPageRoute(builder: (ctx) {
-                    return ProviderConfig.getInstance().getNetPicturesPage(useType: NetPicturesUseType.navigatorHeader, accountPageModel: newObject(), taskBean: newObject());
+                    return ProviderConfig.getInstance().getNetPicturesPage(useType: NetPicturesUseType.navigatorHeader, accountPageModel: AccountPageModel(context: context, isExisting: false), taskBean: TaskBean(detailList: []));
                   }));
                 },
-              child: CustomCacheImage(null,url: globalModel.currentNetPicUrl,),)
+              child: CustomCacheImage(null,url: globalModel.currentNetPicUrl??"",),)
             ),
           ],
         ),
@@ -63,7 +66,7 @@ class NavSettingPage extends StatelessWidget {
 
     if(context != null && globalModel.currentNetPicUrl == ""){
       Navigator.of(context).push(new CupertinoPageRoute(builder: (ctx) {
-        return ProviderConfig.getInstance().getNetPicturesPage(useType: value, accountPageModel: newObject()  , taskBean: newObject());
+        return ProviderConfig.getInstance().getNetPicturesPage(useType: value, accountPageModel: AccountPageModel(context: context, isExisting: false)  , taskBean: TaskBean(detailList: []));
       }));
       return;
     }

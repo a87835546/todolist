@@ -230,7 +230,7 @@ class ApiService {
       required Function success,
       required Function failed,
       required Function error,
-      required CancelToken token}) {
+        CancelToken? token}) {
     ApiStrategy.getInstance().postUpload(
         "fUser/uploadAvatar",
         (data) {

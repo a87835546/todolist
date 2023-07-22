@@ -1,3 +1,5 @@
+
+
 import 'package:flutter/material.dart';
 import 'package:todo_list/config/api_service.dart';
 import 'package:todo_list/database/database.dart';
@@ -41,7 +43,7 @@ class EditTaskPageLogic {
     final controller = _model.textEditingController;
     String text = controller.text;
     if (text.isEmpty) return;
-    _model.taskDetails.add(TaskDetailBean(taskDetailName: text));
+    _model.taskDetails?.add(TaskDetailBean(taskDetailName: text));
 //    WidgetsBinding.instance.addPostFrameCallback( (_) => controller.clear());
     controller.clear();
     _model.refresh();
@@ -70,10 +72,10 @@ class EditTaskPageLogic {
   //监听文字，提交按钮是否可以点击
   void editListener() {
     final text = _model.textEditingController.text;
-    if (text.isEmpty && _model.canAddTaskDetail) {
+    if (text.isEmpty && _model.canAddTaskDetail != null) {
       _model.canAddTaskDetail = false;
       _model.refresh();
-    } else if (text.isNotEmpty && !_model.canAddTaskDetail) {
+    } else if (text.isNotEmpty && _model.canAddTaskDetail == null) {
       _model.canAddTaskDetail = true;
       _model.refresh();
     }
@@ -81,7 +83,7 @@ class EditTaskPageLogic {
 
   //删除一项任务
   void removeItem(int index) {
-    _model.taskDetails.removeAt(index);
+    _model.taskDetails?.removeAt(index);
     _model.refresh();
   }
 
@@ -91,12 +93,12 @@ class EditTaskPageLogic {
     initialDate = initialDate.add(Duration(days: 1));
     DateTime firstDate = initialDate;
     DateTime lastDate = initialDate.add(Duration(days: 365));
-    showDP(firstDate, initialDate, lastDate, globalModel.logic.isDarkNow())
+    showDP(firstDate, initialDate, lastDate, globalModel.logic?.isDarkNow()??false)
         .then(
       (day) {
         if (day == null) return;
         if (_model.startDate != null) {
-          if (day.isBefore(_model.startDate)) {
+          if (day.isBefore(_model.startDate!)) {
             showDialog(
                 context: _model.context,
                 builder: (ctx) {
@@ -120,12 +122,12 @@ class EditTaskPageLogic {
     DateTime initialDate = DateTime.now();
     DateTime firstDate = initialDate.add(Duration(days: 1));
     DateTime lastDate = initialDate.add(Duration(days: 365));
-    showDP(firstDate, initialDate, lastDate, globalModel.logic.isDarkNow())
+    showDP(firstDate, initialDate, lastDate, globalModel.logic?.isDarkNow()??false)
         .then(
       (day) {
         if (day == null) return;
         if (_model.deadLine != null) {
-          if (day.isAfter(_model.deadLine)) {
+          if (day.isAfter(_model.deadLine!)) {
             showDialog(
                 context: _model.context,
                 builder: (ctx) {
@@ -174,7 +176,7 @@ class EditTaskPageLogic {
   String getEndTimeText() {
     if (_model.deadLine != null) {
       final time = _model.deadLine;
-      return "${time.year}-${time.month}-${time.day}";
+      return "${time?.year}-${time?.month}-${time?.day}";
     }
     return IntlLocalizations.of(_model.context)?.deadline??"";
   }
@@ -183,7 +185,7 @@ class EditTaskPageLogic {
   String getStartTimeText() {
     if (_model.startDate != null) {
       final time = _model.startDate;
-      return "${time.year}-${time.month}-${time.day}";
+      return "${time?.year}-${time?.month}-${time?.day}";
     }
     return IntlLocalizations.of(_model.context)?.startDate??"";
   }
@@ -206,7 +208,7 @@ class EditTaskPageLogic {
 
   //创建新的任务
   void submitNewTask() async {
-    if (_model.taskDetails.length == 0) {
+    if (_model.taskDetails?.length == 0) {
       showDialog(
           context: _model.context,
           builder: (ctx) {
@@ -229,26 +231,26 @@ class EditTaskPageLogic {
 
   Future exitWithSubmitNewTask(TaskBean taskBean,{bool needCancelDialog = false}) async {
     await DBProvider.db.createTask(taskBean);
-    await _model.mainPageModel.logic.getTasks();
-    _model.mainPageModel.refresh();
+    await _model.mainPageModel?.logic?.getTasks();
+    _model.mainPageModel?.refresh();
     Navigator.of(_model.context).pop();
     if(needCancelDialog) Navigator.of(_model.context).pop();
   }
 
   Future exitWhenSubmitOldTask(TaskBean taskBean) async {
     DBProvider.db.updateTask(taskBean);
-    await _model.mainPageModel.logic.getTasks();
-    _model.mainPageModel.refresh();
+    await _model.mainPageModel?.logic?.getTasks();
+    _model.mainPageModel?.refresh();
     if (_model.taskDetailPageModel != null) {
-      _model.taskDetailPageModel.isExiting = true;
-      _model.taskDetailPageModel.refresh();
+      _model.taskDetailPageModel!.isExiting = true;
+      _model.taskDetailPageModel!.refresh();
     }
     Navigator.of(_model.context).popUntil((route) => route.isFirst);
   }
 
   //修改旧的任务
   void submitOldTask() async {
-    if (_model.taskDetails.length == 0) {
+    if (_model.taskDetails?.length == 0) {
       showDialog(
           context: _model.context,
           builder: (ctx) {
@@ -274,7 +276,7 @@ class EditTaskPageLogic {
   ///在云端创建一个任务
   void postCreateTask(TaskBean taskBean,{bool isSubmitOldTask = false}) async{
     showDialog(context: _model.context, builder: (ctx){
-      return NetLoadingWidget();
+      return NetLoadingWidget(null);
     });
     final token = await SharedUtil.instance.getString(Keys.token);
     ApiService.instance?.postCreateTask(
@@ -285,12 +287,12 @@ class EditTaskPageLogic {
       },
       failed: (UploadTaskBean bean){
         taskBean.needUpdateToCloud = 'true';
-        _model.mainPageModel.needSyn = true;
+        _model.mainPageModel?.needSyn = true;
         isSubmitOldTask ? exitWhenSubmitOldTask(taskBean) : exitWithSubmitNewTask(taskBean, needCancelDialog: true);
       },
       error: (msg){
         taskBean.needUpdateToCloud = 'true';
-        _model.mainPageModel.needSyn = true;
+        _model.mainPageModel?.needSyn = true;
         isSubmitOldTask ? exitWhenSubmitOldTask(taskBean) : exitWithSubmitNewTask(taskBean, needCancelDialog: true);
       },
       taskBean: taskBean,
@@ -302,7 +304,7 @@ class EditTaskPageLogic {
   ///在云端更新一个任务
   void postUpdateTask(TaskBean taskBean, ) async{
     showDialog(context: _model.context, builder: (ctx){
-      return NetLoadingWidget();
+      return NetLoadingWidget(null);
     });
     final token = await SharedUtil.instance.getString(Keys.token);
     ApiService.instance?.postUpdateTask(
@@ -312,12 +314,12 @@ class EditTaskPageLogic {
       },
       failed: (CommonBean bean){
         taskBean.needUpdateToCloud = 'true';
-        _model.mainPageModel.needSyn = true;
+        _model.mainPageModel?.needSyn = true;
         exitWhenSubmitOldTask(taskBean);
       },
       error: (msg){
         taskBean.needUpdateToCloud = 'true';
-        _model.mainPageModel.needSyn = true;
+        _model.mainPageModel?.needSyn = true;
         exitWhenSubmitOldTask(taskBean);
       },
       taskBean: taskBean,
@@ -328,10 +330,10 @@ class EditTaskPageLogic {
 
   //获取当前任务总进度
   double _getOverallProgress() {
-    int length = _model.taskDetails.length;
+    int length = _model.taskDetails?.length??0;
     double overallProgress = 0.0;
     for (int i = 0; i < length; i++) {
-      overallProgress += _model.taskDetails[i].itemProgress / length;
+      overallProgress += _model.taskDetails?[i].itemProgress??0 / length;
     }
     return overallProgress;
   }
@@ -340,29 +342,29 @@ class EditTaskPageLogic {
       {int id = 0, double overallProgress = 0.0}) async {
     final account =
         await SharedUtil.instance.getString(Keys.account) ?? "default";
-    final taskName = _model.currentTaskName.isEmpty
-        ? _model.taskIcon.taskName
+    final taskName = _model.currentTaskName?.isEmpty??false
+        ? _model.taskIcon?.taskName
         : _model.currentTaskName;
     final createDate = _model?.createDate?.toIso8601String() ??
         DateTime.now().toIso8601String();
     TaskBean taskBean = TaskBean(
-      taskName: taskName,
+      taskName: taskName!,
       account: account,
       taskStatus: _model.oldTaskBean.taskStatus ?? TaskStatus.todo,
       needUpdateToCloud: _model.oldTaskBean.needUpdateToCloud ?? 'false',
-      uniqueId: _model.uniqueId ,
-      taskType: _model.taskIcon.taskName,
-      taskDetailNum: _model.taskDetails.length,
+      uniqueId: _model.uniqueId??"",
+      taskType: _model.taskIcon?.taskName??"",
+      taskDetailNum: _model.taskDetails?.length??0,
       createDate: createDate,
-      startDate: _model.startDate.toIso8601String(),
-      deadLine: _model.deadLine.toIso8601String(),
-      detailList: _model.taskDetails,
+      startDate: _model.startDate!.toIso8601String(),
+      deadLine: _model.deadLine!.toIso8601String(),
+      detailList: _model.taskDetails!,
       taskIconBean: _model.taskIcon,
-      changeTimes: _model.changeTimes,
+      changeTimes: _model.changeTimes??0,
       overallProgress: overallProgress,
-      backgroundUrl: _model.backgroundUrl,
+      backgroundUrl: _model.backgroundUrl??"",
       textColor: _model.textColorBean,
-      finishDate: _model?.finishDate?.toIso8601String() ?? "",
+      finishDate: _model.finishDate?.toIso8601String() ?? "",
     );
     if (id != null) {
       taskBean.id = id;
@@ -373,8 +375,8 @@ class EditTaskPageLogic {
   //用旧任务数据初始化所有数据
   void initialDataFromOld(TaskBean oldTaskBean) {
     if (oldTaskBean != null) {
-      _model.taskDetails.clear();
-      _model.taskDetails.addAll(oldTaskBean.detailList as Iterable<TaskDetailBean>);
+      _model.taskDetails?.clear();
+      _model.taskDetails?.addAll(oldTaskBean.detailList as Iterable<TaskDetailBean>);
       if (oldTaskBean.deadLine != null)
         _model.deadLine = DateTime.parse(oldTaskBean.deadLine);
       if (oldTaskBean.startDate != null)
@@ -399,7 +401,7 @@ class EditTaskPageLogic {
     bool isEdit = isEditOldTask();
     final context = _model.context;
     String defaultTitle =
-        "${IntlLocalizations.of(context)?.defaultTitle}:${_model.taskIcon.taskName}";
+        "${IntlLocalizations.of(context)?.defaultTitle}:${_model.taskIcon?.taskName}";
     String oldTaskTitle = "${_model?.oldTaskBean?.taskName}";
     return isEdit ? oldTaskTitle : defaultTitle;
   }
@@ -428,7 +430,7 @@ class EditTaskPageLogic {
             content: CustomIconWidget(
               iconData: IconBean.fromBean(iconBean),
               onApplyTap: (Color color) async {
-                _model.taskIcon.colorBean = ColorBean.fromColor(color);
+                _model.taskIcon?.colorBean = ColorBean.fromColor(color);
                 _model.refresh();
               },
               pickerColor: ColorBean.fromBean(colorBean),
@@ -436,7 +438,7 @@ class EditTaskPageLogic {
                 final name = text.isEmpty
                     ? IntlLocalizations.of(_model.context)?.defaultIconName
                     : text;
-                _model.taskIcon.iconBean?.iconName = name;
+                _model.taskIcon?.iconBean?.iconName = name;
               },
               iconName: iconBean.iconName??"",
             ));
@@ -444,11 +446,11 @@ class EditTaskPageLogic {
   }
 
   void moveTaskDetail(int oldIndex, int newIndex) {
-    var oldDetail = _model.taskDetails.removeAt(oldIndex);
-    if(newIndex >= _model.taskDetails.length){
-      _model.taskDetails.add(oldDetail);
+    var oldDetail = _model.taskDetails?.removeAt(oldIndex);
+    if(newIndex >= _model.taskDetails!.length){
+      _model.taskDetails?.add(oldDetail!);
     } else {
-      _model.taskDetails.insert(newIndex, oldDetail);
+      _model.taskDetails?.insert(newIndex, oldDetail!);
     }
     _model.refresh();
   }

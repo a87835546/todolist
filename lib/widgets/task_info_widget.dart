@@ -27,9 +27,9 @@ class TaskInfoWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final iconColor = isCardChangeWithBg
         ? Theme.of(context).primaryColor
-        : ColorBean.fromBean(taskBean!.taskIconBean!.colorBean);
+        : ColorBean.fromBean(taskBean!.taskIconBean!.colorBean??ColorBean());
     final textColor = getTextColor(context);
-    final taskIconData = IconBean.fromBean(taskBean!.taskIconBean!.iconBean);
+    final taskIconData = IconBean.fromBean(taskBean!.taskIconBean!.iconBean??IconBean(codePoint: 0, fontFamily: '', fontPackage: '', iconName: '', matchTextDirection: null));
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceAround,

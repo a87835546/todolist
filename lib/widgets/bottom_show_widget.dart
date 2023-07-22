@@ -1,4 +1,3 @@
-import 'dart:js_util';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -9,6 +8,9 @@ import 'package:todo_list/model/global_model.dart';
 import 'package:circle_list/circle_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:todo_list/pages/navigator/settings/setting_page.dart';
+
+import '../json/task_bean.dart';
+import '../model/task_detail_page_model.dart';
 
 class BottomShowWidget extends StatefulWidget {
   final VoidCallback onExit;
@@ -107,7 +109,7 @@ class _BottomShowWidgetState extends State<BottomShowWidget>
                                 builder: (ctx) {
                                   return ProviderConfig.getInstance()
                                       .getEditTaskPage(
-                                    _children[index], taskDetailPageModel: newObject(), taskBean: newObject(),
+                                    _children[index], taskDetailPageModel: TaskDetailPageModel(context: context), taskBean: TaskBean(detailList: []),
                                   );
                                 },
                               ),
@@ -115,14 +117,14 @@ class _BottomShowWidgetState extends State<BottomShowWidget>
                           },
                           tooltip: _children[index].taskName,
                           icon: Icon(
-                            IconBean.fromBean(_children[index].iconBean),
+                            IconBean.fromBean(_children[index].iconBean??IconBean(codePoint: 0, fontFamily: '', fontPackage: '', iconName: '', matchTextDirection: null)),
                             size: 40,
-                            color: ColorBean.fromBean(_children[index].colorBean),
+                            color: ColorBean.fromBean(_children[index].colorBean??ColorBean()),
                           ),
                         );
                       }),
                       innerCircleColor: Theme.of(context).primaryColorLight,
-                      outerCircleColor: globalModel.logic.getBgInDark(),
+                      outerCircleColor: globalModel.logic?.getBgInDark(),
                       innerCircleRotateWithChildren: true,
                       centerWidget: GestureDetector(
                           onTap: () {

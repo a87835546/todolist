@@ -3,7 +3,7 @@ import 'package:todo_list/config/all_types.dart';
 import 'package:todo_list/logic/all_logic.dart';
 
 class AccountPageModel extends ChangeNotifier {
-  AccountPageLogic logic;
+  AccountPageLogic? logic;
   BuildContext context;
 
   String? avatarUrl;
@@ -14,7 +14,14 @@ class AccountPageModel extends ChangeNotifier {
 
   bool isExisting = false;
 
-  AccountPageModel(this.logic,this.context,this.avatarUrl,this.userName,this.emailAccount,this.backgroundType,this.backgroundUrl,this.isExisting) {
+  AccountPageModel({this.logic,
+    required this.context,
+     this.avatarUrl,
+     this.userName,
+     this.emailAccount,
+     this.backgroundType,
+     this.backgroundUrl,
+    required this.isExisting}) {
     logic = AccountPageLogic(this);
   }
 
@@ -22,11 +29,11 @@ class AccountPageModel extends ChangeNotifier {
     if (this.context == null) {
       this.context = context;
       Future.wait([
-        logic.getAvatarUrl(),
-        logic.getUserName(),
-        logic.getEmailAccount(),
-        logic.getBackgroundType(),
-        logic.getBackgroundUrl(),
+        logic!.getAvatarUrl(),
+        logic!.getUserName(),
+        logic!.getEmailAccount(),
+        logic!.getBackgroundType(),
+        logic!.getBackgroundUrl(),
       ]).then((v) {
         refresh();
       });

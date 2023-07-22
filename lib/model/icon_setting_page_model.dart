@@ -3,7 +3,7 @@ import 'package:todo_list/json/task_icon_bean.dart';
 import 'package:todo_list/logic/all_logic.dart';
 
 class IconSettingPageModel extends ChangeNotifier {
-  IconSettingPageLogic logic;
+  IconSettingPageLogic? logic;
   BuildContext context;
 
   ///当前已经选择出来的icon图标
@@ -23,7 +23,7 @@ class IconSettingPageModel extends ChangeNotifier {
   bool isDeleting = false;
   bool isSearching = false;
 
-  IconSettingPageModel(this.context,this.logic) {
+  IconSettingPageModel({required this.context,this.logic}) {
     logic = IconSettingPageLogic(this);
   }
 
@@ -31,8 +31,8 @@ class IconSettingPageModel extends ChangeNotifier {
     if (this.context == null) {
       this.context = context;
       Future.wait([
-        logic.getTaskIconList(),
-        logic.getIconList(),
+        logic!.getTaskIconList(),
+        logic!.getIconList(),
       ]).then((value) {
         refresh();
       });

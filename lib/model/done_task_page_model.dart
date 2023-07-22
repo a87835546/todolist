@@ -6,17 +6,17 @@ export 'package:todo_list/widgets/loading_widget.dart';
 
 class DoneTaskPageModel extends ChangeNotifier{
 
-  DoneTaskPageLogic logic;
+  DoneTaskPageLogic? logic;
   BuildContext context;
 
 
-  LoadingFlag loadingFlag = LoadingFlag.loading;
-  List<TaskBean> doneTasks = [];
+  LoadingFlag? loadingFlag = LoadingFlag.loading;
+  List<TaskBean>? doneTasks = [];
 
   //当前点击到的已完成任务的index，方便再任务列表页面删除用的
-  int currentTapIndex = 0;
+  int? currentTapIndex = 0;
 
-  DoneTaskPageModel(this.logic,this.context,this.doneTasks,this.loadingFlag,this.currentTapIndex){
+  DoneTaskPageModel({this.logic,required this.context,this.doneTasks,this.loadingFlag,this.currentTapIndex}){
     logic = DoneTaskPageLogic(this);
   }
 
@@ -24,7 +24,7 @@ class DoneTaskPageModel extends ChangeNotifier{
     if(this.context == null){
         this.context = context;
         Future.wait([
-          logic.getDoneTasks(),
+          logic!.getDoneTasks(),
         ],).then((value){
           refresh();
         });

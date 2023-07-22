@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'dart:js_util';
+
 import 'package:flutter/foundation.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
@@ -11,7 +11,7 @@ class DBProvider {
 
   static final DBProvider db = DBProvider();
 
-  Database _database = newObject();
+  Database _database = DBProvider.db._database;
 
   Future<Database> get database async {
     if (_database != null) return _database;

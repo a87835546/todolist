@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'dart:js_util';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:todo_list/json/color_bean.dart';
@@ -7,13 +7,13 @@ export 'package:todo_list/json/color_bean.dart';
 
 class TaskIconBean {
   String taskName;
-  IconBean iconBean;
-  ColorBean colorBean;
+  IconBean? iconBean;
+  ColorBean? colorBean;
 
   TaskIconBean({required this.taskName, required this.iconBean, required this.colorBean});
 
   static TaskIconBean fromMap(Map<String, dynamic> map) {
-    TaskIconBean bean = new TaskIconBean(taskName: '', iconBean: newObject(), colorBean: newObject());
+    TaskIconBean bean = new TaskIconBean(taskName: '', iconBean: null, colorBean: ColorBean());
     bean.taskName = map['taskName'];
     bean.colorBean = ColorBean.fromMap(map['colorBean'])!;
     bean.iconBean = IconBean.fromMap(map['iconBean']);

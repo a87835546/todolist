@@ -49,12 +49,12 @@ class _AboutPageState extends State<AboutPage> {
             color: Colors.grey,
           ),
         ),
-        backgroundColor: globalModel.logic.getBgInDark(),
+        backgroundColor: globalModel.logic?.getBgInDark(),
         iconTheme: IconThemeData(color: Colors.grey),
         elevation: 0.0,
       ),
       body: Container(
-        color: globalModel.logic.getBgInDark(),
+        color: globalModel.logic?.getBgInDark(),
         child: Container(
           margin: EdgeInsets.all(20),
           child: NotificationListener<OverscrollIndicatorNotification>(
@@ -255,6 +255,7 @@ class _AboutPageState extends State<AboutPage> {
         builder: (ctx) {
           CancelToken cancelToken = CancelToken();
           return NetLoadingWidget(
+            null,
             loadingController: loadingController,
             successText: IntlLocalizations.of(context)?.noUpdate??"",
             onSuccess: () {
@@ -275,9 +276,9 @@ class _AboutPageState extends State<AboutPage> {
                             version: updateInfo.appVersion,
                             updateUrl: updateInfo.downloadUrl,
                             updateInfo: updateInfo.updateInfo,
-                            updateInfoColor: globalModel.logic.getBgInDark(),
+                            updateInfoColor: globalModel.logic?.getBgInDark(),
                             backgroundColor:
-                                globalModel.logic.getPrimaryGreyInDark(context),
+                                globalModel.logic?.getPrimaryGreyInDark(context),
                           );
                         });
                   }
@@ -287,7 +288,7 @@ class _AboutPageState extends State<AboutPage> {
                   loadingController.setFlag(LoadingFlag.error);
                 },
                 params: {
-                  "language": globalModel.currentLocale.languageCode,
+                  "language": globalModel.currentLocale?.languageCode??"EN",
                   "appId": "001"
                 },
                 token: cancelToken,
