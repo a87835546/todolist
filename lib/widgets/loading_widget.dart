@@ -13,7 +13,7 @@ class LoadingWidget extends StatelessWidget {
   final LoadingFlag? flag;
   final VoidCallback? errorCallBack;
   final Widget? successWidget;
-  final double? size;
+  final double size;
 
   LoadingWidget(
       {this.progressColor,
@@ -27,7 +27,6 @@ class LoadingWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     final primaryColor = Theme.of(context).primaryColor;
 
     switch (flag) {
@@ -37,22 +36,22 @@ class LoadingWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Container(
-                height: size??0 / 2,
-                width: size??0 / 2,
+                height: size / 2,
+                width: size / 2,
                 child: CircularProgressIndicator(
-                  strokeWidth: size??0 / 10,
+                  strokeWidth: size / 10,
                   valueColor: AlwaysStoppedAnimation(
                       progressColor ?? primaryColor),
                 ),
               ),
               SizedBox(
-                height: size??0 / 5,
+                height: size / 5,
               ),
               Text(
                 loadingText ?? IntlLocalizations.of(context)?.loading??"",
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    fontSize: textSize ?? size??0 / 5, color: textColor ?? primaryColor),
+                    fontSize: textSize ?? size / 5, color: textColor ?? primaryColor),
               )
             ],
           ),
@@ -75,7 +74,7 @@ class LoadingWidget extends StatelessWidget {
                   child: Text(
                     "${errorText??""}".isEmpty?(IntlLocalizations.of(context)?.reLoading??""):errorText!,
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: textSize ?? size??0 / 5, color: textColor ?? primaryColor),
+                    style: TextStyle(fontSize: textSize ?? size / 5, color: textColor ?? primaryColor),
                   )),
             ],
           ),
@@ -100,7 +99,7 @@ class LoadingWidget extends StatelessWidget {
                 emptyText ?? IntlLocalizations.of(context)?.loadingEmpty??"",
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    fontSize: textSize ?? size??0 / 5, color: textColor ?? primaryColor),
+                    fontSize: textSize ?? size / 5, color: textColor ?? primaryColor),
               ),
             ],
           ),
@@ -123,14 +122,15 @@ class LoadingWidget extends StatelessWidget {
                 idleText ?? IntlLocalizations.of(context)?.loadingIdle??"",
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    fontSize: textSize ?? size??0 / 5, color: textColor ?? primaryColor),
+                    fontSize: textSize ?? size / 5, color: textColor ?? primaryColor),
               )
             ],
           ),
         );
         break;
+      default:
+        return Container();
     }
-    return Container();
   }
 }
 

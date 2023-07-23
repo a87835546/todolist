@@ -11,7 +11,7 @@ class DoneTaskPageLogic {
   DoneTaskPageLogic(this._model);
 
   Future getDoneTasks() async {
-    final tasks = await DBProvider.db.getTasks(isDone: true, account: '');
+    final tasks = await DBProvider.getInstance().getTasks(isDone: true, account: '');
     if (tasks.length == 0) {
       _model.loadingFlag = LoadingFlag.empty;
       _model.doneTasks?.clear();

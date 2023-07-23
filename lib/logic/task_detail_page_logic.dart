@@ -68,7 +68,7 @@ class TaskDetailPageLogic {
         });
       }
       _model.taskBean?.changeTimes++;
-      DBProvider.db.updateTask(_model.taskBean??TaskBean(detailList: [])).then((value) async {
+      DBProvider.getInstance().updateTask(_model.taskBean??TaskBean(detailList: [])).then((value) async {
         final account =
             await SharedUtil.instance.getString(Keys.account) ?? 'default';
         if (account != 'default') {
@@ -184,7 +184,7 @@ class TaskDetailPageLogic {
 
   void deleteAndExit(MainPageModel mainPageModel) {
 //    removeTask(mainPageModel);
-    DBProvider.db.deleteTask(_model.taskBean!.id);
+    DBProvider.getInstance().deleteTask(_model.taskBean!.id);
 //    _model.refresh();
     //如果是从“完成列表”过来
     final doneTaskPageModel = _model.doneTaskPageModel;

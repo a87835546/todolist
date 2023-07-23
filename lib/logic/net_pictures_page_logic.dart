@@ -135,7 +135,7 @@ class NetPicturesPageLogic {
                 break;
               case NetPicturesUseType.taskCardBackground:
                 _model.taskBean.backgroundUrl = currentUrl!;
-                DBProvider.db.updateTask(_model.taskBean);
+                DBProvider.getInstance().updateTask(_model.taskBean);
                 final searchModel = globalModel?.searchPageModel;
                 searchModel?.refresh();
                 final mainPageModel = globalModel?.mainPageModel;
@@ -204,7 +204,7 @@ class NetPicturesPageLogic {
         break;
       case NetPicturesUseType.taskCardBackground:
         _model.taskBean?.backgroundUrl = currentUrl;
-        DBProvider.db.updateTask(_model.taskBean);
+        DBProvider.getInstance().updateTask(_model.taskBean);
         final searchModel = globalModel?.searchPageModel;
         searchModel?.refresh();
         final taskDetailPageModel = globalModel?.taskDetailPageModel;

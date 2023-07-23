@@ -4,23 +4,22 @@ import 'package:todo_list/config/keys.dart';
 
 class SharedUtil{
 
-  factory SharedUtil() => _getInstance();
+  factory SharedUtil() => getInstance();
 
-  static SharedUtil get instance => _getInstance();
-  static SharedUtil _instance = SharedUtil._getInstance();
+  static SharedUtil get instance => getInstance();
 
 
-  SharedUtil._internal() {
-    //初始化
-  }
+  static SharedUtil? _instance;
 
-  static SharedUtil _getInstance() {
+  // 私有的命名函数，声明后，用户无法通过Singleton()创建一个新的对象
+  SharedUtil._internal();
+
+  static SharedUtil getInstance() {
     if (_instance == null) {
-      _instance = new SharedUtil._internal();
+      _instance = SharedUtil._internal();
     }
-    return _instance;
+    return _instance!;
   }
-
 
   Future saveString (String key, String value) async{
     SharedPreferences prefs = await SharedPreferences.getInstance();

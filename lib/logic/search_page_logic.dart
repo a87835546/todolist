@@ -28,7 +28,7 @@ class SearchPageLogic{
     if(queryText.isEmpty) return;
     if (!_model.isSearching) {
       _model. isSearching = true;
-      DBProvider.db.queryTask(queryText).then((list) {
+      DBProvider.getInstance().queryTask(queryText).then((list) {
         _model.isSearching = false;
         _model.searchTasks.clear();
         _model.searchTasks.addAll(list);
@@ -74,7 +74,7 @@ class SearchPageLogic{
   }
 
   void doDelete(TaskBean task, GlobalModel globalModel) {
-    DBProvider.db.deleteTask(task.id);
+    DBProvider.getInstance().deleteTask(task.id);
     final mainPageModel = globalModel.mainPageModel;
     if(mainPageModel!=null) {
       removeTask(mainPageModel!, task.id);

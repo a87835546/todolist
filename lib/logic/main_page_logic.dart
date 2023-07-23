@@ -108,7 +108,7 @@ class MainPageLogic {
   }
 
   Future getTasks() async {
-    final tasks = await DBProvider.db.getTasks();
+    final tasks = await DBProvider.getInstance().getTasks();
     if (tasks == null) return;
     _model.tasks.clear();
     _model.tasks.addAll(tasks);
@@ -238,7 +238,7 @@ class MainPageLogic {
   }
 
   void _deleteDataBaseTask(TaskBean taskBean) {
-    DBProvider.db.deleteTask(taskBean.id).then((a) {
+    DBProvider.getInstance().deleteTask(taskBean.id).then((a) {
       getTasks().then((value) {
         _model.refresh();
       });
@@ -493,19 +493,19 @@ class MainPageLogic {
     ApiService.instance?.postUpdateTask(
       success: (CommonBean bean) {
         taskBean.needUpdateToCloud = 'false';
-        DBProvider.db.updateTask(taskBean);
+        DBProvider.getInstance().updateTask(taskBean);
       },
       failed: (CommonBean bean) {
         taskBean.needUpdateToCloud = 'true';
         _model.needSyn = true;
         _model.refresh();
-        DBProvider.db.updateTask(taskBean);
+        DBProvider.getInstance().updateTask(taskBean);
       },
       error: (msg) {
         taskBean.needUpdateToCloud = 'true';
         _model.needSyn = true;
         _model.refresh();
-        DBProvider.db.updateTask(taskBean);
+        DBProvider.getInstance().updateTask(taskBean);
       },
       taskBean: taskBean,
       token: token!,
@@ -525,19 +525,19 @@ class MainPageLogic {
       success: (UploadTaskBean bean) {
         taskBean.needUpdateToCloud = 'false';
         taskBean.uniqueId = bean.uniqueId;
-        DBProvider.db.updateTask(taskBean);
+        DBProvider.getInstance().updateTask(taskBean);
       },
       failed: (UploadTaskBean bean) {
         taskBean.needUpdateToCloud = 'true';
         _model.needSyn = true;
         _model.refresh();
-        DBProvider.db.updateTask(taskBean);
+        DBProvider.getInstance().updateTask(taskBean);
       },
       error: (msg) {
         taskBean.needUpdateToCloud = 'true';
         _model.needSyn = true;
         _model.refresh();
-        DBProvider.db.updateTask(taskBean);
+        DBProvider.getInstance().updateTask(taskBean);
       },
       taskBean: taskBean,
       token: token!,

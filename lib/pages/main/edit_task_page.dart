@@ -13,11 +13,11 @@ class EditTaskPage extends StatelessWidget {
   final TaskIconBean taskIconBean;
 
   //detailModel如果不为空，表示这个页面是从浏览页面过来的
-  final TaskDetailPageModel taskDetailPageModel;
+  final TaskDetailPageModel? taskDetailPageModel;
 
   EditTaskPage(
     this.taskIconBean, {
-    required this.taskDetailPageModel,
+      this.taskDetailPageModel,
   });
 
   @override
@@ -206,7 +206,7 @@ class EditTaskPage extends StatelessWidget {
                               Icons.timer,
                               color: iconColor,
                             ),
-                            text: model.logic?.getStartTimeText(),
+                            text: model.logic?.getStartTimeText(context),
                             onTap:() => model.logic?.pickStartTime(globalModel),
                           ),
                           model.logic!.getIconText(
@@ -214,7 +214,7 @@ class EditTaskPage extends StatelessWidget {
                               Icons.timelapse,
                               color: iconColor,
                             ),
-                            text: model.logic?.getEndTimeText(),
+                            text: model.logic?.getEndTimeText(context),
                             onTap:() => model.logic?.pickEndTime(globalModel),
                           ),
                         ],

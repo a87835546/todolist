@@ -106,7 +106,7 @@ class PopMenuBt extends StatelessWidget {
   }
 
   void refreshTaskCard(GlobalModel globalModel) {
-     DBProvider.db.updateTask(taskBean!);
+     DBProvider.getInstance().updateTask(taskBean!);
     final searchModel = globalModel.searchPageModel;
     final taskDetailPageModel = globalModel.taskDetailPageModel;
     taskDetailPageModel?.refresh();

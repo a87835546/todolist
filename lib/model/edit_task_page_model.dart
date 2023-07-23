@@ -46,7 +46,7 @@ class EditTaskPageModel extends ChangeNotifier{
   bool? canAddTaskDetail = false;
 
   ///当这个值不为空的时候，表示不是新增一个task，而是编辑已存在的task
-  TaskBean oldTaskBean;
+  TaskBean? oldTaskBean;
 
   EditTaskPageModel({required this.context,
       this.logic,
@@ -65,16 +65,16 @@ class EditTaskPageModel extends ChangeNotifier{
       this.taskIcon,
       this.textColorBean,
       this.uniqueId,
-   required this.oldTaskBean}){
+    this.oldTaskBean}){
     logic = EditTaskPageLogic(this);
-    this.uniqueId = oldTaskBean.uniqueId;
-    logic?.initialDataFromOld(oldTaskBean);
+    if(oldTaskBean != null) {
+      this.uniqueId = oldTaskBean?.uniqueId;
+      logic?.initialDataFromOld(oldTaskBean);
+    }
   }
 
   void setContext(BuildContext context){
-    if(this.context == null){
-        this.context = context;
-    }
+    this.context = context;
   }
 
   @override
@@ -85,7 +85,7 @@ class EditTaskPageModel extends ChangeNotifier{
     }
     textEditingController.dispose();
     scrollController.dispose();
-    if(cancelToken!.isCancelled == null) cancelToken?.cancel();
+    cancelToken?.cancel();
     SystemChannels.textInput.invokeMethod('TextInput.hide');
     debugPrint("EditTaskPageModel销毁了");
   }
@@ -104,7 +104,7 @@ class EditTaskPageModel extends ChangeNotifier{
     this.mainPageModel = mainPageModel;
   }
 
-  void setTaskDetailPageModel(TaskDetailPageModel taskDetailPageModel) {
+  void setTaskDetailPageModel(TaskDetailPageModel? taskDetailPageModel) {
     if(this.taskDetailPageModel == null){
       this.taskDetailPageModel = taskDetailPageModel;
     }

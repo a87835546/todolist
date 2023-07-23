@@ -7,16 +7,19 @@ import 'package:todo_list/utils/shared_util.dart';
 import 'package:todo_list/utils/theme_util.dart';
 
 class IconListUtil{
-  static IconListUtil _instance = IconListUtil.getInstance();
 
-  static IconListUtil getInstance(){
-    if(_instance == null){
-        _instance = IconListUtil._internal();
+  static IconListUtil? _instance;
+
+  // 私有的命名函数，声明后，用户无法通过Singleton()创建一个新的对象
+  IconListUtil._internal();
+
+  static IconListUtil getInstance() {
+    if (_instance == null) {
+      _instance = IconListUtil._internal();
     }
-    return _instance;
+    return _instance!;
   }
 
-  IconListUtil._internal();
 
 
   List<TaskIconBean> getDefaultTaskIcons(BuildContext context){
@@ -58,7 +61,7 @@ class IconListUtil{
       TaskIconBean taskIconBean = TaskIconBean.fromMap(data);
       list.add(taskIconBean);
     }
-    final hasSaveDefaultIcons = await SharedUtil.instance.getBoolean(Keys.hasSavedDefaultIcons) ?? false;
+    final hasSaveDefaultIcons = await SharedUtil.instance.getBoolean(Keys.hasSavedDefaultIcons);
     List<TaskIconBean>  defaultList = [];
     if(!hasSaveDefaultIcons){
       defaultList = getDefaultTaskIcons(context);

@@ -95,7 +95,7 @@ class _NetLoadingWidgetState extends State<NetLoadingWidget> {
   @override
   void initState() {
     super.initState();
-    widget?.loadingController?._setState(this);
+    widget.loadingController?._setState(this);
     if(widget.onRequest != null){
       widget.onRequest!();
     }
@@ -108,7 +108,7 @@ class _NetLoadingWidgetState extends State<NetLoadingWidget> {
 
   @override
   void dispose() {
-    widget?.cancelToken?.cancel();
+    widget.cancelToken?.cancel();
     super.dispose();
   }
 
@@ -140,18 +140,14 @@ class LoadingController {
   LoadingFlag _flag = LoadingFlag.loading;
 
   void setFlag(LoadingFlag loadingFlag) {
-    _state?.loadingFlag = loadingFlag;
+    _state.loadingFlag = loadingFlag;
     _flag = loadingFlag;
-    _state?.refresh();
-    print("设置:${_state?.loadingFlag}");
+    _state.refresh();
+    print("设置:${_state.loadingFlag}");
   }
 
   void _setState(_NetLoadingWidgetState state) {
-    if (this?._state == null) {
-      this?._state = state;
-    } else {
-      this._state = state;
-    }
+    this._state = state;
     print("设置了:${this._state}");
   }
 

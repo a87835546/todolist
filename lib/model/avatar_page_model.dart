@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:image_crop/image_crop.dart';
 import 'package:todo_list/config/api_service.dart';
 import 'package:todo_list/logic/all_logic.dart';
 import 'package:todo_list/model/main_page_model.dart';
@@ -16,7 +15,7 @@ class AvatarPageModel extends ChangeNotifier{
   //当前的头像url,比如本地的就是本地路径，网络就是网络地址
   String? currentAvatarUrl = "images/icon.png";
 
-  final cropKey = GlobalKey<CropState>();
+  // final cropKey = GlobalKey<CropState>();
 
   AvatarPageModel({this.logic,required this.context,this.mainPageModel,this.cancelToken,this.currentAvatarType,this.currentAvatarUrl}){
     logic = AvatarPageLogic(this);
@@ -31,7 +30,6 @@ class AvatarPageModel extends ChangeNotifier{
 
   @override
   void dispose(){
-    cropKey?.currentState?.dispose();
     cancelToken?.cancel();
     super.dispose();
     debugPrint("AvatarPageModel销毁了");

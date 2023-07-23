@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
 import 'package:path/path.dart';
@@ -7,19 +8,40 @@ import 'package:todo_list/json/task_bean.dart';
 import 'package:todo_list/utils/shared_util.dart';
 
 class DBProvider {
-  // DBProvider._() ;
 
-  static final DBProvider db = DBProvider();
+  // static final DBProvider db = DBProvider();
+  static DBProvider? db;
 
-  Database _database = DBProvider.db._database;
+  // 私有的命名函数，声明后，用户无法通过Singleton()创建一个新的对象
+  DBProvider._internal();
 
-  Future<Database> get database async {
-    if (_database != null) return _database;
-    _database = await initDB();
-    return _database;
+  static DBProvider getInstance()   {
+    if (db == null) {
+      db = DBProvider._internal();
+      initDB();
+      log("bd provider init.......");
+
+    }
+    return db!;
   }
 
-  initDB() async {
+
+
+
+  // Database _database = DBProvider.getInstance()._database;
+  Database? _database ;
+
+  Future<Database> get database  async {
+    // if (_database != null) {
+    //   _database = await initDB();
+    // }
+    log("database init.......");
+    return  await initDB();
+  }
+
+
+
+  static initDB() async {
     var dataBasePath = await getDatabasesPath();
     String path = join(dataBasePath, "todo.db");
     return await openDatabase(

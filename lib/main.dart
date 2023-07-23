@@ -52,7 +52,8 @@ class MyApp extends StatelessWidget {
           }
         }
         if (model.currentLocale == null) {
-          model.currentLocale = Locale('zh', "CN");
+          // model.currentLocale = Locale('zh', "CN");
+          model.currentLocale = Locale('en', "US");
           return model.currentLocale;
         }
         return model.currentLocale;

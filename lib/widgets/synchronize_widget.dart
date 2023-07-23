@@ -228,7 +228,7 @@ class _SynchronizeWidgetState extends State< SynchronizeWidget> {
 
   void updateLocalTasks(String token) {
     if(syncedList.length == needSyncedLength){
-      DBProvider.db.updateTasks(needSynTasks).then((v){
+      DBProvider.getInstance().updateTasks(needSynTasks).then((v){
         setState(() {
           this.synFlag = SynFlag.cloudSynchronizing;
           print("更新完成");
@@ -241,7 +241,7 @@ class _SynchronizeWidgetState extends State< SynchronizeWidget> {
 
 
   void checkIfNeedSyn(String account, String token) async{
-    final allTasks = await DBProvider.db.getAllTasks(account: account);
+    final allTasks = await DBProvider.getInstance().getAllTasks(account: account);
     List<TaskBean> needSynTasks = [];
     int needSynNum = 0;
     for (var task in allTasks) {
@@ -297,7 +297,7 @@ class _SynchronizeWidgetState extends State< SynchronizeWidget> {
         List<TaskBean> needCreateTasks = [];
         for (var task in tasks) {
           final uniqueId = task.uniqueId;
-          final localTask = await DBProvider.db.getTaskByUniqueId(uniqueId);
+          final localTask = await DBProvider.getInstance().getTaskByUniqueId(uniqueId);
           ///如果本地没有查到这个task，就需要在本地重新创建
           if(localTask == null){
             needCreateTasks.add(task);
@@ -308,8 +308,8 @@ class _SynchronizeWidgetState extends State< SynchronizeWidget> {
             needUpdateTasks.add(task);
           }
         }
-        await DBProvider.db.updateTasks(needUpdateTasks);
-        await DBProvider.db.createTasks(needCreateTasks);
+        await DBProvider.getInstance().updateTasks(needUpdateTasks);
+        await DBProvider.getInstance().createTasks(needCreateTasks);
         widget.mainPageModel.logic?.getTasks().then((v){
           widget.mainPageModel.needSyn = false;
           widget.mainPageModel.refresh();

@@ -6,16 +6,18 @@ import 'package:todo_list/json/theme_bean.dart';
 import 'package:todo_list/utils/shared_util.dart';
 
 class ThemeUtil {
-  static ThemeUtil _instance = ThemeUtil.getInstance();
+
+  static ThemeUtil? _instance;
+
+  // 私有的命名函数，声明后，用户无法通过Singleton()创建一个新的对象
+  ThemeUtil._internal();
 
   static ThemeUtil getInstance() {
     if (_instance == null) {
       _instance = ThemeUtil._internal();
     }
-    return _instance;
+    return _instance!;
   }
-
-  ThemeUtil._internal();
 
   ThemeData getTheme(
     ThemeBean themeBean,

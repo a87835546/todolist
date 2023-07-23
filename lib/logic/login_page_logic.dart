@@ -124,7 +124,7 @@ class LoginPageLogic {
             SharedUtil.instance.saveInt(Keys.currentAvatarType, CurrentAvatarType.net);
           }
         }).then((v){
-          DBProvider.db.updateAccount(account).then((v){
+          DBProvider.getInstance().updateAccount(account).then((v){
             Navigator.of(context).pushAndRemoveUntil(
                 new MaterialPageRoute(
                     builder: (context){

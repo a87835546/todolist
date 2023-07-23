@@ -9,16 +9,21 @@ import 'package:todo_list/model/all_model.dart';
 import 'package:todo_list/pages/all_page.dart';
 
 class ProviderConfig {
-  static ProviderConfig _instance = ProviderConfig.getInstance();
+  static ProviderConfig? _singleton;
+
+  // 私有的命名函数，声明后，用户无法通过Singleton()创建一个新的对象
+  ProviderConfig._internal();
 
   static ProviderConfig getInstance() {
-    if (_instance == null) {
-      _instance = ProviderConfig._internal();
+    if (_singleton == null) {
+      _singleton = ProviderConfig._internal();
     }
-    return _instance;
+    return _singleton!;
+
+    // 上述判断空的在初始化的代码，可以简化成
+    // return _instance ??= Singleton._internal();
   }
 
-  ProviderConfig._internal();
 
   ///全局provider
   ChangeNotifierProvider<GlobalModel> getGlobal(Widget child) {
@@ -58,10 +63,10 @@ class ProviderConfig {
   ///任务编辑页provider
   ChangeNotifierProvider<EditTaskPageModel> getEditTaskPage(
       TaskIconBean taskIcon,
-      {required TaskDetailPageModel taskDetailPageModel,
-      required TaskBean taskBean}) {
+      {TaskDetailPageModel? taskDetailPageModel,
+       TaskBean? taskBean}) {
     return ChangeNotifierProvider<EditTaskPageModel>(
-      create: (context) => EditTaskPageModel(oldTaskBean: taskBean,context: context),
+      create: (context) => EditTaskPageModel(context: context),
       child: EditTaskPage(
         taskIcon,
         taskDetailPageModel: taskDetailPageModel,

@@ -52,7 +52,7 @@ dev_dependencies:
   #路径获取
   path_provider: ^2.0.7
   #图片裁剪
-  image_crop: ^0.4.0
+#  image_crop: ^0.4.0
   #svg----这个控件真是饱受挫折呀！
   flutter_svg: ^2.0.7
   #获取package信息

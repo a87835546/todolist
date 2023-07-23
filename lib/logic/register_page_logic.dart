@@ -147,7 +147,7 @@ class RegisterPageLogic{
             SharedUtil.instance.saveInt(Keys.currentAvatarType, CurrentAvatarType.net);
           }
         }).then((v){
-          DBProvider.db.updateAccount(model.email).then((v){
+          DBProvider.getInstance().updateAccount(model.email).then((v){
             Navigator.of(context).pushAndRemoveUntil(
                 new MaterialPageRoute(
                     builder: (context){

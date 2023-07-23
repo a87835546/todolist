@@ -109,7 +109,7 @@ class _BottomShowWidgetState extends State<BottomShowWidget>
                                 builder: (ctx) {
                                   return ProviderConfig.getInstance()
                                       .getEditTaskPage(
-                                    _children[index], taskDetailPageModel: TaskDetailPageModel(context: context), taskBean: TaskBean(detailList: []),
+                                    _children[index],taskBean: TaskBean(detailList: []),
                                   );
                                 },
                               ),
@@ -172,7 +172,7 @@ class _BottomShowWidgetState extends State<BottomShowWidget>
   }
 
   Future doExit(BuildContext context, AnimationController controller) async{
-    widget?.onExit();
+    widget.onExit();
     await controller.reverse();
     Navigator.of(context).pop();
   }

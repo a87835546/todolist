@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:image_crop/image_crop.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_list/i10n/localization_intl.dart';
 import 'package:todo_list/model/avatar_page_model.dart';
@@ -53,12 +52,7 @@ class AvatarPage extends StatelessWidget {
               alignment: Alignment.center,
               child: Container(
                 padding: EdgeInsets.all(20),
-                child: Crop(
-                  key: model.cropKey,
-                  image: model.logic!.getAvatarProvider(),
-                  aspectRatio: 1.0,
-                  maximumScale: 1.0,
-                ),
+                child: Container()
               ),
             ),
           ),
