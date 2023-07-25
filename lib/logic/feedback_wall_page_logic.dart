@@ -12,7 +12,7 @@ class FeedbackWallPageLogic{
   FeedbackWallPageLogic(this._model);
 
 
-  void getSuggestions(){
+  void getSuggestions(String account) async{
     ApiService.instance?.getSuggestions(
       success: (data){
         SharedUtil.instance.saveString(Keys.feedbackWallCacheList, jsonEncode(data));
@@ -31,6 +31,7 @@ class FeedbackWallPageLogic{
           _model.refresh();
         }
     },
+      id: account,
       token: _model.cancelToken,
     );
   }

@@ -93,7 +93,7 @@ class FeedbackPageLogic {
                 success: (bean){
                   SharedUtil.instance.saveString(Keys.lastSuggestTime, DateTime.now().toIso8601String());
                   _model.loadingController.setFlag(LoadingFlag.success);
-                  feedbackWallPageModel.logic?.getSuggestions();
+                  feedbackWallPageModel.logic?.getSuggestions(account??"");
                 },
                 failed: (bean){
                   _model.loadingController.setFlag(LoadingFlag.error);

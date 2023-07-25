@@ -51,8 +51,10 @@ class IconBean {
       required this.iconName,
       required this.matchTextDirection});
 
-  static IconData fromBean(IconBean bean) => IconData(bean.codePoint,
+  static IconData fromBean(IconBean bean) {
+    return  IconData(bean.codePoint,
       fontFamily: bean.fontFamily,);
+  }
 
   static IconBean fromMap(Map<String, dynamic> map) {
     IconBean bean = new IconBean(codePoint: 0, fontFamily: '', fontPackage: '', iconName: '', matchTextDirection: null);

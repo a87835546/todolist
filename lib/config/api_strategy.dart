@@ -4,12 +4,12 @@ export 'package:dio/dio.dart';
 
 ///Dio的封装类
 class ApiStrategy {
-  static ApiStrategy _instance = ApiStrategy._internal();
+  static ApiStrategy? _instance;
 
-  static final String baseUrl = "http://42.194.193.85/oldchen/";
-//  static final String baseUrl = "http://192.168.137.1:8080/";
-  static const int connectTimeOut = 10 * 1000; //连接超时时间为10秒
-  static const int receiveTimeOut = 15 * 1000; //响应超时时间为15秒
+  // static final String baseUrl = "http://42.194.193.85/oldchen/";
+ static final String baseUrl = "http://127.0.0.1:8081/";
+  static const Duration connectTimeOut = Duration(seconds: 10); //连接超时时间为10秒
+  static const Duration receiveTimeOut = Duration(seconds: 15); //响应超时时间为15秒
 
   Dio _client = Dio();
 
@@ -17,14 +17,13 @@ class ApiStrategy {
     if (_instance == null) {
       _instance = ApiStrategy._internal();
     }
-    return _instance;
+    return _instance!;
   }
 
   ApiStrategy._internal() {
-    if (_client == null) {
       BaseOptions options = new BaseOptions();
-      options.connectTimeout = connectTimeOut as Duration?;
-      options.receiveTimeout = receiveTimeOut as Duration?;
+      options.connectTimeout = connectTimeOut;
+      options.receiveTimeout = receiveTimeOut;
       options.baseUrl = baseUrl;
       _client = new Dio(options);
       _client.interceptors.add(LogInterceptor(
@@ -33,7 +32,6 @@ class ApiStrategy {
         responseHeader: false,
         request: false,
       )); //开启请求日志
-    }
   }
 
   Dio get client => _client;

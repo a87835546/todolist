@@ -88,6 +88,7 @@ class ApiService {
 
   ///获取建议列表
   void getSuggestions({
+    required String id,
      required Function success,
      required Function error,
      required CancelToken token,
@@ -100,7 +101,8 @@ class ApiService {
       errorCallBack: (errorMessage) {
         error(errorMessage);
       },
-      token: token, params: {},
+      token: token, params: {"id":id},
+
     );
   }
 
@@ -421,7 +423,7 @@ class ApiService {
         'changeTimes':'${taskBean.changeTimes}',
         'finishDate':taskBean.finishDate,
         'startDate':taskBean.startDate,
-        'uniqueId':taskBean.uniqueId,
+        'uniqueId':taskBean.uniqueId??"",
         'deadLine':taskBean.deadLine,
         'taskIconBean':jsonEncode(taskBean.taskIconBean?.toMap()),
         'detailList':jsonEncode(List.generate(taskBean.detailList?.length??0, (index) {

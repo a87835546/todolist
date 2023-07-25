@@ -229,7 +229,7 @@ class MainPageLogic {
           params: {
             "token": token??"",
             "account": account,
-            "uniqueId": taskBean.uniqueId,
+            "uniqueId": taskBean.uniqueId??"",
           },
           token: _model.cancelToken,
         );

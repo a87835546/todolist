@@ -9,11 +9,26 @@ import 'package:todo_list/i10n/localization_intl.dart';
 import 'package:todo_list/model/feedback_wall_page_model.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
+import '../../../utils/shared_util.dart';
 
-class FeedbackWallPage extends StatelessWidget {
 
+class FeedbackWallPage extends StatefulWidget {
+  final String? account;
+  const FeedbackWallPage({Key? key,  this.account}) : super(key: key);
 
   @override
+  State<StatefulWidget> createState() {
+    return FeedbackWallPageState();
+  }
+}
+
+class FeedbackWallPageState extends State<FeedbackWallPage> {
+  String account = "";
+  @override
+  void initState() async{
+    super.initState();
+    account = await SharedUtil.instance.getString(Keys.account)??"";
+  }
   Widget build(BuildContext context) {
     final model = Provider.of<FeedbackWallPageModel>(context)
       ..setContext(context);
@@ -32,47 +47,48 @@ class FeedbackWallPage extends StatelessWidget {
         ],
       ),
       body: Container(
-        child: model.suggestionList.isEmpty ? LoadingWidget(
-          flag: model.loadingFlag,
-          errorCallBack: (){
-            model.loadingFlag = LoadingFlag.loading;
-            model.refresh();
-            model.logic?.getSuggestions();
-          },
-        ) : AnimationLimiter(
-          child: ListView.builder(
-            itemBuilder: (ctx, index) {
-              final bean = model.suggestionList[index];
-              final connectWay = bean.connectWay;
-              final splitData = connectWay.split("<emoji>");
-              String emoji = "4";
-              for (var o in splitData) {
-                if(o.isNotEmpty){
-                  emoji = o;
+          child: model.suggestionList.isEmpty ? LoadingWidget(
+            flag: model.loadingFlag,
+            errorCallBack: (){
+              model.loadingFlag = LoadingFlag.loading;
+              model.refresh();
+              model.logic?.getSuggestions(widget.account??account);
+            },
+          ) : AnimationLimiter(
+            child: ListView.builder(
+              itemBuilder: (ctx, index) {
+                final bean = model.suggestionList[index];
+                final connectWay = bean.connectWay;
+                final splitData = connectWay.split("<emoji>");
+                String emoji = "4";
+                for (var o in splitData) {
+                  if(o.isNotEmpty){
+                    emoji = o;
+                  }
                 }
-              }
-              return AnimationConfiguration.staggeredList(
-                position: index,
-                duration: const Duration(milliseconds: 375),
-                child: SlideAnimation(
-                  verticalOffset: 50.0,
-                  child: FadeInAnimation(
-                    child: FeedbackItem(
-                      userName: bean.userName,
-                      avatarUrl: ApiStrategy.baseUrl + bean.avatarUrl ?? "files/default/2019/7/1564207029288.jpg",
-                      submitTime: bean.time,
-                      suggestion: bean.suggestion,
-                      emoji: emoji,
-                      index: index, key: super.key,
+                return AnimationConfiguration.staggeredList(
+                  position: index,
+                  duration: const Duration(milliseconds: 375),
+                  child: SlideAnimation(
+                    verticalOffset: 50.0,
+                    child: FadeInAnimation(
+                      child: FeedbackItem(
+                        userName: bean.userName,
+                        avatarUrl: ApiStrategy.baseUrl + bean.avatarUrl ?? "files/default/2019/7/1564207029288.jpg",
+                        submitTime: bean.time,
+                        suggestion: bean.suggestion,
+                        emoji: emoji,
+                        index: index, key: widget.key,
+                      ),
                     ),
                   ),
-                ),
-              );
-            },
-            itemCount: model.suggestionList.length,
-          ),
-        )
+                );
+              },
+              itemCount: model.suggestionList.length,
+            ),
+          )
       ),
     );
   }
+
 }
