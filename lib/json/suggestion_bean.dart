@@ -12,9 +12,9 @@ class SuggestionBean {
 
   static SuggestionBean fromMap(Map<String, dynamic> map) {
     SuggestionBean suggestionBean = new SuggestionBean();
-    suggestionBean.description = map['description'];
-    suggestionBean.status = map['status'];
-    suggestionBean.suggestions = SuggestionsListBean.fromMapList(map['suggestions']);
+    suggestionBean.description = map['message'];
+    suggestionBean.status = map['code'];
+    suggestionBean.suggestions = SuggestionsListBean.fromMapList(map['data']);
     return suggestionBean;
   }
 

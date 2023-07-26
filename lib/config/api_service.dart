@@ -93,7 +93,7 @@ class ApiService {
      required Function error,
      required CancelToken token,
   }) {
-    ApiStrategy.getInstance().get(
+    ApiStrategy.getInstance().post(
       "fUser/getSuggestion",
       (data) {
         success(data);

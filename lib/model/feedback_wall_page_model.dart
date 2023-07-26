@@ -4,8 +4,6 @@ import 'package:todo_list/logic/all_logic.dart';
 import 'package:dio/dio.dart';
 import 'package:todo_list/widgets/loading_widget.dart';
 
-import '../utils/shared_util.dart';
-
 class FeedbackWallPageModel extends ChangeNotifier{
 
   FeedbackWallPageLogic? logic;
@@ -20,15 +18,12 @@ class FeedbackWallPageModel extends ChangeNotifier{
 
   FeedbackWallPageModel({this.logic,required this.context}){
     logic = FeedbackWallPageLogic(this);
-
   }
 
-  void setContext(BuildContext context) async{
-    final account = await SharedUtil.instance.getString(Keys.account);
-
-    this.context = context;
+  void setContext(BuildContext context){
+        this.context = context;
         logic!.getCacheSuggestions();
-        logic!.getSuggestions(account??"");
+        logic!.getSuggestions("1ß");
   }
 
   @override

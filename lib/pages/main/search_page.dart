@@ -37,7 +37,7 @@ class SearchPage extends StatelessWidget {
                 color: bgColor,
               ),
               onPressed: () => Future.delayed(Duration(milliseconds: 100), () {
-                model.textEditingController?.clear();
+                model.textEditingController.clear();
               }),
             ),
             border: InputBorder.none,

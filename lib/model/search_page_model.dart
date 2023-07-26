@@ -38,7 +38,7 @@ class SearchPageModel extends ChangeNotifier{
 
   @override
   void dispose(){
-    textEditingController?.dispose();
+    textEditingController.dispose();
     if(!cancelToken.isCancelled) cancelToken.cancel();
     super.dispose();
     _globalModel?.searchPageModel = null;

@@ -4,10 +4,11 @@ export 'package:dio/dio.dart';
 
 ///Dio的封装类
 class ApiStrategy {
-  static ApiStrategy? _instance;
+  // static ApiStrategy _instance = ApiStrategy._internal();
+  static ApiStrategy? _instance ;
 
   // static final String baseUrl = "http://42.194.193.85/oldchen/";
- static final String baseUrl = "http://127.0.0.1:8081/";
+ static final String baseUrl = "http://160.251.52.178:8081/";
   static const Duration connectTimeOut = Duration(seconds: 10); //连接超时时间为10秒
   static const Duration receiveTimeOut = Duration(seconds: 15); //响应超时时间为15秒
 
@@ -21,6 +22,7 @@ class ApiStrategy {
   }
 
   ApiStrategy._internal() {
+    // if (_client == null) {
       BaseOptions options = new BaseOptions();
       options.connectTimeout = connectTimeOut;
       options.receiveTimeout = receiveTimeOut;
@@ -32,6 +34,7 @@ class ApiStrategy {
         responseHeader: false,
         request: false,
       )); //开启请求日志
+    // }
   }
 
   Dio get client => _client;

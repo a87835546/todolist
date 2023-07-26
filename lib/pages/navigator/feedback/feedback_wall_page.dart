@@ -25,14 +25,18 @@ class FeedbackWallPage extends StatefulWidget {
 class FeedbackWallPageState extends State<FeedbackWallPage> {
   String account = "";
   @override
-  void initState() async{
+  void initState() {
     super.initState();
+  }
+  @override
+  void didUpdateWidget(covariant FeedbackWallPage oldWidget) async{
+    super.didUpdateWidget(oldWidget);
     account = await SharedUtil.instance.getString(Keys.account)??"";
+
   }
   Widget build(BuildContext context) {
     final model = Provider.of<FeedbackWallPageModel>(context)
       ..setContext(context);
-
     return Scaffold(
       appBar: AppBar(
         title: Text(IntlLocalizations.of(context)?.feedbackWall??""),
