@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:todo_list/i10n/localization_intl.dart';
 export 'package:permission_handler/permission_handler.dart';
 import 'package:permission_handler_platform_interface/permission_handler_platform_interface.dart';
 
@@ -16,7 +15,8 @@ class PermissionReqUtil {
 
   PermissionReqUtil._internal();
 
-  void requestPermission(Permission reqPermissions, {
+  void requestPermission(
+    Permission reqPermissions, {
     bool showDialog = true,
     required BuildContext context,
     required VoidCallback granted,
@@ -24,16 +24,18 @@ class PermissionReqUtil {
     VoidCallback? disabled,
     VoidCallback? restricted,
     VoidCallback? unknown,
-     String? deniedDes,
-     String? disabledDes,
-     String? restrictedDes,
-     String? unknownDes,
-     String? openSetting,
+    String? deniedDes,
+    String? disabledDes,
+    String? restrictedDes,
+    String? unknownDes,
+    String? openSetting,
   }) async {
-    Map<Permission, PermissionStatus> output =
-    await PermissionHandlerPlatform.instance.requestPermissions([reqPermissions]);
-
-    switch (output[reqPermissions]) {
+    Map<Permission, PermissionStatus> output = await PermissionHandlerPlatform
+        .instance
+        .requestPermissions([reqPermissions]);
+    PermissionStatus permission =
+        output[reqPermissions] ?? PermissionStatus.granted;
+    switch (permission) {
       case PermissionStatus.granted:
         if (granted != null) granted();
 //        toShow(showDialog, context, reqPermissions, "权限申请成功");
@@ -44,8 +46,8 @@ class PermissionReqUtil {
           showDialog,
           context,
           reqPermissions,
-          deniedDes! ,
-          openSetting! ,
+          deniedDes!,
+          openSetting!,
           showOpenSettingButton: true,
         );
         break;
@@ -55,24 +57,28 @@ class PermissionReqUtil {
           disabled();
           return;
         }
-        toShow(showDialog, context, reqPermissions, disabledDes??"",openSetting??"");
+        toShow(showDialog, context, reqPermissions, disabledDes ?? "",
+            openSetting ?? "");
         break;
       case PermissionStatus.restricted:
         debugPrint("restricted权限:$reqPermissions");
         if (restricted != null) restricted();
-        toShow(showDialog, context, reqPermissions, restrictedDes??"",openSetting??"",
+        toShow(showDialog, context, reqPermissions, restrictedDes ?? "",
+            openSetting ?? "",
             showOpenSettingButton: true);
         break;
       case PermissionStatus.limited:
         debugPrint("未知权限:$reqPermissions");
         if (unknown != null) unknown();
-        toShow(showDialog, context, reqPermissions, unknownDes!,openSetting!);
+        toShow(showDialog, context, reqPermissions, unknownDes!, openSetting!);
         break;
+      case PermissionStatus.provisional:
+      // TODO: Handle this case.
     }
   }
 
-  void toShow(bool showDialog, BuildContext context,
-      Permission reqPermissions, String description, String openSetting,
+  void toShow(bool showDialog, BuildContext context, Permission reqPermissions,
+      String description, String openSetting,
       {bool showOpenSettingButton = false}) {
     if (showDialog) {
       if (context == null)
@@ -98,10 +104,10 @@ class PermissionReqUtil {
             actions: <Widget>[
               showOpenSettingButton
                   ? TextButton(
-                  onPressed: () {
-                    openAppSettings();
-                  },
-                  child: Text(openSetting))
+                      onPressed: () {
+                        openAppSettings();
+                      },
+                      child: Text(openSetting))
                   : SizedBox(),
             ],
           );

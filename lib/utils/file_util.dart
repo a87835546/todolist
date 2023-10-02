@@ -8,9 +8,8 @@ class FileUtil {
   static FileUtil _instance = FileUtil.getInstance();
 
   static FileUtil getInstance() {
-    if (_instance == null) {
-      _instance = FileUtil._internal();
-    }
+    _instance = FileUtil._internal();
+
     return _instance;
   }
 
@@ -81,7 +80,9 @@ class FileUtil {
           if (onComplete != null) onComplete(path + name);
         }
       },
-      options: Options(sendTimeout: Duration(seconds:15) , receiveTimeout:Duration(seconds:360)),
+      options: Options(
+          sendTimeout: Duration(seconds: 15),
+          receiveTimeout: Duration(seconds: 360)),
     );
   }
 }

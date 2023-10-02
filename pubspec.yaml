@@ -6,7 +6,7 @@ description: A new Flutter project.
 version: 1.1.2+1
 
 environment:
-  sdk: ">=2.12.0 <3.0.8"
+  sdk: ">=3.0.0 <3.13.5"
 
 dependencies:
   flutter:
@@ -37,8 +37,6 @@ dev_dependencies:
   carousel_slider: ^4.0.0
   #环形列表
   circle_list: ^1.0.5
-#  #intl语言包
-#  intl: ^0.16.0
   #本地数据库
   sqflite: ^2.0.1
   #取色框
@@ -48,7 +46,7 @@ dev_dependencies:
   #图片选取
   image_picker: ^1.0.1
   #权限申请
-  permission_handler: ^10.4.3
+  permission_handler: ^11.0.0
   #路径获取
   path_provider: ^2.0.7
   #图片裁剪
@@ -58,7 +56,6 @@ dev_dependencies:
   #获取package信息
   package_info: ^2.0.2
   #网页
-#  flutter_webview_plugin: ^0.4.0
   webview_flutter: ^4.2.2
   #上拉加载
   pull_to_refresh: ^2.0.0

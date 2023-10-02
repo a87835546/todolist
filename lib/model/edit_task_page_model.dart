@@ -1,6 +1,3 @@
-
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:todo_list/config/api_service.dart';
@@ -10,8 +7,7 @@ import 'package:todo_list/logic/all_logic.dart';
 import 'package:todo_list/model/main_page_model.dart';
 import 'package:todo_list/model/task_detail_page_model.dart';
 
-class EditTaskPageModel extends ChangeNotifier{
-
+class EditTaskPageModel extends ChangeNotifier {
   EditTaskPageLogic? logic;
   BuildContext context;
   final TextEditingController textEditingController = TextEditingController();
@@ -22,16 +18,18 @@ class EditTaskPageModel extends ChangeNotifier{
 
   CancelToken? cancelToken = CancelToken();
 
-
   ///任务清单
   List<TaskDetailBean>? taskDetails = [];
+
   ///截止日期
   DateTime? deadLine;
+
   ///开始日期
   DateTime? startDate;
-  
+
   ///创建日期
   DateTime? createDate;
+
   ///结束日期
   DateTime? finishDate;
 
@@ -48,7 +46,8 @@ class EditTaskPageModel extends ChangeNotifier{
   ///当这个值不为空的时候，表示不是新增一个task，而是编辑已存在的task
   TaskBean? oldTaskBean;
 
-  EditTaskPageModel({required this.context,
+  EditTaskPageModel(
+      {required this.context,
       this.logic,
       this.cancelToken,
       this.mainPageModel,
@@ -65,22 +64,21 @@ class EditTaskPageModel extends ChangeNotifier{
       this.taskIcon,
       this.textColorBean,
       this.uniqueId,
-    this.oldTaskBean}){
+      this.oldTaskBean}) {
     logic = EditTaskPageLogic(this);
-    if(oldTaskBean != null) {
+    if (oldTaskBean != null) {
       this.uniqueId = oldTaskBean?.uniqueId;
       logic?.initialDataFromOld(oldTaskBean);
     }
   }
 
-  void setContext(BuildContext context){
+  void setContext(BuildContext context) {
     this.context = context;
   }
 
   @override
-  void dispose(){
-    super.dispose();
-    if(logic != null){
+  void dispose() {
+    if (logic != null) {
       textEditingController.removeListener(logic!.editListener);
     }
     textEditingController.dispose();
@@ -88,14 +86,15 @@ class EditTaskPageModel extends ChangeNotifier{
     cancelToken?.cancel();
     SystemChannels.textInput.invokeMethod('TextInput.hide');
     debugPrint("EditTaskPageModel销毁了");
+    super.dispose();
   }
 
-  void refresh(){
+  void refresh() {
     notifyListeners();
   }
 
   void setTaskIcon(TaskIconBean taskIcon) {
-    if(this.taskIcon == null){
+    if (this.taskIcon == null) {
       this.taskIcon = taskIcon;
     }
   }
@@ -105,9 +104,8 @@ class EditTaskPageModel extends ChangeNotifier{
   }
 
   void setTaskDetailPageModel(TaskDetailPageModel? taskDetailPageModel) {
-    if(this.taskDetailPageModel == null){
+    if (this.taskDetailPageModel == null) {
       this.taskDetailPageModel = taskDetailPageModel;
     }
   }
-
 }

@@ -21,30 +21,29 @@ class AboutPage extends StatefulWidget {
 class _AboutPageState extends State<AboutPage> {
   List<String> descriptions = [];
 
-
   @override
   Widget build(BuildContext context) {
     final globalModel = Provider.of<GlobalModel>(context);
-    if(descriptions.isEmpty){
-      descriptions.add(IntlLocalizations.of(context)?.version112??"");
-      descriptions.add(IntlLocalizations.of(context)?.version111??"");
-      descriptions.add(IntlLocalizations.of(context)?.version110??"");
-      descriptions.add(IntlLocalizations.of(context)?.version109??"");
-      descriptions.add(IntlLocalizations.of(context)?.version108??"");
-      descriptions.add(IntlLocalizations.of(context)?.version107??"");
-      descriptions.add(IntlLocalizations.of(context)?.version106??"");
-      descriptions.add(IntlLocalizations.of(context)?.version105??"");
-      descriptions.add(IntlLocalizations.of(context)?.version104??"");
-      descriptions.add(IntlLocalizations.of(context)?.version103??"");
-      descriptions.add(IntlLocalizations.of(context)?.version102??"");
-      descriptions.add(IntlLocalizations.of(context)?.version101??"");
-      descriptions.add(IntlLocalizations.of(context)?.version100??"");
+    if (descriptions.isEmpty) {
+      descriptions.add(IntlLocalizations.of(context)?.version112 ?? "");
+      descriptions.add(IntlLocalizations.of(context)?.version111 ?? "");
+      descriptions.add(IntlLocalizations.of(context)?.version110 ?? "");
+      descriptions.add(IntlLocalizations.of(context)?.version109 ?? "");
+      descriptions.add(IntlLocalizations.of(context)?.version108 ?? "");
+      descriptions.add(IntlLocalizations.of(context)?.version107 ?? "");
+      descriptions.add(IntlLocalizations.of(context)?.version106 ?? "");
+      descriptions.add(IntlLocalizations.of(context)?.version105 ?? "");
+      descriptions.add(IntlLocalizations.of(context)?.version104 ?? "");
+      descriptions.add(IntlLocalizations.of(context)?.version103 ?? "");
+      descriptions.add(IntlLocalizations.of(context)?.version102 ?? "");
+      descriptions.add(IntlLocalizations.of(context)?.version101 ?? "");
+      descriptions.add(IntlLocalizations.of(context)?.version100 ?? "");
     }
 
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          IntlLocalizations.of(context)?.aboutApp??"",
+          IntlLocalizations.of(context)?.aboutApp ?? "",
           style: TextStyle(
             color: Colors.grey,
           ),
@@ -59,7 +58,7 @@ class _AboutPageState extends State<AboutPage> {
           margin: EdgeInsets.all(20),
           child: NotificationListener<OverscrollIndicatorNotification>(
             onNotification: (overScroll) {
-              overScroll.disallowGlow();
+              overScroll.disallowIndicator();
               return true;
             },
             child: Column(
@@ -71,11 +70,12 @@ class _AboutPageState extends State<AboutPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     InkWell(
-                      onTap: (){
-                        Navigator.of(context).push(CupertinoPageRoute(builder: (ctx) {
+                      onTap: () {
+                        Navigator.of(context)
+                            .push(CupertinoPageRoute(builder: (ctx) {
                           return WebViewPage(
                             'https://oldchen.top/flutter-blog/#/',
-                            title: IntlLocalizations.of(context)?.myBlog??"",
+                            title: IntlLocalizations.of(context)?.myBlog ?? "",
                           );
                         }));
                       },
@@ -105,7 +105,7 @@ class _AboutPageState extends State<AboutPage> {
                           Expanded(
                             child: Container(
                               child: Text(
-                                IntlLocalizations.of(context)?.appName??"",
+                                IntlLocalizations.of(context)?.appName ?? "",
                                 style: TextStyle(
                                   fontSize: 25,
                                   fontWeight: FontWeight.bold,
@@ -123,7 +123,8 @@ class _AboutPageState extends State<AboutPage> {
                                       future: PackageInfo.fromPlatform(),
                                       builder: (context, snapshot) {
                                         if (snapshot.hasData) {
-                                          PackageInfo packageInfo = snapshot.data as PackageInfo;
+                                          PackageInfo packageInfo =
+                                              snapshot.data as PackageInfo;
                                           return Text(
                                             packageInfo.version,
                                             style: TextStyle(
@@ -139,14 +140,16 @@ class _AboutPageState extends State<AboutPage> {
                                           return Container();
                                       }),
                                 ),
-                                SizedBox(width: 30,),
+                                SizedBox(
+                                  width: 30,
+                                ),
                                 Platform.isAndroid
                                     ? GestureDetector(
-                                      child: Icon(
-                                        Icons.cloud_upload,
-                                      ),
-                                      onTap: () => checkUpdate(globalModel),
-                                    )
+                                        child: Icon(
+                                          Icons.cloud_upload,
+                                        ),
+                                        onTap: () => checkUpdate(globalModel),
+                                      )
                                     : SizedBox(),
                               ],
                             ),
@@ -164,11 +167,11 @@ class _AboutPageState extends State<AboutPage> {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(20))),
                       child: Container(
-                        margin: EdgeInsets.only(left: 20, top: 30,right: 20),
+                        margin: EdgeInsets.only(left: 20, top: 30, right: 20),
                         child: NotificationListener<
                             OverscrollIndicatorNotification>(
                           onNotification: (overScroll) {
-                            overScroll.disallowGlow();
+                            overScroll.disallowIndicator();
                             return true;
                           },
                           child: ListView(
@@ -178,11 +181,13 @@ class _AboutPageState extends State<AboutPage> {
                               return Container(
                                 margin: EdgeInsets.only(bottom: 20),
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
                                     Text(
                                       IntlLocalizations.of(context)
-                                          ?.versionDescription??"",
+                                              ?.versionDescription ??
+                                          "",
                                       style: TextStyle(
                                         fontSize: 15,
                                         fontWeight: FontWeight.bold,
@@ -246,7 +251,6 @@ class _AboutPageState extends State<AboutPage> {
     );
   }
 
-
   void checkUpdate(GlobalModel globalModel) {
     final loadingController = globalModel.loadingController;
 
@@ -257,7 +261,7 @@ class _AboutPageState extends State<AboutPage> {
           return NetLoadingWidget(
             null,
             loadingController: loadingController,
-            successText: IntlLocalizations.of(context)?.noUpdate??"",
+            successText: IntlLocalizations.of(context)?.noUpdate ?? "",
             onSuccess: () {
               Navigator.pop(context);
             },
@@ -277,8 +281,8 @@ class _AboutPageState extends State<AboutPage> {
                             updateUrl: updateInfo.downloadUrl,
                             updateInfo: updateInfo.updateInfo,
                             updateInfoColor: globalModel.logic?.getBgInDark(),
-                            backgroundColor:
-                                globalModel.logic?.getPrimaryGreyInDark(context),
+                            backgroundColor: globalModel.logic
+                                ?.getPrimaryGreyInDark(context),
                           );
                         });
                   }
@@ -288,7 +292,7 @@ class _AboutPageState extends State<AboutPage> {
                   loadingController.setFlag(LoadingFlag.error);
                 },
                 params: {
-                  "language": globalModel.currentLocale?.languageCode??"EN",
+                  "language": globalModel.currentLocale?.languageCode ?? "EN",
                   "appId": "001"
                 },
                 token: cancelToken,

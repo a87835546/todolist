@@ -1,4 +1,3 @@
-
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -17,7 +16,7 @@ class EditTaskPage extends StatelessWidget {
 
   EditTaskPage(
     this.taskIconBean, {
-      this.taskDetailPageModel,
+    this.taskDetailPageModel,
   });
 
   @override
@@ -29,12 +28,21 @@ class EditTaskPage extends StatelessWidget {
     model.setTaskDetailPageModel(taskDetailPageModel);
     model.setTaskIcon(taskIconBean);
 
-    final iconColor = ColorBean.fromBean(taskIconBean.colorBean??ColorBean());
-    final iconData = IconBean.fromBean(taskIconBean.iconBean??IconBean(codePoint: 1, fontFamily: '', fontPackage: '', iconName: '', matchTextDirection: null));
+    final iconColor = ColorBean.fromBean(taskIconBean.colorBean ?? ColorBean());
+    final iconData = IconBean.fromBean(taskIconBean.iconBean ??
+        IconBean(
+            codePoint: 1,
+            fontFamily: '',
+            fontPackage: '',
+            iconName: '',
+            matchTextDirection: null));
     final bgColor = globalModel.logic?.getBgInDark();
-    final textColor =  globalModel.logic?.isDarkNow()??false ? Color.fromRGBO(130, 130, 130, 1) : Colors.black;
-    final hintTextColor =  globalModel.logic?.isDarkNow()??false ? Color.fromRGBO(130, 130, 130, 1) : Colors.grey;
-
+    final textColor = globalModel.logic?.isDarkNow() ?? false
+        ? Color.fromRGBO(130, 130, 130, 1)
+        : Colors.black;
+    final hintTextColor = globalModel.logic?.isDarkNow() ?? false
+        ? Color.fromRGBO(130, 130, 130, 1)
+        : Colors.grey;
 
 //    model.logic?.scrollToEndWhenEdit();
 
@@ -46,19 +54,21 @@ class EditTaskPage extends StatelessWidget {
         elevation: 0,
         actions: <Widget>[
           IconButton(
-              icon: Icon(
-                Icons.check,
-                color: iconColor,
-              ),
-              tooltip: IntlLocalizations.of(context)?.submit??"",
-              onPressed: model.logic?.onSubmitTap,)
+            icon: Icon(
+              Icons.check,
+              color: iconColor,
+            ),
+            tooltip: IntlLocalizations.of(context)?.submit ?? "",
+            onPressed: model.logic?.onSubmitTap,
+          )
         ],
         title: Container(
           height: 49,
           child: Form(
             autovalidateMode: AutovalidateMode.always,
             child: TextFormField(
-              style: TextStyle(color: textColor,textBaseline: TextBaseline.alphabetic),
+              style: TextStyle(
+                  color: textColor, textBaseline: TextBaseline.alphabetic),
               textAlign: TextAlign.center,
               validator: (text) {
                 model.currentTaskName = text!;
@@ -81,15 +91,16 @@ class EditTaskPage extends StatelessWidget {
               margin: EdgeInsets.only(left: 50, right: 50),
               child: NotificationListener<OverscrollIndicatorNotification>(
                 onNotification: (overScroll) {
-                  overScroll.disallowGlow();
+                  overScroll.disallowIndicator();
                   return true;
                 },
                 child: ReorderableListView(
-                  onReorder: (oldIndex, newIndex){
+                  onReorder: (oldIndex, newIndex) {
                     debugPrint("old:$oldIndex   new$newIndex");
                     model.logic?.moveTaskDetail(oldIndex, newIndex);
                   },
-                  children: List.generate(model.taskDetails?.length??0, (index){
+                  children:
+                      List.generate(model.taskDetails?.length ?? 0, (index) {
                     return Dismissible(
                       background: Container(
                         alignment: Alignment.centerLeft,
@@ -160,11 +171,10 @@ class EditTaskPage extends StatelessWidget {
                     TextField(
                       controller: model.textEditingController
                         ..addListener(model.logic!.editListener),
-                      autofocus: model.taskDetails?.isEmpty??true,
+                      autofocus: model.taskDetails?.isEmpty ?? true,
                       style: TextStyle(
-                        color: textColor,
-                          textBaseline: TextBaseline.alphabetic
-                      ),
+                          color: textColor,
+                          textBaseline: TextBaseline.alphabetic),
                       decoration: InputDecoration(
                           hintText: IntlLocalizations.of(context)?.addTask,
                           border: InputBorder.none,
@@ -172,7 +182,15 @@ class EditTaskPage extends StatelessWidget {
                             color: hintTextColor,
                           ),
                           prefixIcon: GestureDetector(
-                            onTap:() => model.logic?.onIconPress(model.taskIcon?.iconBean??IconBean(codePoint: 1, fontFamily: '', fontPackage: '', iconName: '', matchTextDirection: null),model.taskIcon?.colorBean??ColorBean()),
+                            onTap: () => model.logic?.onIconPress(
+                                model.taskIcon?.iconBean ??
+                                    IconBean(
+                                        codePoint: 1,
+                                        fontFamily: '',
+                                        fontPackage: '',
+                                        iconName: '',
+                                        matchTextDirection: null),
+                                model.taskIcon?.colorBean ?? ColorBean()),
                             child: Icon(
                               iconData,
                               color: iconColor,
@@ -184,7 +202,7 @@ class EditTaskPage extends StatelessWidget {
                               margin: EdgeInsets.all(10),
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(8),
-                                  color: model.canAddTaskDetail??false
+                                  color: model.canAddTaskDetail ?? false
                                       ? iconColor
                                       : Colors.grey.withOpacity(0.4)),
                               child: Icon(
@@ -207,7 +225,8 @@ class EditTaskPage extends StatelessWidget {
                               color: iconColor,
                             ),
                             text: model.logic?.getStartTimeText(context),
-                            onTap:() => model.logic?.pickStartTime(globalModel),
+                            onTap: () =>
+                                model.logic?.pickStartTime(globalModel),
                           ),
                           model.logic!.getIconText(
                             icon: Icon(
@@ -215,7 +234,7 @@ class EditTaskPage extends StatelessWidget {
                               color: iconColor,
                             ),
                             text: model.logic?.getEndTimeText(context),
-                            onTap:() => model.logic?.pickEndTime(globalModel),
+                            onTap: () => model.logic?.pickEndTime(globalModel),
                           ),
                         ],
                       ),

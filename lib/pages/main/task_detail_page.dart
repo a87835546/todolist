@@ -1,6 +1,5 @@
 import 'dart:io';
 
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_list/json/task_bean.dart';
@@ -21,17 +20,20 @@ class TaskDetailPage extends StatelessWidget {
       ..setContext(context, globalModel);
 
     globalModel.setTaskDetailPageModel(model);
-    final taskColor = globalModel.isCardChangeWithBg??false
+    final taskColor = globalModel.isCardChangeWithBg ?? false
         ? Theme.of(context).primaryColor
-        : ColorBean.fromBean(model.taskBean?.taskIconBean?.colorBean??ColorBean());
+        : ColorBean.fromBean(
+            model.taskBean?.taskIconBean?.colorBean ?? ColorBean());
 
     final textColor = model.logic?.getTextColor(context);
 
-    final int heroTag = model.heroTag??0;
+    final int heroTag = model.heroTag ?? 0;
     final size = MediaQuery.of(context).size;
     final bgUrl = model.taskBean?.backgroundUrl;
     final opacity = mainPageModel.currentTransparency;
-    final enableOpacity = model.doneTaskPageModel == null ? mainPageModel.enableTaskPageOpacity : false;
+    final enableOpacity = model.doneTaskPageModel == null
+        ? mainPageModel.enableTaskPageOpacity
+        : false;
 
     return WillPopScope(
       onWillPop: () {
@@ -84,7 +86,8 @@ class TaskDetailPage extends StatelessWidget {
                           null,
                           iconColor: taskColor,
                           taskBean: model.taskBean,
-                          onDelete: () => model.logic?.deleteTask(mainPageModel),
+                          onDelete: () =>
+                              model.logic?.deleteTask(mainPageModel),
                           onEdit: () => model.logic?.editTask(mainPageModel),
                         ))),
               ],
@@ -100,7 +103,7 @@ class TaskDetailPage extends StatelessWidget {
                   child: TaskInfoWidget(
                     heroTag,
                     taskBean: model.taskBean,
-                    isCardChangeWithBg: globalModel.isCardChangeWithBg??false,
+                    isCardChangeWithBg: globalModel.isCardChangeWithBg ?? false,
                     isExisting: model.isExiting,
                   ),
                 ),
@@ -110,7 +113,7 @@ class TaskDetailPage extends StatelessWidget {
                     child: !model.isExiting
                         ? NotificationListener<OverscrollIndicatorNotification>(
                             onNotification: (overScroll) {
-                              overScroll.disallowGlow();
+                              overScroll.disallowIndicator();
                               return true;
                             },
                             child: ListView(
@@ -118,10 +121,16 @@ class TaskDetailPage extends StatelessWidget {
                                 model?.taskBean?.detailList?.length ?? 0,
                                 (index) {
                                   TaskDetailBean taskDetailBean =
-                                      model.taskBean?.detailList[index]??TaskDetailBean();
+                                      model.taskBean?.detailList[index] ??
+                                          TaskDetailBean();
                                   return Container(
                                     margin: EdgeInsets.only(
-                                        bottom: (index ==model.taskBean!.detailList.length - 1)? 20: 0,
+                                        bottom: (index ==
+                                                model.taskBean!.detailList
+                                                        .length -
+                                                    1)
+                                            ? 20
+                                            : 0,
                                         left: 50,
                                         right: 50),
                                     child: TaskDetailItem(
@@ -131,7 +140,7 @@ class TaskDetailPage extends StatelessWidget {
                                       itemProgress: taskDetailBean.itemProgress,
                                       itemName: taskDetailBean.taskDetailName,
                                       iconColor: taskColor,
-                                      textColor: textColor??Colors.grey,
+                                      textColor: textColor ?? Colors.grey,
                                       onProgressChanged: (progress) {
                                         model.logic?.refreshProgress(
                                             taskDetailBean,

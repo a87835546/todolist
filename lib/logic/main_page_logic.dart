@@ -53,7 +53,8 @@ class MainPageLogic {
                           _model.logic?.deleteTask(taskBean);
                         },
                         child: Text(
-                          IntlLocalizations.of(_model.context)?.delete??"delete",
+                          IntlLocalizations.of(_model.context)?.delete ??
+                              "delete",
                           style: TextStyle(color: Colors.redAccent),
                         )),
                     TextButton(
@@ -61,7 +62,8 @@ class MainPageLogic {
                           Navigator.of(context).pop();
                         },
                         child: Text(
-                          IntlLocalizations.of(_model.context)?.cancel??"cancel",
+                          IntlLocalizations.of(_model.context)?.cancel ??
+                              "cancel",
                           style: TextStyle(color: Colors.green),
                         )),
                   ],
@@ -70,7 +72,7 @@ class MainPageLogic {
         ),
         onTap: () {
           _model.currentTapIndex = index;
-          Future.delayed(Duration(milliseconds: 400), (){
+          Future.delayed(Duration(milliseconds: 400), () {
             _model.canHideWidget = true;
             _model.refresh();
           });
@@ -109,7 +111,6 @@ class MainPageLogic {
 
   Future getTasks() async {
     final tasks = await DBProvider.getInstance().getTasks();
-    if (tasks == null) return;
     _model.tasks.clear();
     _model.tasks.addAll(tasks);
   }
@@ -122,22 +123,23 @@ class MainPageLogic {
     _model.currentUserName = currentUserName;
   }
 
-  Future getCurrentTransparency() async{
-    final transparency = await SharedUtil.instance.getDouble(Keys.currentTransparency);
+  Future getCurrentTransparency() async {
+    final transparency =
+        await SharedUtil.instance.getDouble(Keys.currentTransparency);
     if (transparency == null) return;
     if (transparency == _model.currentTransparency) return;
     _model.currentTransparency = transparency;
   }
 
-  Future getEnableCardPageOpacity() async{
-    final enable = await SharedUtil.instance.getBoolean(Keys.enableCardPageOpacity);
-    if (enable == null) return;
+  Future getEnableCardPageOpacity() async {
+    final enable =
+        await SharedUtil.instance.getBoolean(Keys.enableCardPageOpacity);
     _model.enableTaskPageOpacity = enable;
   }
 
   Decoration getBackground(GlobalModel globalModel) {
-    bool isBgGradient = globalModel.isBgGradient??false;
-    bool isBgChangeWithCard = globalModel.isBgChangeWithCard??false;
+    bool isBgGradient = globalModel.isBgGradient ?? false;
+    bool isBgChangeWithCard = globalModel.isBgChangeWithCard ?? false;
     bool enableBg = globalModel.enableNetPicBgInMainPage;
     final bgUrl = globalModel.currentMainPageBgUrl;
 
@@ -191,7 +193,8 @@ class MainPageLogic {
     int taskLength = _model.tasks.length;
     if (taskLength == 0) return primaryColor;
     if (index > taskLength - 1) return primaryColor;
-    return ColorBean.fromBean(_model.tasks[index].taskIconBean?.colorBean??ColorBean());
+    return ColorBean.fromBean(
+        _model.tasks[index].taskIconBean?.colorBean ?? ColorBean());
   }
 
   void deleteTask(TaskBean taskBean) async {
@@ -227,9 +230,9 @@ class MainPageLogic {
             _showTextDialog(msg);
           },
           params: {
-            "token": token??"",
+            "token": token ?? "",
             "account": account,
-            "uniqueId": taskBean.uniqueId??"",
+            "uniqueId": taskBean.uniqueId ?? "",
           },
           token: _model.cancelToken,
         );
@@ -249,8 +252,11 @@ class MainPageLogic {
     Navigator.of(_model.context).push(
       new CupertinoPageRoute(
         builder: (ctx) {
-          return ProviderConfig.getInstance()
-              .getEditTaskPage(taskBean.taskIconBean??TaskIconBean(taskName: "", iconBean: null, colorBean: null), taskBean: taskBean, taskDetailPageModel: TaskDetailPageModel(context: ctx));
+          return ProviderConfig.getInstance().getEditTaskPage(
+              taskBean.taskIconBean ??
+                  TaskIconBean(taskName: "", iconBean: null, colorBean: null),
+              taskBean: taskBean,
+              taskDetailPageModel: TaskDetailPageModel(context: ctx));
         },
       ),
     );
@@ -277,7 +283,6 @@ class MainPageLogic {
   ///无论是网络头像还是asset头像，最后将转换为本地文件头像
   Future getCurrentAvatar() async {
     switch (_model.currentAvatarType) {
-
       ///头像为默认头像的时候，将asset转换为file，方便imageCrop与之后的suggestion直接用到file
       case CurrentAvatarType.defaultAvatar:
         final path = await FileUtil.getInstance()
@@ -302,7 +307,7 @@ class MainPageLogic {
       case CurrentAvatarType.net:
         final net = await SharedUtil().getString(Keys.netAvatarPath);
         FileUtil.getInstance().downloadFile(
-          url: net??"",
+          url: net ?? "",
           filePath: "/avatar/",
           fileName: net!.split('/').last ?? "avatar.png",
           onComplete: (path) {
@@ -371,8 +376,8 @@ class MainPageLogic {
         builder: (ctx) {
           return EditDialog(
             null,
-            title: IntlLocalizations.of(context)?.customUserName??"",
-            hintText: IntlLocalizations.of(context)?.inputUserName??"",
+            title: IntlLocalizations.of(context)?.customUserName ?? "",
+            hintText: IntlLocalizations.of(context)?.inputUserName ?? "",
             positiveWithPop: false,
             onValueChanged: (text) {
               _model.currentEditingUserName = text;
@@ -381,7 +386,7 @@ class MainPageLogic {
             onPositive: () async {
               if (_model.currentEditingUserName.isEmpty) {
                 _showTextDialog(
-                    IntlLocalizations.of(context)?.userNameCantBeNull??"");
+                    IntlLocalizations.of(context)?.userNameCantBeNull ?? "");
                 return;
               }
               final account = await SharedUtil.instance.getString(Keys.account);
@@ -478,7 +483,7 @@ class MainPageLogic {
       },
       error: (msg) {},
       params: {
-        "language": globalModel.currentLocale?.languageCode??"en",
+        "language": globalModel.currentLocale?.languageCode ?? "en",
         "appId": "001"
       },
       token: cancelToken,
@@ -548,7 +553,9 @@ class MainPageLogic {
   void onBackGroundTap(GlobalModel globalModel) {
     Navigator.of(_model.context).push(new CupertinoPageRoute(builder: (ctx) {
       return ProviderConfig.getInstance().getNetPicturesPage(
-        useType: NetPicturesUseType.mainPageBackground, accountPageModel: AccountPageModel(context: ctx, isExisting: false), taskBean: TaskBean(detailList: []),
+        useType: NetPicturesUseType.mainPageBackground,
+        accountPageModel: AccountPageModel(context: ctx, isExisting: false),
+        taskBean: TaskBean(detailList: []),
       );
     }));
   }

@@ -1,10 +1,7 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_list/json/task_bean.dart';
 import 'package:todo_list/json/task_icon_bean.dart';
-import 'package:todo_list/logic/reset_password_page_logic.dart';
 import 'package:todo_list/model/all_model.dart';
 import 'package:todo_list/pages/all_page.dart';
 
@@ -24,11 +21,12 @@ class ProviderConfig {
     // return _instance ??= Singleton._internal();
   }
 
-
   ///全局provider
   ChangeNotifierProvider<GlobalModel> getGlobal(Widget child) {
     return ChangeNotifierProvider<GlobalModel>(
-      create: (context) => GlobalModel( context: context,mainPageModel: MainPageModel(null,context: context)),
+      create: (context) => GlobalModel(
+          context: context,
+          mainPageModel: MainPageModel(null, context: context)),
       child: child,
     );
   }
@@ -36,7 +34,7 @@ class ProviderConfig {
   ///主页provider
   ChangeNotifierProvider<MainPageModel> getMainPage() {
     return ChangeNotifierProvider<MainPageModel>(
-      create: (context) => MainPageModel(null,context: context),
+      create: (context) => MainPageModel(null, context: context),
       child: MainPage(),
     );
   }
@@ -45,13 +43,13 @@ class ProviderConfig {
   ChangeNotifierProvider<TaskDetailPageModel> getTaskDetailPage(
     int index,
     TaskBean taskBean, {
-     DoneTaskPageModel? doneTaskPageModel,
-     SearchPageModel? searchPageModel,
+    DoneTaskPageModel? doneTaskPageModel,
+    SearchPageModel? searchPageModel,
   }) {
     return ChangeNotifierProvider<TaskDetailPageModel>(
       create: (context) => TaskDetailPageModel(
         context: context,
-        taskBean:taskBean,
+        taskBean: taskBean,
         doneTaskPageModel: doneTaskPageModel,
         searchPageModel: searchPageModel,
         heroTag: index,
@@ -64,7 +62,7 @@ class ProviderConfig {
   ChangeNotifierProvider<EditTaskPageModel> getEditTaskPage(
       TaskIconBean taskIcon,
       {TaskDetailPageModel? taskDetailPageModel,
-       TaskBean? taskBean}) {
+      TaskBean? taskBean}) {
     return ChangeNotifierProvider<EditTaskPageModel>(
       create: (context) => EditTaskPageModel(context: context),
       child: EditTaskPage(
@@ -113,7 +111,7 @@ class ProviderConfig {
   ///搜索任务页provider
   ChangeNotifierProvider<SearchPageModel> getSearchPage() {
     return ChangeNotifierProvider<SearchPageModel>(
-      create: (context) => SearchPageModel(null,context: context),
+      create: (context) => SearchPageModel(null, context: context),
       child: SearchPage(),
     );
   }
@@ -155,7 +153,8 @@ class ProviderConfig {
   ChangeNotifierProvider<ResetPasswordPageModel> getResetPasswordPage(
       {bool isReset = true}) {
     return ChangeNotifierProvider<ResetPasswordPageModel>(
-      create: (context) => ResetPasswordPageModel(context: context,isReset: isReset),
+      create: (context) =>
+          ResetPasswordPageModel(context: context, isReset: isReset),
       child: ResetPasswordPage(),
     );
   }
@@ -167,7 +166,7 @@ class ProviderConfig {
       required TaskBean taskBean}) {
     return ChangeNotifierProvider<NetPicturesPageModel>(
       create: (context) => NetPicturesPageModel(
-        context:context,
+        context: context,
         useType: useType,
         accountPageModel: accountPageModel,
         taskBean: taskBean,
@@ -179,7 +178,8 @@ class ProviderConfig {
   ///账号页面的provider
   ChangeNotifierProvider<AccountPageModel> getAccountPage() {
     return ChangeNotifierProvider<AccountPageModel>(
-      create: (context) => AccountPageModel(context: context, isExisting: false ),
+      create: (context) =>
+          AccountPageModel(context: context, isExisting: false),
       child: AccountPage(),
     );
   }
